@@ -72,7 +72,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         for(int i=0; i < answers.length; i++){
             test.put(colorBlindImagesRes[i], answers[i]);
         }
-//        Collections.shuffle(Arrays.asList(colorBlindImageResDuplicate));
+        Collections.shuffle(Arrays.asList(colorBlindImageResDuplicate));
         for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
             inputButtons[i].setContentAreaFilled(false);
