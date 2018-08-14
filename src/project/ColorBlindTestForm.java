@@ -6,7 +6,12 @@
 package project;
 
 import java.awt.Color;
+import java.awt.List;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -20,44 +25,73 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
     /**
      * Creates new form BlindTestForm
      */
+    ArrayList<Integer> randomUniqueNumbers ;
+    private ArrayList colorBlindTestQuestion;
     private String input = "";
+    private HashMap<String, Integer> test;
+    String colorBlindImageResDuplicate[];
+    int currentItemFinished = 0;
     public ColorBlindTestForm() {
         initComponents();
         setSize(875, 551);
         setResizable(false);
+        test = new HashMap<String, Integer>();
+        colorBlindTestQuestion = new ArrayList();
         inputField.setHorizontalAlignment(SwingConstants.CENTER);
 //        this.setBackground(new Color(14,122,132,80));
         this.setBackground(new Color(23, 23,23 ,150));
+        inputField.setOpaque(true);
         nextButtonHighlighted.setVisible(false);
         nextButtonPressed.setVisible(false);
         jLabel1.setBackground(new Color(23, 23,23));
-        JButton inputButtons[] = {inputOne,
-        inputTwo,
-        inputThree,
-        inputFour,
-        inputFive,
-        inputSix,
-        inputSeven,
-        inputEight,
-        inputNine,
-        inputZero,
-        inputClear          
+        JButton inputButtons[] = {inputOne, inputTwo, inputThree, inputFour, inputFive,inputSix,
+        inputSeven, inputEight, inputNine, inputZero, inputClear   };
+        String colorBlindImagesRes[] = {"/Images/BlindTest/1.jpg",
+        "/Images/BlindTest/2.jpg",
+        "/Images/BlindTest/3.jpg",
+        "/Images/BlindTest/4.jpg",
+        "/Images/BlindTest/5.jpg",
+        "/Images/BlindTest/6.jpg",
+        "/Images/BlindTest/7.jpg",
+        "/Images/BlindTest/8.jpg",
+        "/Images/BlindTest/9.jpg",
+        "/Images/BlindTest/10.jpg",
+        "/Images/BlindTest/11.jpg",
+        "/Images/BlindTest/12.jpg",
+        "/Images/BlindTest/13.jpg",
+        "/Images/BlindTest/14.jpg",
+        "/Images/BlindTest/15.jpg",
+        "/Images/BlindTest/16.jpg",
+        "/Images/BlindTest/17.jpg",
         };
+        int answers[] = {2, 3, 5, 6, 7, 8, 10, 12, 15, 16, 25, 29, 42, 56, 57,78, 74};
+        colorBlindImageResDuplicate = colorBlindImagesRes;
         
         
+        for(int i=0; i < answers.length; i++){
+            test.put(colorBlindImagesRes[i], answers[i]);
+        }
+//        Collections.shuffle(Arrays.asList(colorBlindImageResDuplicate));
         for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
             inputButtons[i].setContentAreaFilled(false);
             inputButtons[i].setBorderPainted(true);
         }
         
-            inputField.setOpaque(true);
 
-      
-               
-    
+//        for (int i=0; i<=17; i++) {
+//            System.out.println(list.get(i));
+//        }
+//        for  (int i=0; i < test.size(); i++){
+//            colorBlindTestQuestion.add(test.get(colorBlindImagesRes[i]));
+//            System.out.println(test.get(colorBlindImagesRes[i]));
+//        }      
+//            String currentQuestion = questionImage.getIcon().toString().substring(questionImage.getIcon().toString().indexOf("/Images"));         
+//            test.put(currentQuestion, 2);       
+//            System.out.print(currentQuestion);
+            
+   
 
-//        jLabel1.setVisible(false);
         
     }
 
@@ -87,7 +121,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         inputZero = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        questionImage = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -298,9 +332,9 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         getContentPane().add(jLabel5);
         jLabel5.setBounds(30, 30, 170, 30);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/BlindTest/1.jpg"))); // NOI18N
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(28, 120, 319, 310);
+        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/BlindTest/1.jpg"))); // NOI18N
+        getContentPane().add(questionImage);
+        questionImage.setBounds(28, 120, 319, 310);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -454,7 +488,37 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
 
     private void nextButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMouseClicked
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, inputField.getText().toString());
+       
+        if(currentItemFinished < colorBlindImageResDuplicate.length){
+        String currentQuestion = questionImage.getIcon().toString().substring(questionImage.getIcon().toString().indexOf("/Images"));
+        int inputAnswer = Integer.valueOf(inputField.getText().toString());
+        if(inputAnswer == test.get(currentQuestion)){
+             JOptionPane.showMessageDialog(null, "corek");
+             input = "";
+             inputField.setText(input);
+        }
+        else{
+            System.out.print(input + " " +test.get(currentQuestion));
+        }
+        
+  
+        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+         colorBlindImageResDuplicate[currentItemFinished]
+        )));
+        
+        System.out.println(colorBlindImageResDuplicate[currentItemFinished] + " " + currentItemFinished + "/"+ String.valueOf(colorBlindImageResDuplicate.length));
+        currentItemFinished++;
+        }
+        else{
+             int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                if(confirmExitDialog == 0){
+                     JOptionPane.showMessageDialog(null, "Proceeded");
+                }
+        }
+        
+       
+        
+        
     }//GEN-LAST:event_nextButtonHighlightedMouseClicked
 
     private void nextButtonPressedComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_nextButtonPressedComponentShown
@@ -520,12 +584,12 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel nextButton;
     private javax.swing.JLabel nextButtonHighlighted;
     private javax.swing.JLabel nextButtonPressed;
+    private javax.swing.JLabel questionImage;
     // End of variables declaration//GEN-END:variables
 }

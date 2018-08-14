@@ -22,26 +22,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.media.NoPlayerException;
-import javax.media.CannotRealizeException;
-import javax.media.MediaLocator;
-import javax.media.Player;
-import javax.media.Manager;
-import javax.media.control.FrameGrabbingControl;
-import javax.swing.ImageIcon;
-import javax.swing.JToggleButton;
-import javax.media.Buffer;
-import javax.media.format.VideoFormat;
-import javax.media.util.BufferToImage;
-
-import JImage.JIResizeImage;
-import java.awt.image.BufferedImage;
-
-import java.awt.FileDialog;
-import java.io.File;
-import java.io.IOException;
-import javax.media.Processor;
-import javax.media.protocol.FileTypeDescriptor;
 
 
 
@@ -55,7 +35,7 @@ public class RegistrationForm extends javax.swing.JFrame {
     /**
      * Creates new form RegistrationForm
      */
-    Player player;
+ 
     BufferedImage bi;
     String nFile;
   
