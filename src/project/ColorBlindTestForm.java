@@ -26,6 +26,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
      * Creates new form BlindTestForm
      */
     ArrayList<Integer> randomUniqueNumbers ;
+    private int totalPoints = 0;
     private ArrayList colorBlindTestQuestion;
     private String input = "";
     private HashMap<String, Integer> test;
@@ -493,12 +494,17 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         String currentQuestion = questionImage.getIcon().toString().substring(questionImage.getIcon().toString().indexOf("/Images"));
         int inputAnswer = Integer.valueOf(inputField.getText().toString());
         if(inputAnswer == test.get(currentQuestion)){
-             JOptionPane.showMessageDialog(null, "corek");
+//             JOptionPane.showMessageDialog(null, "corek");
+             totalPoints++;
              input = "";
              inputField.setText(input);
         }
         else{
-            System.out.print(input + " " +test.get(currentQuestion));
+//            System.out.print(input + " " +test.get(currentQuestion));
+
+
+             input = "";
+             inputField.setText(input);
         }
         
   
@@ -510,7 +516,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         currentItemFinished++;
         }
         else{
-             int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+             int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Score:"+ totalPoints +"/17 Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
                 if(confirmExitDialog == 0){
                      JOptionPane.showMessageDialog(null, "Proceeded");
                 }
