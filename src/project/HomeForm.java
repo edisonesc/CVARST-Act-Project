@@ -194,6 +194,9 @@ public class HomeForm extends javax.swing.JFrame {
 
         maintainanceButtonHighlighted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/maintenanceButton.png"))); // NOI18N
         maintainanceButtonHighlighted.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maintainanceButtonHighlightedMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 maintainanceButtonHighlightedMouseExited(evt);
             }
@@ -215,6 +218,9 @@ public class HomeForm extends javax.swing.JFrame {
 
         clearanceButtonHighlighted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/clearanceButton.png"))); // NOI18N
         clearanceButtonHighlighted.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearanceButtonHighlightedMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 clearanceButtonHighlightedMouseExited(evt);
             }
@@ -421,6 +427,19 @@ public class HomeForm extends javax.swing.JFrame {
         this.setVisible(false);
         rf.setVisible(true);
     }//GEN-LAST:event_registrationButtonHighlightedMouseClicked
+
+    private void clearanceButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearanceButtonHighlightedMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_clearanceButtonHighlightedMouseClicked
+
+    private void maintainanceButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maintainanceButtonHighlightedMouseClicked
+        // TODO add your handling code here:
+        MaintainanceForm mf = new MaintainanceForm();
+        
+        this.setVisible(false);
+        mf.setVisible(true);
+    }//GEN-LAST:event_maintainanceButtonHighlightedMouseClicked
 
     /**
      * @param args the command line arguments

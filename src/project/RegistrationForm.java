@@ -13,6 +13,12 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import static java.lang.Thread.sleep;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -37,6 +43,9 @@ public class RegistrationForm extends javax.swing.JFrame {
      * Creates new form RegistrationForm
      */
  
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
     BufferedImage bi;
     String nFile;
   
@@ -56,6 +65,21 @@ public class RegistrationForm extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         selectButtonHighlighted.setVisible(false);
         
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            
+            JOptionPane.showMessageDialog(null, "connected.");
+            
+           
+            
+            
+        }
+        catch(Exception e){
+        
+                e.printStackTrace();
+        }
  
         genderCB.setOpaque(false);
      
@@ -103,15 +127,15 @@ public class RegistrationForm extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         addressLabel = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
-        jTextField5 = new javax.swing.JTextField();
+        addressText = new javax.swing.JTextField();
         lastnameLabel = new javax.swing.JLabel();
         middlenameLabel = new javax.swing.JLabel();
         firstnameLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        lastnameText = new javax.swing.JTextField();
+        middlenameText = new javax.swing.JTextField();
         firstnameText = new javax.swing.JTextField();
         cancelButton = new javax.swing.JLabel();
         cancelButtonHighlighted = new javax.swing.JLabel();
@@ -173,24 +197,8 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel1.add(selectButton);
         selectButton.setBounds(1, 230, 260, 29);
-
-        dateChooserBirthdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dateChooserBirthdateMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                dateChooserBirthdateMouseEntered(evt);
-            }
-        });
-        dateChooserBirthdate.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                dateChooserBirthdateInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
         jPanel1.add(dateChooserBirthdate);
-        dateChooserBirthdate.setBounds(0, 0, 260, 260);
+        dateChooserBirthdate.setBounds(0, 0, 260, 225);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(290, 240, 260, 260);
@@ -409,20 +417,20 @@ public class RegistrationForm extends javax.swing.JFrame {
         getContentPane().add(jSeparator4);
         jSeparator4.setBounds(290, 180, 550, 10);
 
-        jTextField5.setBackground(new java.awt.Color(14, 122, 138));
-        jTextField5.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
-        jTextField5.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
+        addressText.setBackground(new java.awt.Color(14, 122, 138));
+        addressText.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
+        addressText.setForeground(new java.awt.Color(255, 255, 255));
+        addressText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        addressText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField5FocusGained(evt);
+                addressTextFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField5FocusLost(evt);
+                addressTextFocusLost(evt);
             }
         });
-        getContentPane().add(jTextField5);
-        jTextField5.setBounds(290, 150, 550, 28);
+        getContentPane().add(addressText);
+        addressText.setBounds(290, 150, 550, 28);
 
         lastnameLabel.setForeground(java.awt.Color.lightGray);
         lastnameLabel.setText("Last name");
@@ -445,35 +453,35 @@ public class RegistrationForm extends javax.swing.JFrame {
         getContentPane().add(jSeparator2);
         jSeparator2.setBounds(470, 120, 170, 10);
 
-        jTextField4.setBackground(new java.awt.Color(14, 122, 138));
-        jTextField4.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
+        lastnameText.setBackground(new java.awt.Color(14, 122, 138));
+        lastnameText.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
+        lastnameText.setForeground(new java.awt.Color(255, 255, 255));
+        lastnameText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        lastnameText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField4FocusGained(evt);
+                lastnameTextFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField4FocusLost(evt);
+                lastnameTextFocusLost(evt);
             }
         });
-        getContentPane().add(jTextField4);
-        jTextField4.setBounds(650, 95, 190, 28);
+        getContentPane().add(lastnameText);
+        lastnameText.setBounds(650, 95, 190, 28);
 
-        jTextField3.setBackground(new java.awt.Color(14, 122, 138));
-        jTextField3.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
+        middlenameText.setBackground(new java.awt.Color(14, 122, 138));
+        middlenameText.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
+        middlenameText.setForeground(new java.awt.Color(255, 255, 255));
+        middlenameText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        middlenameText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField3FocusGained(evt);
+                middlenameTextFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextField3FocusLost(evt);
+                middlenameTextFocusLost(evt);
             }
         });
-        getContentPane().add(jTextField3);
-        jTextField3.setBounds(470, 95, 170, 28);
+        getContentPane().add(middlenameText);
+        middlenameText.setBounds(470, 95, 170, 28);
 
         firstnameText.setBackground(new java.awt.Color(14, 122, 138));
         firstnameText.setFont(new java.awt.Font("URW Gothic L", 0, 17)); // NOI18N
@@ -822,35 +830,35 @@ public class RegistrationForm extends javax.swing.JFrame {
         firstnameLabel.setForeground(Color.LIGHT_GRAY);
     }//GEN-LAST:event_firstnameTextFocusLost
 
-    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
+    private void middlenameTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_middlenameTextFocusGained
         // TODO add your handling code here:
         middlenameLabel.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jTextField3FocusGained
+    }//GEN-LAST:event_middlenameTextFocusGained
 
-    private void jTextField3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusLost
+    private void middlenameTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_middlenameTextFocusLost
         // TODO add your handling code here:
         middlenameLabel.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_jTextField3FocusLost
+    }//GEN-LAST:event_middlenameTextFocusLost
 
-    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
+    private void lastnameTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastnameTextFocusGained
         // TODO add your handling code here:
         lastnameLabel.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jTextField4FocusGained
+    }//GEN-LAST:event_lastnameTextFocusGained
 
-    private void jTextField4FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusLost
+    private void lastnameTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastnameTextFocusLost
         // TODO add your handling code here:
         lastnameLabel.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_jTextField4FocusLost
+    }//GEN-LAST:event_lastnameTextFocusLost
 
-    private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
+    private void addressTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_addressTextFocusGained
         // TODO add your handling code here:
         addressLabel.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jTextField5FocusGained
+    }//GEN-LAST:event_addressTextFocusGained
 
-    private void jTextField5FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusLost
+    private void addressTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_addressTextFocusLost
         // TODO add your handling code here:
         addressLabel.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_jTextField5FocusLost
+    }//GEN-LAST:event_addressTextFocusLost
 
     private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
         // TODO add your handling code here:
@@ -953,6 +961,67 @@ public class RegistrationForm extends javax.swing.JFrame {
 
     private void proceedButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_proceedButtonHighlightedMouseClicked
         // TODO add your handling code here:
+        
+        String firstname, middlename, lastname, address, birthdate, gender, bloodType, resCode, licenseNumber, vehicleUsed;
+        double height, weight;
+        int age;
+        String photo;
+        
+        firstname = firstnameText.getText().toString();
+        middlename = middlenameText.getText().toString();
+        lastname = lastnameText.getText().toString();
+        address = addressText.getText().toString();
+        birthdate = birthdateText.getText().toString();
+        gender = genderCB.getSelectedItem().toString();
+        bloodType = bloodTypeCB.getSelectedItem().toString();
+        resCode = resCodeCB.getSelectedItem().toString();
+        licenseNumber = licenseNoText.getText().toString();
+        vehicleUsed = vehicleUsedText.getText().toString();
+        height = Double.valueOf(heightText.getText().toString());
+        weight = Double.valueOf(weightText1.getText().toString());
+        age = Integer.valueOf(ageText.getText().toString());
+        photo = "hehe";
+        
+        try {
+     
+           String getCount = "select id from cvarst.registration";
+           int count = 0;
+          
+            ResultSet resultSet = st.executeQuery(getCount);
+            while(resultSet.next()){
+                count = resultSet.getInt("id");
+            }
+            
+            ps = cn.prepareStatement("insert into cvarst.registration (id, firstname, middlename, lastname,"
+                    + " address, birthdate, gender, age, height,"
+                    + " weight, blood_type, res_code, vehicle_used,"
+                    + " license_number, photo) values"
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            ps.setInt(1, count + 1);
+            ps.setString(2, firstname);
+            ps.setString(3, middlename);
+            ps.setString(4, lastname);
+            ps.setString(5, address);
+            ps.setString(6, birthdate);
+            ps.setString(7, gender);
+            ps.setInt(8, age);
+            ps.setDouble(9, height);
+            ps.setDouble(10, weight);
+            ps.setString(11, bloodType);
+            ps.setString(12, resCode);
+            ps.setString(13, vehicleUsed);
+            ps.setString(14, licenseNumber);
+            ps.setString(15, photo);
+            ps.executeUpdate();
+            cn.close();
+            ps.close();
+            JOptionPane.showMessageDialog(null, "Registered de account Successfully");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         ColorBlindTestForm btf = new ColorBlindTestForm();
         this.dispose();
         btf.setVisible(true);
@@ -997,6 +1066,7 @@ public class RegistrationForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addressLabel;
+    private javax.swing.JTextField addressText;
     private javax.swing.JLabel ageLabel;
     private javax.swing.JTextField ageText;
     private javax.swing.JLabel birthdateLabel;
@@ -1032,15 +1102,14 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JLabel lastnameLabel;
+    private javax.swing.JTextField lastnameText;
     private javax.swing.JLabel leftBiometric;
     private javax.swing.JLabel leftBiometricHighlighted;
     private javax.swing.JLabel licenceNumberLabel;
     private javax.swing.JTextField licenseNoText;
     private javax.swing.JLabel middlenameLabel;
+    private javax.swing.JTextField middlenameText;
     private javax.swing.JLabel proceedButton;
     private javax.swing.JLabel proceedButtonHighlighted;
     private javax.swing.JComboBox<String> resCodeCB;

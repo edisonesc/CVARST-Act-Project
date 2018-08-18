@@ -171,6 +171,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="maintainanceButtonHighlightedMouseClicked"/>
         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="maintainanceButtonHighlightedMouseExited"/>
       </Events>
       <Constraints>
@@ -202,6 +203,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clearanceButtonHighlightedMouseClicked"/>
         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clearanceButtonHighlightedMouseExited"/>
       </Events>
       <Constraints>
