@@ -5,6 +5,7 @@
  */
 package project;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -99,10 +100,15 @@ public class ColorblindTest implements Serializable {
     public ImageIcon getImage() throws IOException{
 
 //        
+        ImageIcon icon = new ImageIcon(picture);
+        Image img = icon.getImage();
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+//        g.drawImage(img, 0, 0, null);
+        g.drawImage(img, 0, 0, 250, 250, null);
+        ImageIcon result = new ImageIcon(bi);
         
-        
-        
-        return new ImageIcon(picture);
+        return result;
     }
     public void setPicture(byte[] picture) {
         byte[] oldPicture = this.picture;

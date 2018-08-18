@@ -45,8 +45,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
       
         jLabel4.setBackground(new Color(23, 23,23));
         colorBlindTable.setRowHeight(70);
-//        jTable1.setShowGrid(true);
-//        jTable1.setGridColor(new Color(30, 30, 30, 100));
+        colorBlindTable.setShowGrid(true);
+        colorBlindTable.setGridColor(new Color(30, 30, 30, 100));
         colorBlindTable.getTableHeader().setDefaultRenderer(new HeaderColor());
         colorBlindTable.setBackground(new Color(255,255,255));
         colorBlindTable.setSelectionBackground(new Color(23, 23,23, 30));
@@ -229,7 +229,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(visualAcuityBarChartText);
-        visualAcuityBarChartText.setBounds(700, 70, 163, 30);
+        visualAcuityBarChartText.setBounds(690, 70, 163, 30);
 
         visualAcuitySnellenText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
         visualAcuitySnellenText.setForeground(java.awt.Color.white);
