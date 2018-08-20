@@ -40,9 +40,12 @@ import javax.swing.ImageIcon;
 @NamedQueries({
     @NamedQuery(name = "ColorblindTest.findAll", query = "SELECT c FROM ColorblindTest c")
     , @NamedQuery(name = "ColorblindTest.findById", query = "SELECT c FROM ColorblindTest c WHERE c.id = :id")
-    , @NamedQuery(name = "ColorblindTest.findByQuestion", query = "SELECT c FROM ColorblindTest c WHERE c.question = :question")
+//    , @NamedQuery(name = "ColorblindTest.findByQuestion", query = "SELECT c FROM ColorblindTest c WHERE c.question = :question")
     , @NamedQuery(name = "ColorblindTest.findByAnswer", query = "SELECT c FROM ColorblindTest c WHERE c.answer = :answer")
-    , @NamedQuery(name = "ColorblindTest.findByVision", query = "SELECT c FROM ColorblindTest c WHERE c.vision = :vision")})
+//    , @NamedQuery(name = "ColorblindTest.findByVision", query = "SELECT c FROM ColorblindTest c WHERE c.vision = :vision")
+
+
+})
 public class ColorblindTest implements Serializable {
 
     @Transient
@@ -58,15 +61,15 @@ public class ColorblindTest implements Serializable {
     @Lob
     @Column(name = "Picture")
     private byte[] picture;
-    @Basic(optional = false)
-    @Column(name = "Question")
-    private String question;
+//    @Basic(optional = false)
+//    @Column(name = "Question")
+//    private String question;
     @Basic(optional = false)
     @Column(name = "Answer")
     private String answer;
-    @Basic(optional = false)
-    @Column(name = "Vision")
-    private String vision;
+//    @Basic(optional = false)
+//    @Column(name = "Vision")
+//    private String vision;
 
     public ColorblindTest() {
     }
@@ -78,9 +81,9 @@ public class ColorblindTest implements Serializable {
     public ColorblindTest(Integer id, byte[] picture, String question, String answer, String vision) {
         this.id = id;
         this.picture = picture;
-        this.question = question;
+//        this.question = question;
         this.answer = answer;
-        this.vision = vision;
+//        this.vision = vision;
     }
 
     public Integer getId() {
@@ -116,15 +119,15 @@ public class ColorblindTest implements Serializable {
         changeSupport.firePropertyChange("picture", oldPicture, picture);
     }
 
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        String oldQuestion = this.question;
-        this.question = question;
-        changeSupport.firePropertyChange("question", oldQuestion, question);
-    }
+//    public String getQuestion() {
+//        return question;
+//    }
+//
+//    public void setQuestion(String question) {
+//        String oldQuestion = this.question;
+//        this.question = question;
+//        changeSupport.firePropertyChange("question", oldQuestion, question);
+//    }
 
     public String getAnswer() {
         return answer;
@@ -136,15 +139,15 @@ public class ColorblindTest implements Serializable {
         changeSupport.firePropertyChange("answer", oldAnswer, answer);
     }
 
-    public String getVision() {
-        return vision;
-    }
-
-    public void setVision(String vision) {
-        String oldVision = this.vision;
-        this.vision = vision;
-        changeSupport.firePropertyChange("vision", oldVision, vision);
-    }
+//    public String getVision() {
+//        return vision;
+//    }
+//
+//    public void setVision(String vision) {
+//        String oldVision = this.vision;
+//        this.vision = vision;
+//        changeSupport.firePropertyChange("vision", oldVision, vision);
+//    }
 
     private Image getScaledImage(Image srcImg, int w, int h){
     BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

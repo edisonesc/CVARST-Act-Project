@@ -24,7 +24,7 @@ public class LoginForm extends javax.swing.JFrame {
         setResizable(false);
         setSize(516, 282);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-     
+      
        
     }
 
@@ -128,7 +128,7 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MediacalTitlebar.png"))); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 10, 516, 273);
+        jLabel1.setBounds(0, 10, 516, 270);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

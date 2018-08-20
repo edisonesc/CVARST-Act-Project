@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -42,8 +43,12 @@ public class MaintainanceForm extends javax.swing.JFrame {
         initComponents();
         setSize(875, 551);
         setResizable(false);
+        this.setBackground(new Color(23,23,23,100));
+//        colorBlindTable.setBackground(new Color(23,23,23,100));
       
-        jLabel4.setBackground(new Color(23, 23,23));
+        
+       jLabel5.setBackground(new Color(23,23,23,100));
+        jLabel4.setBackground(new Color(23, 23,23)); //
         colorBlindTable.setRowHeight(70);
         colorBlindTable.setShowGrid(true);
         colorBlindTable.setGridColor(new Color(30, 30, 30, 100));
@@ -55,10 +60,17 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorblindTextHighlight.setVisible(false);
         visualAcuityBarChartTextHighlight.setVisible(false);
         visualAcuityTextHighlight.setVisible(false);
-        colorBlindTable.setRowHeight(200);
+        colorBlindTable.setRowHeight(250);
+        
+        
         DefaultTableCellRenderer centerRederer = new DefaultTableCellRenderer();
         centerRederer.setHorizontalAlignment(JLabel.CENTER);
         colorBlindTable.setDefaultRenderer(String.class, centerRederer);
+        
+        JTableHeader colorBlindTableHeader = colorBlindTable.getTableHeader();
+        colorBlindTableHeader.setDefaultRenderer(new CustomHeader(colorBlindTable));
+        
+        
         String getData = "Select * from cvarst.ColorblindTest";
            try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -108,6 +120,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("cvarst?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
         colorblindTestQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM ColorblindTest c");
         colorblindTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery.getResultList();
+        colorblindTestQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM ColorblindTest c");
+        colorblindTestList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery1.getResultList();
         jLabel2 = new javax.swing.JLabel();
         colorBlindScrollPane = new javax.swing.JScrollPane();
         colorBlindTable = new javax.swing.JTable();
@@ -140,25 +154,29 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindTable.setGridColor(java.awt.Color.white);
         colorBlindTable.setSelectionForeground(java.awt.Color.black);
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, colorblindTestList, colorBlindTable);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, colorblindTestList1, colorBlindTable);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${image}"));
         columnBinding.setColumnName("Image");
         columnBinding.setColumnClass(javax.swing.ImageIcon.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${question}"));
-        columnBinding.setColumnName("Question");
-        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${answer}"));
         columnBinding.setColumnName("Answer");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${vision}"));
-        columnBinding.setColumnName("Vision");
-        columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        colorBlindTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                colorBlindTableMouseClicked(evt);
+            }
+        });
+        colorBlindTable.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                colorBlindTableComponentShown(evt);
+            }
+        });
         colorBlindScrollPane.setViewportView(colorBlindTable);
 
         getContentPane().add(colorBlindScrollPane);
-        colorBlindScrollPane.setBounds(38, 99, 837, 460);
+        colorBlindScrollPane.setBounds(38, 99, 835, 460);
 
         deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/delete_icon.png"))); // NOI18N
         deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -318,7 +336,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
         jLabel4.setOpaque(true);
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(30, 70, 850, 480);
+        jLabel4.setBounds(30, 70, 850, 50);
 
         jLabel5.setBackground(new java.awt.Color(23, 23, 23));
         jLabel5.setOpaque(true);
@@ -469,6 +487,20 @@ public class MaintainanceForm extends javax.swing.JFrame {
         deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/highlighted/delete_icon.png")));
     }//GEN-LAST:event_deleteButtonMouseReleased
 
+    private void colorBlindTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorBlindTableMouseClicked
+       System.out.println(colorBlindTable.getModel().getValueAt(colorBlindTable.getSelectedRow(), colorBlindTable.getSelectedColumn()).toString());
+              
+       
+    }//GEN-LAST:event_colorBlindTableMouseClicked
+
+    private void colorBlindTableComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_colorBlindTableComponentShown
+        // TODO add your handling code here:
+//        colorblindText.setForeground(Color.BLACK);
+//        colorblindTextHighlight.setBackground(Color.WHITE);
+//        colorblindTextHighlight.setVisible(true);
+System.out.print("SHOWING");
+    }//GEN-LAST:event_colorBlindTableComponentShown
+
     /**
      * @param args the command line arguments
      */
@@ -521,7 +553,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane colorBlindScrollPane;
     private javax.swing.JTable colorBlindTable;
     private java.util.List<project.ColorblindTest> colorblindTestList;
+    private java.util.List<project.ColorblindTest> colorblindTestList1;
     private javax.persistence.Query colorblindTestQuery;
+    private javax.persistence.Query colorblindTestQuery1;
     private javax.swing.JLabel colorblindText;
     private javax.swing.JLabel colorblindTextHighlight;
     private javax.swing.JLabel deleteButton;
