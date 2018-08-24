@@ -206,6 +206,9 @@ public class HomeForm extends javax.swing.JFrame {
 
         startButtonHighlighted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/startButton.png"))); // NOI18N
         startButtonHighlighted.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                startButtonHighlightedMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 startButtonHighlightedMouseExited(evt);
             }
@@ -423,9 +426,7 @@ public class HomeForm extends javax.swing.JFrame {
     private void registrationButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationButtonHighlightedMouseClicked
         // TODO add your handling code here:
         
-        RegistrationForm rf = new RegistrationForm();
-        this.setVisible(false);
-        rf.setVisible(true);
+      
     }//GEN-LAST:event_registrationButtonHighlightedMouseClicked
 
     private void clearanceButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearanceButtonHighlightedMouseClicked
@@ -440,6 +441,13 @@ public class HomeForm extends javax.swing.JFrame {
         this.setVisible(false);
         mf.setVisible(true);
     }//GEN-LAST:event_maintainanceButtonHighlightedMouseClicked
+
+    private void startButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonHighlightedMouseClicked
+       // TODO add your handling code here:
+         RegistrationForm rf = new RegistrationForm();
+        this.setVisible(false);
+        rf.setVisible(true);
+    }//GEN-LAST:event_startButtonHighlightedMouseClicked
 
     /**
      * @param args the command line arguments

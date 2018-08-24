@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
+import project.Pickers.ColorBlindPicker;
 
 /**
  *
@@ -38,7 +39,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private PreparedStatement ps;
     private Statement st;
     private ResultSet rs;
-    
+    private ColorBlindPicker cBP = new ColorBlindPicker();
     public MaintainanceForm() {
         initComponents();
         setSize(875, 551);
@@ -60,7 +61,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorblindTextHighlight.setVisible(false);
         visualAcuityBarChartTextHighlight.setVisible(false);
         visualAcuityTextHighlight.setVisible(false);
-        colorBlindTable.setRowHeight(250);
+        colorBlindTable.setRowHeight(150);
         
         
         DefaultTableCellRenderer centerRederer = new DefaultTableCellRenderer();
@@ -126,6 +127,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindScrollPane = new javax.swing.JScrollPane();
         colorBlindTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JLabel();
+        backButton = new javax.swing.JLabel();
         addButton = new javax.swing.JLabel();
         editButton = new javax.swing.JLabel();
         visualAcuityBarChartText = new javax.swing.JLabel();
@@ -144,6 +146,11 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
         getContentPane().setLayout(null);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/title.png"))); // NOI18N
@@ -194,7 +201,28 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(deleteButton);
-        deleteButton.setBounds(8, 130, 30, 40);
+        deleteButton.setBounds(10, 150, 30, 40);
+
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/back_icon.png"))); // NOI18N
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                backButtonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                backButtonMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backButtonMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backButtonMouseEntered(evt);
+            }
+        });
+        getContentPane().add(backButton);
+        backButton.setBounds(10, 30, 30, 40);
 
         addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/add_icon.png"))); // NOI18N
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -215,7 +243,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(addButton);
-        addButton.setBounds(8, 50, 30, 40);
+        addButton.setBounds(10, 70, 30, 40);
 
         editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/edit_icon.png"))); // NOI18N
         editButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,7 +261,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(editButton);
-        editButton.setBounds(8, 90, 30, 40);
+        editButton.setBounds(10, 110, 30, 40);
 
         visualAcuityBarChartText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
         visualAcuityBarChartText.setForeground(java.awt.Color.white);
@@ -454,6 +482,17 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
         // TODO add your handling code here:
+        if(colorBlindTable.isVisible() == true){
+        
+        cBP.setVisible(true);
+            
+        
+        
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "not visible");
+        }
+            
          
     }//GEN-LAST:event_addButtonMouseClicked
 
@@ -500,6 +539,35 @@ public class MaintainanceForm extends javax.swing.JFrame {
 //        colorblindTextHighlight.setVisible(true);
 System.out.print("SHOWING");
     }//GEN-LAST:event_colorBlindTableComponentShown
+
+    private void backButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButtonMousePressed
+
+    private void backButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButtonMouseReleased
+
+    private void backButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseClicked
+        // TODO add your handling code here:
+        HomeForm hf = new HomeForm();
+        hf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonMouseClicked
+
+    private void backButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseExited
+         backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/back_icon.png")));
+    }//GEN-LAST:event_backButtonMouseExited
+
+    private void backButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseEntered
+        // TODO add your handling code here:
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/highlighted/back_icon.png")));
+    }//GEN-LAST:event_backButtonMouseEntered
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+     
+    }//GEN-LAST:event_formMouseClicked
 
     /**
      * @param args the command line arguments
@@ -550,6 +618,7 @@ System.out.print("SHOWING");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addButton;
+    private javax.swing.JLabel backButton;
     private javax.swing.JScrollPane colorBlindScrollPane;
     private javax.swing.JTable colorBlindTable;
     private java.util.List<project.ColorblindTest> colorblindTestList;

@@ -986,7 +986,6 @@ public class RegistrationForm extends javax.swing.JFrame {
      
            String getCount = "select id from cvarst.registration";
            int count = 0;
-          
             ResultSet resultSet = st.executeQuery(getCount);
             while(resultSet.next()){
                 count = resultSet.getInt("id");

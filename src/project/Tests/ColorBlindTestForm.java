@@ -6,16 +6,31 @@
 package project.Tests;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.List;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import project.HomeForm;
+import project.Pickers.ColorBlindPicker;
 
 /**
  *
@@ -27,17 +42,21 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
      * Creates new form BlindTestForm
      */
     ArrayList<Integer> randomUniqueNumbers ;
+    private Connection cn;
+    private Statement st;
+    private PreparedStatement ps;
+    
     private int totalPoints = 0;
-    private ArrayList colorBlindTestQuestion;
+    private ArrayList colorBlindTestQuestion = new ArrayList(), answersList = new ArrayList(), pictureList = new ArrayList();;
     private String input = "";
-    private HashMap<String, Integer> test;
+    private HashMap<Object, Object> testForList;
     String colorBlindImageResDuplicate[];
     int currentItemFinished = 0;
     public ColorBlindTestForm() {
         initComponents();
         setSize(875, 551);
         setResizable(false);
-        test = new HashMap<String, Integer>();
+        testForList= new HashMap<Object, Object>();
         colorBlindTestQuestion = new ArrayList();
         inputField.setHorizontalAlignment(SwingConstants.CENTER);
         this.setBackground(new Color(23, 23,23 ,150));
@@ -47,37 +66,48 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         jLabel1.setBackground(new Color(23, 23,23));
         JButton inputButtons[] = {inputOne, inputTwo, inputThree, inputFour, inputFive,inputSix,
         inputSeven, inputEight, inputNine, inputZero, inputClear   };
-        String colorBlindImagesRes[] = {"/Images/BlindTest/1.jpg",
-        "/Images/BlindTest/2.jpg",
-        "/Images/BlindTest/3.jpg",
-        "/Images/BlindTest/4.jpg",
-        "/Images/BlindTest/5.jpg",
-        "/Images/BlindTest/6.jpg",
-        "/Images/BlindTest/7.jpg",
-        "/Images/BlindTest/8.jpg",
-        "/Images/BlindTest/9.jpg",
-        "/Images/BlindTest/10.jpg",
-        "/Images/BlindTest/11.jpg",
-        "/Images/BlindTest/12.jpg",
-        "/Images/BlindTest/13.jpg",
-        "/Images/BlindTest/14.jpg",
-        "/Images/BlindTest/15.jpg",
-        "/Images/BlindTest/16.jpg",
-        "/Images/BlindTest/17.jpg",
-        };
-        int answers[] = {2, 3, 5, 6, 7, 8, 10, 12, 15, 16, 25, 29, 42, 56, 57,78, 74};
-        colorBlindImageResDuplicate = colorBlindImagesRes;
-        
-        
-        for(int i=0; i < answers.length; i++){
-            test.put(colorBlindImagesRes[i], answers[i]);
+
+        try{
+
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement(); 
+
+           String getCount = "select * from cvarst.ColorblindTest";
+           int count = 0;
+            ResultSet resultSet = st.executeQuery(getCount);
+            while(resultSet.next()){
+             
+                     ImageIcon icon = new ImageIcon((byte[]) resultSet.getBytes("Picture"));
+//                    Image img = icon.getImage();
+//                    BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+//                    Graphics g = bi.createGraphics();
+//                    g.drawImage(img, 0, 0, questionImage.getWidth(), questionImage.getHeight(), null);
+//                    ImageIcon result = new ImageIcon(bi);
+                    
+                       pictureList.add(icon);
+                        answersList.add(resultSet.getString("Answer"));
+            }
         }
-        Collections.shuffle(Arrays.asList(colorBlindImageResDuplicate));
+  
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        for (int i= 0; i < answersList.size(); i++){
+            testForList.put(pictureList.get(i), answersList.get(i));
+             System.out.println(String.valueOf(pictureList.get(i) + " | " + answersList.get(i)));
+        }
+
+        Collections.shuffle(pictureList);
         for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
             inputButtons[i].setContentAreaFilled(false);
             inputButtons[i].setBorderPainted(true);
         }
+        questionImage.setIcon((ImageIcon) pictureList.get(0));
+        questionImage.setVerticalAlignment(SwingConstants.CENTER);
+        
     }
 
     /**
@@ -319,7 +349,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
 
         questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/BlindTest/1.jpg"))); // NOI18N
         getContentPane().add(questionImage);
-        questionImage.setBounds(28, 120, 319, 310);
+        questionImage.setBounds(28, 120, 320, 310);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -479,40 +509,63 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
 
     private void nextButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMouseClicked
         // TODO add your handling code here:
-        String field = inputField.getText().toString();
+        String currentQuestion, userAnswer, field;
+        field = inputField.getText().toString();
         if(field.equals("")){
         JOptionPane.showMessageDialog(null, "Input required.");
         
         }
         else{
-        if(currentItemFinished < colorBlindImageResDuplicate.length){
-        String currentQuestion = questionImage.getIcon().toString().substring(questionImage.getIcon().toString().indexOf("/Images"));
-        int inputAnswer = Integer.valueOf(field);
-        if(inputAnswer == test.get(currentQuestion)){
-             totalPoints++;
-             input = "";
-             inputField.setText(input);
-        }
-        else{
-              input = "";
-             inputField.setText(input);
-        }
-        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-         colorBlindImageResDuplicate[currentItemFinished]
-        )));
-        
-        System.out.println(colorBlindImageResDuplicate[currentItemFinished] + " " + currentItemFinished + "/"+ String.valueOf(colorBlindImageResDuplicate.length));
-        currentItemFinished++;
-        }
-        else{
-             int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Score:"+ totalPoints +"/17 Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+//        if(currentItemFinished < colorBlindImageResDuplicate.length){-
+//        String currentQuestion = questionImage.getIcon().toString().substring(questionImage.getIcon().toString().indexOf("/Images")); -
+//        int inputAnswer = Integer.valueOf(field);-
+//        if(inputAnswer == test.get(currentQuestion)){-
+//             totalPoints++;
+//             input = "";
+//             inputField.setText(input);
+//        }
+//        else{
+//              input = "";
+//             inputField.setText(input);
+//        }
+//        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+//         colorBlindImageResDuplicate[currentItemFinished]
+//        )));
+//        
+//        System.out.println(colorBlindImageResDuplicate[currentItemFinished] + " " + currentItemFinished + "/"+ String.valueOf(colorBlindImageResDuplicate.length));
+//        currentItemFinished++;
+//        }
+//        else{
+//             int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Score:"+ totalPoints +"/17 Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+//                if(confirmExitDialog == 0){
+//                    AuditoryTestForm atf = new AuditoryTestForm();
+//                    this.dispose();
+//                    atf.setVisible(true);
+//                }
+//        }
+
+     if(currentItemFinished < answersList.size()){
+                  currentQuestion  = testForList.get(questionImage.getIcon()).toString();
+                  userAnswer = inputField.getText().toString();
+            if(userAnswer.equals(currentQuestion)){
+                totalPoints++;
+                    }
+                input = "";
+                inputField.setText(input);
+                questionImage.setIcon((ImageIcon) pictureList.get(currentItemFinished));
+                currentItemFinished++;
+                System.out.println(String.valueOf(currentItemFinished) + " | " + String.valueOf(totalPoints));   
+            }
+             else{
+                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Score:"+ totalPoints + " / " + answersList.size() + " Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
                 if(confirmExitDialog == 0){
-                    AuditoryTestForm atf = new AuditoryTestForm();
-                    this.dispose();
-                    atf.setVisible(true);
+                  AuditoryTestForm atf = new AuditoryTestForm();
+                  this.dispose();
+                  atf.setVisible(true);
                 }
+            }
         }
-                }
+          
     }//GEN-LAST:event_nextButtonHighlightedMouseClicked
 
     private void nextButtonPressedComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_nextButtonPressedComponentShown

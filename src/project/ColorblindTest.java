@@ -107,7 +107,6 @@ public class ColorblindTest implements Serializable {
         Image img = icon.getImage();
         BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics g = bi.createGraphics();
-//        g.drawImage(img, 0, 0, null);
         g.drawImage(img, 0, 0, 250, 250, null);
         ImageIcon result = new ImageIcon(bi);
         
