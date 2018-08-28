@@ -7,6 +7,7 @@ package project.Pickers;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,6 +102,17 @@ public class ColorBlindPicker extends javax.swing.JFrame {
         });
         getContentPane().add(attachFileButton);
         attachFileButton.setBounds(370, 320, 43, 28);
+
+        answerField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                answerFieldActionPerformed(evt);
+            }
+        });
+        answerField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                answerFieldKeyTyped(evt);
+            }
+        });
         getContentPane().add(answerField);
         answerField.setBounds(90, 360, 270, 28);
 
@@ -122,7 +134,7 @@ public class ColorBlindPicker extends javax.swing.JFrame {
         getContentPane().add(jLabel3);
         jLabel3.setBounds(0, 0, 457, 60);
 
-        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/project/Pickers/NoImageIcon.png"))); // NOI18N
+        questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Pickers/NoImageIcon.png"))); // NOI18N
         getContentPane().add(questionImage);
         questionImage.setBounds(100, 90, 260, 220);
 
@@ -218,6 +230,19 @@ public class ColorBlindPicker extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void answerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_answerFieldActionPerformed
+
+    private void answerFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_answerFieldKeyTyped
+        // TODO add your handling code here:
+         char c = evt.getKeyChar();
+            if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_DELETE))){
+            evt.consume();
+            
+        }
+    }//GEN-LAST:event_answerFieldKeyTyped
 
     /**
      * @param args the command line arguments

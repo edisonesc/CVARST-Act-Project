@@ -88,6 +88,10 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JTextField" name="answerField">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="answerFieldActionPerformed"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="answerFieldKeyTyped"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="90" y="360" width="270" height="-1"/>
@@ -133,7 +137,7 @@
     <Component class="javax.swing.JLabel" name="questionImage">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/project/Pickers/NoImageIcon.png"/>
+          <Image iconType="3" name="/Images/Pickers/NoImageIcon.png"/>
         </Property>
       </Properties>
       <Constraints>

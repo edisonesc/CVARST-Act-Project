@@ -21,9 +21,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
+import project.Editors.ColorBlindEditor;
 import project.Pickers.ColorBlindPicker;
 
 /**
@@ -40,6 +43,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private Statement st;
     private ResultSet rs;
     private ColorBlindPicker cBP = new ColorBlindPicker();
+    private ColorBlindEditor cBE;
     public MaintainanceForm() {
         initComponents();
         setSize(875, 551);
@@ -47,9 +51,12 @@ public class MaintainanceForm extends javax.swing.JFrame {
         this.setBackground(new Color(23,23,23,100));
 //        colorBlindTable.setBackground(new Color(23,23,23,100));
       
+        addButton.setEnabled(false);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
         
        jLabel5.setBackground(new Color(23,23,23,100));
-        jLabel4.setBackground(new Color(23, 23,23)); //
+  
         colorBlindTable.setRowHeight(70);
         colorBlindTable.setShowGrid(true);
         colorBlindTable.setGridColor(new Color(30, 30, 30, 100));
@@ -57,20 +64,24 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindTable.setBackground(new Color(255,255,255));
         colorBlindTable.setSelectionBackground(new Color(23, 23,23, 30));
         colorBlindTable.setSelectionForeground(Color.BLACK);
-        doctorDetailsTextHighlight.setVisible(false);
-        colorblindTextHighlight.setVisible(false);
-        visualAcuityBarChartTextHighlight.setVisible(false);
-        visualAcuityTextHighlight.setVisible(false);
+        colorBlindTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        colorBlindTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+        colorBlindTable.getColumnModel().getColumn(1).setPreferredWidth(400);
+        colorBlindTable.getColumnModel().getColumn(2).setMinWidth(300);
+        
+      
         colorBlindTable.setRowHeight(150);
         
         
-        DefaultTableCellRenderer centerRederer = new DefaultTableCellRenderer();
-        centerRederer.setHorizontalAlignment(JLabel.CENTER);
-        colorBlindTable.setDefaultRenderer(String.class, centerRederer);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         
+        colorBlindTable.setDefaultRenderer(String.class, centerRenderer);
+        colorBlindTable.setDefaultRenderer(Integer.class, centerRenderer);
+       
         JTableHeader colorBlindTableHeader = colorBlindTable.getTableHeader();
         colorBlindTableHeader.setDefaultRenderer(new CustomHeader(colorBlindTable));
-        
+        availableBalance.setHorizontalAlignment(SwingConstants.CENTER);
         
         String getData = "Select * from cvarst.ColorblindTest";
            try{
@@ -123,25 +134,44 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorblindTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery.getResultList();
         colorblindTestQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM ColorblindTest c");
         colorblindTestList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery1.getResultList();
-        jLabel2 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tab1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        availableBalance = new javax.swing.JLabel();
+        reload = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        saveButton = new javax.swing.JLabel();
+        tab2 = new javax.swing.JPanel();
         colorBlindScrollPane = new javax.swing.JScrollPane();
         colorBlindTable = new javax.swing.JTable();
+        tab3 = new javax.swing.JPanel();
+        tab4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         deleteButton = new javax.swing.JLabel();
         backButton = new javax.swing.JLabel();
         addButton = new javax.swing.JLabel();
         editButton = new javax.swing.JLabel();
-        visualAcuityBarChartText = new javax.swing.JLabel();
-        visualAcuitySnellenText = new javax.swing.JLabel();
-        colorblindText = new javax.swing.JLabel();
-        doctorDetailsText = new javax.swing.JLabel();
-        visualAcuityTextHighlight = new javax.swing.JLabel();
-        colorblindTextHighlight = new javax.swing.JLabel();
-        doctorDetailsTextHighlight = new javax.swing.JLabel();
-        visualAcuityBarChartTextHighlight = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -153,16 +183,261 @@ public class MaintainanceForm extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/title.png"))); // NOI18N
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(60, 30, 160, 33);
+        jTabbedPane1.setFont(new java.awt.Font("Umpush", 0, 13)); // NOI18N
+
+        tab1.setBackground(java.awt.Color.white);
+        tab1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tab1ComponentShown(evt);
+            }
+        });
+        tab1.setLayout(null);
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel4.setForeground(java.awt.Color.gray);
+        jLabel4.setText("Doctor");
+
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel7.setForeground(java.awt.Color.gray);
+        jLabel7.setText("Station");
+
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel8.setForeground(java.awt.Color.gray);
+        jLabel8.setText("Clinic Name");
+
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel9.setForeground(java.awt.Color.gray);
+        jLabel9.setText("PRC No");
+
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel10.setForeground(java.awt.Color.gray);
+        jLabel10.setText("PTR No");
+
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel11.setForeground(java.awt.Color.gray);
+        jLabel11.setText("Area ID");
+
+        jTextField2.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        jTextField3.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        jTextField4.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        jTextField5.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        jTextField6.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        jTextField7.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3)
+                            .addComponent(jTextField4)
+                            .addComponent(jTextField2))
+                        .addGap(27, 27, 27)))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel8)))
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
+        tab1.add(jPanel6);
+        jPanel6.setBounds(10, 10, 810, 230);
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel7.setForeground(java.awt.Color.lightGray);
+
+        jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel12.setForeground(java.awt.Color.gray);
+        jLabel12.setText("Available Balance");
+
+        availableBalance.setFont(new java.awt.Font("Ubuntu", 0, 48)); // NOI18N
+        availableBalance.setForeground(java.awt.Color.gray);
+        availableBalance.setText("23");
+
+        reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button.png"))); // NOI18N
+        reload.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                reloadMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                reloadMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reloadMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reloadMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reloadMouseEntered(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(availableBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(reload)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(availableBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        tab1.add(jPanel7);
+        jPanel7.setBounds(10, 330, 290, 90);
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel8.setForeground(java.awt.Color.lightGray);
+
+        jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel14.setForeground(java.awt.Color.gray);
+        jLabel14.setText("Colorblind Test");
+
+        jLabel15.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel15.setForeground(java.awt.Color.gray);
+        jLabel15.setText("Webcam Location");
+
+        jComboBox1.setFont(new java.awt.Font("Ubuntu", 0, 11)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1" }));
+
+        jComboBox2.setFont(new java.awt.Font("Ubuntu", 0, 11)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6" }));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox1, 0, 129, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tab1.add(jPanel8);
+        jPanel8.setBounds(10, 250, 290, 70);
+
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button.png"))); // NOI18N
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                saveButtonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                saveButtonMouseReleased(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                saveButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                saveButtonMouseEntered(evt);
+            }
+        });
+        tab1.add(saveButton);
+        saveButton.setBounds(650, 380, 150, 30);
+
+        jTabbedPane1.addTab("Doctor Details", tab1);
+
+        tab2.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tab2ComponentShown(evt);
+            }
+        });
+        tab2.setLayout(null);
 
         colorBlindTable.setBorder(null);
         colorBlindTable.setGridColor(java.awt.Color.white);
         colorBlindTable.setSelectionForeground(java.awt.Color.black);
 
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, colorblindTestList1, colorBlindTable);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${image}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
+        columnBinding.setColumnName("Id");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${image}"));
         columnBinding.setColumnName("Image");
         columnBinding.setColumnClass(javax.swing.ImageIcon.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${answer}"));
@@ -182,8 +457,31 @@ public class MaintainanceForm extends javax.swing.JFrame {
         });
         colorBlindScrollPane.setViewportView(colorBlindTable);
 
-        getContentPane().add(colorBlindScrollPane);
-        colorBlindScrollPane.setBounds(38, 99, 835, 460);
+        tab2.add(colorBlindScrollPane);
+        colorBlindScrollPane.setBounds(0, 0, 830, 440);
+
+        jTabbedPane1.addTab("Colorblind Test", tab2);
+
+        tab3.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tab3ComponentShown(evt);
+            }
+        });
+        jTabbedPane1.addTab("Visual Acuity Test (Snellen)", tab3);
+
+        tab4.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tab4ComponentShown(evt);
+            }
+        });
+        jTabbedPane1.addTab("Visual Acuity Test (Bar Chart)", tab4);
+
+        getContentPane().add(jTabbedPane1);
+        jTabbedPane1.setBounds(40, 70, 840, 480);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/title.png"))); // NOI18N
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(60, 30, 160, 33);
 
         deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/delete_icon.png"))); // NOI18N
         deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -193,6 +491,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 deleteButtonMouseReleased(evt);
             }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 deleteButtonMouseExited(evt);
             }
@@ -201,7 +502,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(deleteButton);
-        deleteButton.setBounds(10, 150, 30, 40);
+        deleteButton.setBounds(10, 170, 30, 40);
 
         backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/back_icon.png"))); // NOI18N
         backButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -243,7 +544,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(addButton);
-        addButton.setBounds(10, 70, 30, 40);
+        addButton.setBounds(10, 90, 30, 40);
 
         editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Maintenance/edit_icon.png"))); // NOI18N
         editButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -253,6 +554,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 editButtonMouseReleased(evt);
             }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editButtonMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 editButtonMouseExited(evt);
             }
@@ -261,82 +565,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(editButton);
-        editButton.setBounds(10, 110, 30, 40);
-
-        visualAcuityBarChartText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
-        visualAcuityBarChartText.setForeground(java.awt.Color.white);
-        visualAcuityBarChartText.setText("Visual Acuity Test (Bar Chart)");
-        visualAcuityBarChartText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                visualAcuityBarChartTextMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                visualAcuityBarChartTextMouseEntered(evt);
-            }
-        });
-        getContentPane().add(visualAcuityBarChartText);
-        visualAcuityBarChartText.setBounds(690, 70, 163, 30);
-
-        visualAcuitySnellenText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
-        visualAcuitySnellenText.setForeground(java.awt.Color.white);
-        visualAcuitySnellenText.setText("Visual Acuity Test (Snellen)");
-        visualAcuitySnellenText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                visualAcuitySnellenTextMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                visualAcuitySnellenTextMouseEntered(evt);
-            }
-        });
-        getContentPane().add(visualAcuitySnellenText);
-        visualAcuitySnellenText.setBounds(490, 70, 160, 30);
-
-        colorblindText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
-        colorblindText.setForeground(java.awt.Color.white);
-        colorblindText.setText("Color Blind Test");
-        colorblindText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                colorblindTextMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                colorblindTextMouseEntered(evt);
-            }
-        });
-        getContentPane().add(colorblindText);
-        colorblindText.setBounds(310, 70, 100, 30);
-
-        doctorDetailsText.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
-        doctorDetailsText.setForeground(java.awt.Color.white);
-        doctorDetailsText.setText("Doctor Details");
-        doctorDetailsText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                doctorDetailsTextMousePressed(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                doctorDetailsTextMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                doctorDetailsTextMouseEntered(evt);
-            }
-        });
-        getContentPane().add(doctorDetailsText);
-        doctorDetailsText.setBounds(100, 70, 90, 30);
-
-        visualAcuityTextHighlight.setOpaque(true);
-        getContentPane().add(visualAcuityTextHighlight);
-        visualAcuityTextHighlight.setBounds(460, 70, 210, 30);
-
-        colorblindTextHighlight.setOpaque(true);
-        getContentPane().add(colorblindTextHighlight);
-        colorblindTextHighlight.setBounds(250, 70, 210, 30);
-
-        doctorDetailsTextHighlight.setOpaque(true);
-        getContentPane().add(doctorDetailsTextHighlight);
-        doctorDetailsTextHighlight.setBounds(40, 70, 210, 30);
-
-        visualAcuityBarChartTextHighlight.setOpaque(true);
-        getContentPane().add(visualAcuityBarChartTextHighlight);
-        visualAcuityBarChartTextHighlight.setBounds(670, 70, 200, 30);
+        editButton.setBounds(10, 130, 30, 40);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -362,10 +591,6 @@ public class MaintainanceForm extends javax.swing.JFrame {
         getContentPane().add(jLabel6);
         jLabel6.setBounds(0, 0, 40, 560);
 
-        jLabel4.setOpaque(true);
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(30, 70, 850, 50);
-
         jLabel5.setBackground(new java.awt.Color(23, 23, 23));
         jLabel5.setOpaque(true);
         getContentPane().add(jLabel5);
@@ -387,68 +612,6 @@ public class MaintainanceForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setState(HomeForm.ICONIFIED);
     }//GEN-LAST:event_jLabel3MouseClicked
-
-    private void doctorDetailsTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_doctorDetailsTextMouseEntered
-        // TODO add your handling code here:
-        doctorDetailsText.setForeground(Color.BLACK);
-        doctorDetailsTextHighlight.setBackground(Color.WHITE);
-        doctorDetailsTextHighlight.setVisible(true);
-    }//GEN-LAST:event_doctorDetailsTextMouseEntered
-
-    private void doctorDetailsTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_doctorDetailsTextMouseExited
-        // TODO add your handling code here:
-                doctorDetailsText.setForeground(Color.WHITE);
-                doctorDetailsTextHighlight.setBackground(Color.BLACK);
-        doctorDetailsTextHighlight.setVisible(false);
-    }//GEN-LAST:event_doctorDetailsTextMouseExited
-
-    private void doctorDetailsTextMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_doctorDetailsTextMousePressed
-        // TODO add your handling code here:
-           doctorDetailsText.setForeground(Color.BLACK);
-        doctorDetailsTextHighlight.setVisible(true);
-    }//GEN-LAST:event_doctorDetailsTextMousePressed
-
-    private void colorblindTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorblindTextMouseEntered
-        // TODO add your handling code here:
-        colorblindText.setForeground(Color.BLACK);
-        colorblindTextHighlight.setBackground(Color.WHITE);
-        colorblindTextHighlight.setVisible(true);
-    }//GEN-LAST:event_colorblindTextMouseEntered
-
-    private void colorblindTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorblindTextMouseExited
-        // TODO add your handling code here:
-           colorblindText.setForeground(Color.WHITE);
-        colorblindTextHighlight.setBackground(Color.BLACK);
-        colorblindTextHighlight.setVisible(false);
-    }//GEN-LAST:event_colorblindTextMouseExited
-
-    private void visualAcuitySnellenTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualAcuitySnellenTextMouseEntered
-        // TODO add your handling code here:
-              visualAcuitySnellenText.setForeground(Color.BLACK);
-        visualAcuityTextHighlight.setBackground(Color.WHITE);
-        visualAcuityTextHighlight.setVisible(true);
-    }//GEN-LAST:event_visualAcuitySnellenTextMouseEntered
-
-    private void visualAcuitySnellenTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualAcuitySnellenTextMouseExited
-        // TODO add your handling code here:
-              visualAcuitySnellenText.setForeground(Color.WHITE);
-        visualAcuityTextHighlight.setBackground(Color.BLACK);
-        visualAcuityTextHighlight.setVisible(false);
-    }//GEN-LAST:event_visualAcuitySnellenTextMouseExited
-
-    private void visualAcuityBarChartTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualAcuityBarChartTextMouseEntered
-        // TODO add your handling code here:
-                 visualAcuityBarChartText.setForeground(Color.BLACK);
-        visualAcuityBarChartTextHighlight.setBackground(Color.WHITE);
-        visualAcuityBarChartTextHighlight.setVisible(true);
-    }//GEN-LAST:event_visualAcuityBarChartTextMouseEntered
-
-    private void visualAcuityBarChartTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualAcuityBarChartTextMouseExited
-        // TODO add your handling code here:
-               visualAcuityBarChartText.setForeground(Color.WHITE);
-        visualAcuityBarChartTextHighlight.setBackground(Color.BLACK);
-        visualAcuityBarChartTextHighlight.setVisible(false);
-    }//GEN-LAST:event_visualAcuityBarChartTextMouseExited
 
     private void addButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseEntered
         // TODO add your handling code here:
@@ -482,15 +645,15 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
         // TODO add your handling code here:
-        if(colorBlindTable.isVisible() == true){
-        
+        if(addButton.isEnabled()){
+        if(tab2.isShowing()){
         cBP.setVisible(true);
-            
-        
-        
         }
         else{
             JOptionPane.showMessageDialog(null, "not visible");
+        }}
+        else{
+            JOptionPane.showMessageDialog(null, "Add not applicable.");
         }
             
          
@@ -534,9 +697,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
     private void colorBlindTableComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_colorBlindTableComponentShown
         // TODO add your handling code here:
-//        colorblindText.setForeground(Color.BLACK);
-//        colorblindTextHighlight.setBackground(Color.WHITE);
-//        colorblindTextHighlight.setVisible(true);
+   
 System.out.print("SHOWING");
     }//GEN-LAST:event_colorBlindTableComponentShown
 
@@ -568,6 +729,163 @@ System.out.print("SHOWING");
         // TODO add your handling code here:
      
     }//GEN-LAST:event_formMouseClicked
+
+          private void update_Table(){
+    try{
+
+    String sql = "Select * from cvarst.ColorblindTest";
+    cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+    ps = cn.prepareStatement(sql);
+    rs = ps.executeQuery();
+    colorBlindTable.setModel(DbUtils.resultSetToTableModel(rs));
+    
+    }
+    catch(Exception e){
+    JOptionPane.showMessageDialog(null, e);
+    
+    }
+    finally{
+    try{
+    
+    rs.close();
+    ps.close();
+    
+    }
+    catch (Exception e){}
+    }
+    
+    
+    try{ps.close();}
+    catch(Exception e){}
+    }
+    private void editButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseClicked
+        // TODO add your handling code here:
+        
+        if(editButton.isEnabled()){
+        if(tab2.isShowing()){
+            if(colorBlindTable.getSelectedRowCount() != 0){
+            
+            int id = (int) colorBlindTable.getValueAt(colorBlindTable.getSelectedRow(), 0);
+            System.out.println(String.valueOf(id));
+            cBE = new ColorBlindEditor(id);
+            cBE.setVisible(true);
+            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Please select an item to modify.");
+            }
+                
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "not visible");
+        }}
+        
+    }//GEN-LAST:event_editButtonMouseClicked
+
+    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+        // TODO add your handling code here:
+            String deleteItem = null;
+    if(deleteButton.isEnabled()){
+        if(tab2.isShowing()){
+            if(colorBlindTable.getSelectedRowCount() != 0){
+                try {
+                    int id = (int) colorBlindTable.getValueAt(colorBlindTable.getSelectedRow(), 0);
+                    deleteItem = "DELETE FROM cvarst.ColorblindTest WHERE Id = ?";
+                    ps = cn.prepareStatement(deleteItem);
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                    this.dispose();
+                    new MaintainanceForm().setVisible(true);
+                    JOptionPane.showMessageDialog(null, "Item deleted.");
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+              else{
+                JOptionPane.showMessageDialog(null, "Please select an item to delete.");
+            }}
+         else{
+            JOptionPane.showMessageDialog(null, "not visible");
+        }
+          }
+     
+    }//GEN-LAST:event_deleteButtonMouseClicked
+
+    private void tab1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tab1ComponentShown
+        // TODO add your handling code here:
+        addButton.setEnabled(false);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+    }//GEN-LAST:event_tab1ComponentShown
+
+    private void tab2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tab2ComponentShown
+        // TODO add your handling code here:
+              addButton.setEnabled(true);
+        editButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+    }//GEN-LAST:event_tab2ComponentShown
+
+    private void tab3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tab3ComponentShown
+        // TODO add your handling code here:
+                   addButton.setEnabled(true);
+        editButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+    }//GEN-LAST:event_tab3ComponentShown
+
+    private void tab4ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tab4ComponentShown
+        // TODO add your handling code here:
+              addButton.setEnabled(true);
+        editButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+    }//GEN-LAST:event_tab4ComponentShown
+
+    private void reloadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMouseEntered
+        // TODO add your handling code here:
+        reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button_highlighted.png")));
+    }//GEN-LAST:event_reloadMouseEntered
+
+    private void reloadMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMouseExited
+        // TODO add your handling code here:
+        reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button.png")));
+    }//GEN-LAST:event_reloadMouseExited
+
+    private void reloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_reloadMouseClicked
+
+    private void reloadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMousePressed
+        // TODO add your handling code here:
+        reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button.png")));
+    }//GEN-LAST:event_reloadMousePressed
+
+    private void reloadMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMouseReleased
+        // TODO add your handling code here:
+        reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button_highlighted.png")));
+    }//GEN-LAST:event_reloadMouseReleased
+
+    private void saveButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseEntered
+        // TODO add your handling code here:
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button_highlighted.png")));
+    }//GEN-LAST:event_saveButtonMouseEntered
+
+    private void saveButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseExited
+        // TODO add your handling code here:
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button.png")));
+    }//GEN-LAST:event_saveButtonMouseExited
+
+    private void saveButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMousePressed
+        // TODO add your handling code here:
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button.png")));
+    }//GEN-LAST:event_saveButtonMousePressed
+
+    private void saveButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseReleased
+        // TODO add your handling code here:
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button_highlighted.png")));
+        
+    }//GEN-LAST:event_saveButtonMouseReleased
 
     /**
      * @param args the command line arguments
@@ -618,6 +936,7 @@ System.out.print("SHOWING");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addButton;
+    private javax.swing.JLabel availableBalance;
     private javax.swing.JLabel backButton;
     private javax.swing.JScrollPane colorBlindScrollPane;
     private javax.swing.JTable colorBlindTable;
@@ -625,23 +944,41 @@ System.out.print("SHOWING");
     private java.util.List<project.ColorblindTest> colorblindTestList1;
     private javax.persistence.Query colorblindTestQuery;
     private javax.persistence.Query colorblindTestQuery1;
-    private javax.swing.JLabel colorblindText;
-    private javax.swing.JLabel colorblindTextHighlight;
     private javax.swing.JLabel deleteButton;
-    private javax.swing.JLabel doctorDetailsText;
-    private javax.swing.JLabel doctorDetailsTextHighlight;
     private javax.swing.JLabel editButton;
     private javax.persistence.EntityManager entityManager;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel visualAcuityBarChartText;
-    private javax.swing.JLabel visualAcuityBarChartTextHighlight;
-    private javax.swing.JLabel visualAcuitySnellenText;
-    private javax.swing.JLabel visualAcuityTextHighlight;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel reload;
+    private javax.swing.JLabel saveButton;
+    private javax.swing.JPanel tab1;
+    private javax.swing.JPanel tab2;
+    private javax.swing.JPanel tab3;
+    private javax.swing.JPanel tab4;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

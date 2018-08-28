@@ -329,7 +329,7 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         resCodeCB.setBackground(new java.awt.Color(14, 122, 138));
         resCodeCB.setMaximumRowCount(5);
-        resCodeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        resCodeCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
         resCodeCB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(14, 122, 138)));
         resCodeCB.setOpaque(false);
         resCodeCB.addFocusListener(new java.awt.event.FocusAdapter() {
