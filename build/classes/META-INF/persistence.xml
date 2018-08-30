@@ -16,6 +16,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>project.ColorblindTest</class>
     <class>project.VisualAcuityTest</class>
+    <class>project.VisualAcuityBailyTest</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

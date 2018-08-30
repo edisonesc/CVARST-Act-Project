@@ -55,11 +55,11 @@ public class MaintainanceForm extends javax.swing.JFrame {
         
         jLabel5.setBackground(new Color(23,23,23,100));
   
-        JTable[] tables = {colorBlindTable, VisualSnellenTable};
+        JTable[] tables = {colorBlindTable, visualSnellenTable, visualBailyLoviTable};
         
         for(int i = 0; i < tables.length; i++){
         
-        tables[i].setRowHeight(70);
+        tables[i].setRowHeight(150);
         tables[i].setShowGrid(true);
         tables[i].setGridColor(new Color(30, 30, 30, 100));
         tables[i].getTableHeader().setDefaultRenderer(new HeaderColor());
@@ -71,7 +71,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
         
         }
         
-        VisualSnellenTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+        visualSnellenTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+        visualBailyLoviTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         
         colorBlindTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         colorBlindTable.getColumnModel().getColumn(1).setPreferredWidth(400);
@@ -145,6 +146,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorblindTestList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery1.getResultList();
         visualAcuityTestQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT v FROM VisualAcuityTest v");
         visualAcuityTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : visualAcuityTestQuery.getResultList();
+        visualAcuityBailyTestQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT v FROM VisualAcuityBailyTest v");
+        visualAcuityBailyTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : visualAcuityBailyTestQuery.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -175,8 +178,10 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindTable = new javax.swing.JTable();
         tab3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        VisualSnellenTable = new javax.swing.JTable();
+        visualSnellenTable = new javax.swing.JTable();
         tab4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        visualBailyLoviTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         deleteButton = new javax.swing.JLabel();
         backButton = new javax.swing.JLabel();
@@ -482,7 +487,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         });
         tab3.setLayout(null);
 
-        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, visualAcuityTestList, VisualSnellenTable);
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, visualAcuityTestList, visualSnellenTable);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
         columnBinding.setColumnName("Id");
         columnBinding.setColumnClass(Integer.class);
@@ -500,7 +505,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(VisualSnellenTable);
+        jScrollPane1.setViewportView(visualSnellenTable);
 
         tab3.add(jScrollPane1);
         jScrollPane1.setBounds(0, 0, 830, 440);
@@ -512,6 +517,31 @@ public class MaintainanceForm extends javax.swing.JFrame {
                 tab4ComponentShown(evt);
             }
         });
+        tab4.setLayout(null);
+
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, visualAcuityBailyTestList, visualBailyLoviTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
+        columnBinding.setColumnName("Id");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${image}"));
+        columnBinding.setColumnName("Image");
+        columnBinding.setColumnClass(javax.swing.ImageIcon.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${question}"));
+        columnBinding.setColumnName("Question");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${answer}"));
+        columnBinding.setColumnName("Answer");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${vision}"));
+        columnBinding.setColumnName("Vision");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane2.setViewportView(visualBailyLoviTable);
+
+        tab4.add(jScrollPane2);
+        jScrollPane2.setBounds(0, 2, 830, 430);
+
         jTabbedPane1.addTab("Visual Acuity Test (Bar Chart)", tab4);
 
         getContentPane().add(jTabbedPane1);
@@ -973,7 +1003,6 @@ System.out.print("SHOWING");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable VisualSnellenTable;
     private javax.swing.JLabel addButton;
     private javax.swing.JLabel availableBalance;
     private javax.swing.JLabel backButton;
@@ -1006,6 +1035,7 @@ System.out.print("SHOWING");
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -1019,8 +1049,12 @@ System.out.print("SHOWING");
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JPanel tab4;
+    private java.util.List<project.VisualAcuityBailyTest> visualAcuityBailyTestList;
+    private javax.persistence.Query visualAcuityBailyTestQuery;
     private java.util.List<project.VisualAcuityTest> visualAcuityTestList;
     private javax.persistence.Query visualAcuityTestQuery;
+    private javax.swing.JTable visualBailyLoviTable;
+    private javax.swing.JTable visualSnellenTable;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
+
 
 /**
  *
