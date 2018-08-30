@@ -27,7 +27,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
 import project.Editors.ColorBlindEditor;
+import project.Editors.VisualBailyEditor;
+import project.Editors.VisualSnellenEditor;
 import project.Pickers.ColorBlindPicker;
+import project.Pickers.VisualBailyPicker;
+import project.Pickers.VisualSnellenPicker;
 
 /**
  *
@@ -43,7 +47,11 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private Statement st;
     private ResultSet rs;
     private ColorBlindPicker cBP = new ColorBlindPicker();
+    private VisualSnellenPicker vSP = new VisualSnellenPicker();
+    private VisualBailyPicker vBP = new VisualBailyPicker();
     private ColorBlindEditor cBE;
+    private VisualSnellenEditor vSE;
+    private VisualBailyEditor vBE;
     public MaintainanceForm() {
         initComponents();
         setSize(875, 551);
@@ -99,16 +107,6 @@ public class MaintainanceForm extends javax.swing.JFrame {
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
             st = cn.createStatement();
             rs = st.executeQuery(getData);
-//            colorBlindTable.setModel(DbUtils.resultSetToTableModel(rs));      
-//            ImageIcon image = (ImageIcon) colorBlindTable.getValueAt(0, 0);
-//            Image imagetest = image.getImage();
-//            ImageIcon image3 = new ImageIcon(imagetest);   
-//                while(rs.next()){
-//                
-//                System.out.print(rs.getObject("Picture").getClass());
-//                }
-//            colorBlindTable.setValueAt((ImageIcon)new ImageIcon(getClass().getResource("/Images/Maintenance/delete_icon.png")), 0, 0);
-//            JOptionPane.showMessageDialog(null, "connected.");
 
         }
            catch(Exception e){
@@ -715,16 +713,20 @@ public class MaintainanceForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(addButton.isEnabled()){
         if(tab2.isShowing()){
-        cBP.setVisible(true);
+            cBP.setVisible(true);
         }
-        else{
-            JOptionPane.showMessageDialog(null, "not visible");
-        }}
+        else if(tab3.isShowing()){
+            vSP.setVisible(true);
+        }
+        else if(tab4.isShowing()){
+            vBP.setVisible(true);
+        }
+        }
         else{
             JOptionPane.showMessageDialog(null, "Add not applicable.");
         }
             
-         
+        
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void addButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMousePressed
@@ -844,16 +846,44 @@ System.out.print("SHOWING");
             }
                 
         }
-        else{
-            JOptionPane.showMessageDialog(null, "not visible");
-        }}
+        else if(tab3.isShowing()){
+             if(visualSnellenTable.getSelectedRowCount() != 0){
+            
+            int id = (int) visualSnellenTable.getValueAt(visualSnellenTable.getSelectedRow(), 0);
+            System.out.println(String.valueOf(id));
+            vSE = new VisualSnellenEditor(id);
+            vSE.setVisible(true);
+            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Please select an item to modify.");
+            }
+        }
+        else if(tab4.isShowing()){
+        
+                if(visualBailyLoviTable.getSelectedRowCount() != 0){
+            
+            int id = (int) visualBailyLoviTable.getValueAt(visualBailyLoviTable.getSelectedRow(), 0);
+            System.out.println(String.valueOf(id));
+            vBE = new VisualBailyEditor(id);
+            vBE.setVisible(true);
+            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Please select an item to modify.");
+            }
+        
+        }
+        
+        
+        }
         
     }//GEN-LAST:event_editButtonMouseClicked
 
     private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
         // TODO add your handling code here:
             String deleteItem = null;
-    if(deleteButton.isEnabled()){
+        if(deleteButton.isEnabled()){
         if(tab2.isShowing()){
             if(colorBlindTable.getSelectedRowCount() != 0){
                 try {
@@ -874,9 +904,48 @@ System.out.print("SHOWING");
               else{
                 JOptionPane.showMessageDialog(null, "Please select an item to delete.");
             }}
-         else{
-            JOptionPane.showMessageDialog(null, "not visible");
+         else if(tab3.isShowing()){
+                      if(visualSnellenTable.getSelectedRowCount() != 0){
+                try {
+                    int id = (int) visualSnellenTable.getValueAt(visualSnellenTable.getSelectedRow(), 0);
+                    deleteItem = "DELETE FROM cvarst.VisualAcuityTest WHERE Id = ?";
+                    ps = cn.prepareStatement(deleteItem);
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                    this.dispose();
+                    new MaintainanceForm().setVisible(true);
+                    JOptionPane.showMessageDialog(null, "Item deleted.");
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+              else{
+                JOptionPane.showMessageDialog(null, "Please select an item to delete.");
+            }
         }
+         else if(tab4.isShowing()){
+           if(visualBailyLoviTable.getSelectedRowCount() != 0){
+                try {
+                    int id = (int) visualBailyLoviTable.getValueAt(visualBailyLoviTable.getSelectedRow(), 0);
+                    deleteItem = "DELETE FROM cvarst.VisualAcuityBailyTest WHERE Id = ?";
+                    ps = cn.prepareStatement(deleteItem);
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                    this.dispose();
+                    new MaintainanceForm().setVisible(true);
+                    JOptionPane.showMessageDialog(null, "Item deleted.");
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+              else{
+                JOptionPane.showMessageDialog(null, "Please select an item to delete.");
+            }
+         }
           }
      
     }//GEN-LAST:event_deleteButtonMouseClicked
@@ -921,7 +990,8 @@ System.out.print("SHOWING");
 
     private void reloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMouseClicked
         // TODO add your handling code here:
-        
+        ReloaderForm reload = new ReloaderForm();
+        reload.setVisible(true);
     }//GEN-LAST:event_reloadMouseClicked
 
     private void reloadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reloadMousePressed
