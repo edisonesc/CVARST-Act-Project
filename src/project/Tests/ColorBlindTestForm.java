@@ -49,7 +49,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
     private int totalPoints = 0;
     private ArrayList colorBlindTestQuestion = new ArrayList(), answersList = new ArrayList(), pictureList = new ArrayList();;
     private String input = "";
-    private HashMap<Object, Object> testForList;
+   private HashMap<Object, Object> testForList;
     String colorBlindImageResDuplicate[];
     int currentItemFinished = 0;
     public ColorBlindTestForm() {

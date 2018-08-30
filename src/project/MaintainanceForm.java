@@ -49,29 +49,38 @@ public class MaintainanceForm extends javax.swing.JFrame {
         setSize(875, 551);
         setResizable(false);
         this.setBackground(new Color(23,23,23,100));
-//        colorBlindTable.setBackground(new Color(23,23,23,100));
-      
         addButton.setEnabled(false);
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
         
-       jLabel5.setBackground(new Color(23,23,23,100));
+        jLabel5.setBackground(new Color(23,23,23,100));
   
-        colorBlindTable.setRowHeight(70);
-        colorBlindTable.setShowGrid(true);
-        colorBlindTable.setGridColor(new Color(30, 30, 30, 100));
-        colorBlindTable.getTableHeader().setDefaultRenderer(new HeaderColor());
-        colorBlindTable.setBackground(new Color(255,255,255));
-        colorBlindTable.setSelectionBackground(new Color(23, 23,23, 30));
-        colorBlindTable.setSelectionForeground(Color.BLACK);
-        colorBlindTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        JTable[] tables = {colorBlindTable, VisualSnellenTable};
+        
+        for(int i = 0; i < tables.length; i++){
+        
+        tables[i].setRowHeight(70);
+        tables[i].setShowGrid(true);
+        tables[i].setGridColor(new Color(30, 30, 30, 100));
+        tables[i].getTableHeader().setDefaultRenderer(new HeaderColor());
+        tables[i].setBackground(new Color(255,255,255));
+        tables[i].setSelectionBackground(new Color(23, 23,23, 30));
+        tables[i].setSelectionForeground(Color.BLACK);
+        tables[i].setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        
+        
+        }
+        
+        VisualSnellenTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+        
         colorBlindTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         colorBlindTable.getColumnModel().getColumn(1).setPreferredWidth(400);
         colorBlindTable.getColumnModel().getColumn(2).setMinWidth(300);
-        
-      
         colorBlindTable.setRowHeight(150);
         
+        
+      
+      
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -134,6 +143,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorblindTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery.getResultList();
         colorblindTestQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM ColorblindTest c");
         colorblindTestList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : colorblindTestQuery1.getResultList();
+        visualAcuityTestQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT v FROM VisualAcuityTest v");
+        visualAcuityTestList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : visualAcuityTestQuery.getResultList();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -163,6 +174,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindScrollPane = new javax.swing.JScrollPane();
         colorBlindTable = new javax.swing.JTable();
         tab3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        VisualSnellenTable = new javax.swing.JTable();
         tab4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         deleteButton = new javax.swing.JLabel();
@@ -467,6 +480,31 @@ public class MaintainanceForm extends javax.swing.JFrame {
                 tab3ComponentShown(evt);
             }
         });
+        tab3.setLayout(null);
+
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, visualAcuityTestList, VisualSnellenTable);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${id}"));
+        columnBinding.setColumnName("Id");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${image}"));
+        columnBinding.setColumnName("Image");
+        columnBinding.setColumnClass(javax.swing.ImageIcon.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${question}"));
+        columnBinding.setColumnName("Question");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${answer}"));
+        columnBinding.setColumnName("Answer");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${vision}"));
+        columnBinding.setColumnName("Vision");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(VisualSnellenTable);
+
+        tab3.add(jScrollPane1);
+        jScrollPane1.setBounds(0, 0, 830, 440);
+
         jTabbedPane1.addTab("Visual Acuity Test (Snellen)", tab3);
 
         tab4.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -935,6 +973,7 @@ System.out.print("SHOWING");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable VisualSnellenTable;
     private javax.swing.JLabel addButton;
     private javax.swing.JLabel availableBalance;
     private javax.swing.JLabel backButton;
@@ -966,6 +1005,7 @@ System.out.print("SHOWING");
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -979,6 +1019,8 @@ System.out.print("SHOWING");
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JPanel tab4;
+    private java.util.List<project.VisualAcuityTest> visualAcuityTestList;
+    private javax.persistence.Query visualAcuityTestQuery;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

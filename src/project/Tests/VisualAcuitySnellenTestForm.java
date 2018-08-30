@@ -7,6 +7,16 @@ package project.Tests;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.jdesktop.swingbinding.SwingBindings;
 
@@ -19,12 +29,45 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     /**
      * Creates new form VisualAcuitySnellenTestForm
      */
+    private int totalPoints = 0, currentItemFinished = 0;
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
+    private Map<Object, Object> content;
+    private ArrayList questionImages = new ArrayList(), questionTexts = new ArrayList();
     public VisualAcuitySnellenTestForm() {
         initComponents();
-        setSize(875, 665);
+        setSize(978, 665);
          jLabel1.setBackground(new Color(23, 23,23));
         setResizable(false);
+        content = new HashMap<Object, Object>();
         questionText.setHorizontalAlignment(SwingConstants.CENTER);
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            String getData = "SELECT * FROM cvarst.VisualAcuityTest";
+            ResultSet rs = st.executeQuery(getData);
+            while(rs.next()){
+            
+                ImageIcon icon = new ImageIcon((byte[]) rs.getBytes("Picture"));
+                questionImages.add(icon);
+                questionTexts.add(rs.getString("Question"));
+            }
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+       for (int i = 0; i < questionImages.size(); i++){
+            content.put(questionImages.get(i), questionTexts.get(i));
+            System.out.println(String.valueOf(questionImages.get(i)) + " " + questionTexts.get(i));
+        }
+       
+       questionText.setText(String.valueOf(questionTexts.get(0)));
+       questionImage.setIcon((ImageIcon) questionImages.get(0));
+       
    
     }
 
@@ -37,6 +80,8 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        answerWrong = new javax.swing.JLabel();
+        answerCorrect = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         questionText1 = new javax.swing.JLabel();
         questionText = new javax.swing.JLabel();
@@ -46,8 +91,6 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         questionImage = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -59,8 +102,50 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(null);
 
+        answerWrong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wrong_answer.png"))); // NOI18N
+        answerWrong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                answerWrongMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                answerWrongMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                answerWrongMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                answerWrongMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                answerWrongMouseEntered(evt);
+            }
+        });
+        getContentPane().add(answerWrong);
+        answerWrong.setBounds(700, 580, 60, 60);
+
+        answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_choice.png"))); // NOI18N
+        answerCorrect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                answerCorrectMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                answerCorrectMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                answerCorrectMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                answerCorrectMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                answerCorrectMouseEntered(evt);
+            }
+        });
+        getContentPane().add(answerCorrect);
+        answerCorrect.setBounds(620, 580, 60, 60);
+
         jPanel2.setBackground(new java.awt.Color(23, 23, 23));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(null);
 
         questionText1.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
@@ -73,13 +158,13 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         questionText.setForeground(java.awt.Color.white);
         questionText.setText("Read Line No. 5");
         jPanel2.add(questionText);
-        questionText.setBounds(20, 50, 390, 30);
+        questionText.setBounds(20, 50, 500, 30);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(410, 60, 430, 120);
+        jPanel2.setBounds(410, 60, 540, 120);
 
         jPanel1.setBackground(new java.awt.Color(23, 23, 23));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("DialogInput", 0, 14), java.awt.Color.white)); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(null);
 
         jLabel4.setBackground(new java.awt.Color(24, 24, 24));
@@ -118,15 +203,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         jLabel10.setBounds(30, 140, 140, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(410, 230, 430, 250);
-
-        jButton1.setText("Wrong");
-        getContentPane().add(jButton1);
-        jButton1.setBounds(720, 560, 100, 50);
-
-        jButton2.setText("Correct");
-        getContentPane().add(jButton2);
-        jButton2.setBounds(440, 560, 100, 50);
+        jPanel1.setBounds(410, 230, 540, 250);
 
         questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/VisualAcuitySnellen/1-1.jpg"))); // NOI18N
         getContentPane().add(questionImage);
@@ -143,7 +220,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(831, 0, 50, 20);
+        jLabel3.setBounds(940, 0, 50, 20);
 
         jLabel2.setBackground(new java.awt.Color(3, 72, 83));
         jLabel2.setOpaque(true);
@@ -153,7 +230,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(0, 0, 880, 20);
+        jLabel2.setBounds(0, 0, 980, 20);
 
         jLabel6.setBackground(new java.awt.Color(17, 107, 121));
         jLabel6.setOpaque(true);
@@ -163,7 +240,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(23, 23, 23));
         jLabel1.setOpaque(true);
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(370, 20, 510, 650);
+        jLabel1.setBounds(370, 20, 610, 650);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -179,6 +256,77 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setState(VisualAcuitySnellenTestForm.ICONIFIED);
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void answerCorrectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseExited
+        // TODO add your handling code here:
+        answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_choice.png")));
+    }//GEN-LAST:event_answerCorrectMouseExited
+
+    private void answerCorrectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseEntered
+        // TODO add your handling code here:
+        answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_highlighted.png")));
+    }//GEN-LAST:event_answerCorrectMouseEntered
+
+    private void answerWrongMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerWrongMouseExited
+        // TODO add your handling code here:
+          answerWrong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wrong_answer.png")));
+    }//GEN-LAST:event_answerWrongMouseExited
+
+    private void answerWrongMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerWrongMouseEntered
+        // TODO add your handling code here:
+        answerWrong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wrong_highlighted.png")));
+    }//GEN-LAST:event_answerWrongMouseEntered
+
+    private void answerWrongMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerWrongMousePressed
+        // TODO add your handling code here:
+        answerWrong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wrong_answer.png")));
+    }//GEN-LAST:event_answerWrongMousePressed
+
+    private void answerWrongMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerWrongMouseReleased
+        // TODO add your handling code here:
+        answerWrong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/wrong_highlighted.png")));
+    }//GEN-LAST:event_answerWrongMouseReleased
+
+    private void answerCorrectMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseReleased
+        // TODO add your handling code here:
+        answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_highlighted.png")));
+    }//GEN-LAST:event_answerCorrectMouseReleased
+
+    private void answerCorrectMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMousePressed
+        answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_choice.png")));
+    }//GEN-LAST:event_answerCorrectMousePressed
+
+    private void answerCorrectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseClicked
+        // TODO add your handling code here:
+        
+        if(currentItemFinished < questionImages.size()){
+            
+        questionImage.setIcon((ImageIcon) questionImages.get(currentItemFinished));
+        questionText.setText(String.valueOf(questionTexts.get(currentItemFinished)));
+        totalPoints++;
+        currentItemFinished++;
+        
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+        }
+        
+    }//GEN-LAST:event_answerCorrectMouseClicked
+
+    private void answerWrongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerWrongMouseClicked
+        // TODO add your handling code here:
+          if(currentItemFinished < questionImages.size()){
+            
+        questionImage.setIcon((ImageIcon) questionImages.get(currentItemFinished));
+        questionText.setText(String.valueOf(questionTexts.get(currentItemFinished)));
+        
+        currentItemFinished++;
+        
+        }
+          else{
+            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+        }
+    }//GEN-LAST:event_answerWrongMouseClicked
 
     /**
      * @param args the command line arguments
@@ -216,8 +364,8 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel answerCorrect;
+    private javax.swing.JLabel answerWrong;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
