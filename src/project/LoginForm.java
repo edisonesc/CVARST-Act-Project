@@ -66,6 +66,7 @@ public class LoginForm extends javax.swing.JFrame {
         passwordVisibility.setBounds(190, 190, 170, 22);
 
         passwordText.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
+        passwordText.setEchoChar('\u2022');
         getContentPane().add(passwordText);
         passwordText.setBounds(190, 160, 180, 28);
 
@@ -161,7 +162,7 @@ public class LoginForm extends javax.swing.JFrame {
             
         }
      else if(!passwordVisibility.isSelected()){
-            passwordText.setEchoChar('*');
+            passwordText.setEchoChar('•');
         }
     }//GEN-LAST:event_passwordVisibilityActionPerformed
 

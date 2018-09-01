@@ -63,7 +63,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         
         jLabel5.setBackground(new Color(23,23,23,100));
   
-        JTable[] tables = {colorBlindTable, visualSnellenTable, visualBailyLoviTable};
+        JTable[] tables = {colorBlindTable, visualSnellenTable, visualBailyLoviTable, auditoryTestTable};
         
         for(int i = 0; i < tables.length; i++){
         
@@ -87,7 +87,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindTable.getColumnModel().getColumn(2).setMinWidth(300);
         colorBlindTable.setRowHeight(150);
         
-        
+        auditoryTestTable.setRowHeight(40);
       
       
         
@@ -101,12 +101,15 @@ public class MaintainanceForm extends javax.swing.JFrame {
         colorBlindTableHeader.setDefaultRenderer(new CustomHeader(colorBlindTable));
         availableBalance.setHorizontalAlignment(SwingConstants.CENTER);
         
-        String getData = "Select * from cvarst.ColorblindTest";
+        String getData = "Select * from cvarst.AuditoryTest";
            try{
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
             st = cn.createStatement();
             rs = st.executeQuery(getData);
+            auditoryTestTable.setModel(DbUtils.resultSetToTableModel(rs));
+            auditoryTestTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+            
 
         }
            catch(Exception e){
@@ -180,6 +183,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
         tab4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         visualBailyLoviTable = new javax.swing.JTable();
+        tab5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        auditoryTestTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         deleteButton = new javax.swing.JLabel();
         backButton = new javax.swing.JLabel();
@@ -541,6 +547,23 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jScrollPane2.setBounds(0, 2, 830, 430);
 
         jTabbedPane1.addTab("Visual Acuity Test (Bar Chart)", tab4);
+
+        tab5.setLayout(null);
+
+        auditoryTestTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(auditoryTestTable);
+
+        tab5.add(jScrollPane3);
+        jScrollPane3.setBounds(-4, 4, 840, 430);
+
+        jTabbedPane1.addTab("Auditory Test", tab5);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(40, 70, 840, 480);
@@ -1074,6 +1097,7 @@ System.out.print("SHOWING");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addButton;
+    private javax.swing.JTable auditoryTestTable;
     private javax.swing.JLabel availableBalance;
     private javax.swing.JLabel backButton;
     private javax.swing.JScrollPane colorBlindScrollPane;
@@ -1106,6 +1130,7 @@ System.out.print("SHOWING");
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -1119,6 +1144,7 @@ System.out.print("SHOWING");
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JPanel tab4;
+    private javax.swing.JPanel tab5;
     private java.util.List<project.VisualAcuityBailyTest> visualAcuityBailyTestList;
     private javax.persistence.Query visualAcuityBailyTestQuery;
     private java.util.List<project.VisualAcuityTest> visualAcuityTestList;

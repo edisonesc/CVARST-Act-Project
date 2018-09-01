@@ -14,12 +14,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.print.attribute.standard.Media;
+import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javazoom.jl.player.Player;
+import project.VolumeController.Audio;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -40,17 +50,22 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     File myFile;
     MediaPlayer mp;
     Media me;
-    
-    
+    private String currentAudioPlaying;
+    private Map<Object, Object> content;
+    private Float masterVolume;
+    private int currentItemFinished = 0, totalPoints = 0;
+    private ArrayList questionAudios = new ArrayList(), questionNames = new ArrayList();
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
     public AuditoryTestForm() {
         initComponents();
         setSize(875, 551);
         setResizable(false);
         this.setBackground(new Color(23, 23,23 ,150));
         jLabel4.setBackground(new Color(23, 23,23));
-        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-        nextButtonHighlighted.setVisible(false);
-        nextButtonPressed.setVisible(false);
+        audioName.setHorizontalAlignment(SwingConstants.CENTER);
+        content = new HashMap<Object, Object>();
         JButton inputButtons[] = {buttonPlay,buttonStop};
               for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
@@ -58,10 +73,30 @@ public class AuditoryTestForm extends javax.swing.JFrame {
             inputButtons[i].setBorderPainted(true);
         }
           hPlay.setVisible(false);
-       
           hStop.setVisible(false);
-         
-         
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            String getData = "SELECT * FROM cvarst.AuditoryTest";
+            ResultSet rs = st.executeQuery(getData);
+            while(rs.next()){
+                
+                questionAudios.add(rs.getString("AudioPath"));
+                questionNames.add(rs.getString("AudioName"));
+            }
+           
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        for (int i = 0; i < questionAudios.size(); i++){
+        content.put(questionNames.get(i), questionAudios.get(i));
+        System.out.println(String.valueOf(questionNames.get(i)) + " " + questionAudios.get(i));
+        }
+        System.out.println(questionAudios.get(0) + " | " +  questionNames.get(0));
+        audioName.setText(String.valueOf(questionNames.get(0)));
+        currentAudioPlaying = String.valueOf(questionAudios.get(0));
     }
 
     /**
@@ -74,21 +109,21 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     private void initComponents() {
 
         questionImage = new javax.swing.JLabel();
-        audioTrack = new javax.swing.JSlider();
+        yesButton = new javax.swing.JLabel();
+        noButton = new javax.swing.JLabel();
+        volume = new javax.swing.JSlider();
         hPlay = new javax.swing.JLabel();
         hStop = new javax.swing.JLabel();
-        nextButtonPressed = new javax.swing.JLabel();
-        nextButtonHighlighted = new javax.swing.JLabel();
-        nextButton = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        audioName = new javax.swing.JLabel();
         buttonPlay = new javax.swing.JButton();
         buttonStop = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -98,8 +133,63 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         questionImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/AuditoryTest/headphone.png"))); // NOI18N
         getContentPane().add(questionImage);
         questionImage.setBounds(60, 130, 250, 270);
-        getContentPane().add(audioTrack);
-        audioTrack.setBounds(510, 330, 210, 39);
+
+        yesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/yes_button.png"))); // NOI18N
+        yesButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                yesButtonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                yesButtonMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                yesButtonMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                yesButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                yesButtonMouseEntered(evt);
+            }
+        });
+        getContentPane().add(yesButton);
+        yesButton.setBounds(410, 500, 190, 30);
+
+        noButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/no_button.png"))); // NOI18N
+        noButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                noButtonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                noButtonMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                noButtonMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                noButtonMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                noButtonMouseEntered(evt);
+            }
+        });
+        getContentPane().add(noButton);
+        noButton.setBounds(660, 500, 190, 30);
+
+        volume.setForeground(java.awt.Color.white);
+        volume.setMajorTickSpacing(10);
+        volume.setMaximum(99);
+        volume.setOrientation(javax.swing.JSlider.VERTICAL);
+        volume.setPaintLabels(true);
+        volume.setPaintTicks(true);
+        volume.setValue(40);
+        volume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                volumeStateChanged(evt);
+            }
+        });
+        getContentPane().add(volume);
+        volume.setBounds(730, 130, 70, 160);
 
         hPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/highlighted.png"))); // NOI18N
         getContentPane().add(hPlay);
@@ -108,59 +198,6 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         hStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/highlighted.png"))); // NOI18N
         getContentPane().add(hStop);
         hStop.setBounds(620, 380, 100, 40);
-
-        nextButtonPressed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/nextButtonPressed.png"))); // NOI18N
-        nextButtonPressed.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                nextButtonPressedMouseReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nextButtonPressedMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                nextButtonPressedMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                nextButtonPressedMouseEntered(evt);
-            }
-        });
-        nextButtonPressed.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                nextButtonPressedComponentShown(evt);
-            }
-        });
-        getContentPane().add(nextButtonPressed);
-        nextButtonPressed.setBounds(650, 490, 190, 29);
-
-        nextButtonHighlighted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Secondary_Images/nextButtonHighlighted.png"))); // NOI18N
-        nextButtonHighlighted.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                nextButtonHighlightedMousePressed(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nextButtonHighlightedMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                nextButtonHighlightedMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                nextButtonHighlightedMouseEntered(evt);
-            }
-        });
-        getContentPane().add(nextButtonHighlighted);
-        nextButtonHighlighted.setBounds(650, 490, 190, 29);
-
-        nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/nextButton.png"))); // NOI18N
-        nextButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nextButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                nextButtonMouseEntered(evt);
-            }
-        });
-        getContentPane().add(nextButton);
-        nextButton.setBounds(650, 490, 190, 29);
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/AuditoryTest/questionDisplay.png"))); // NOI18N
         getContentPane().add(jLabel7);
@@ -194,11 +231,11 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         getContentPane().add(jLabel6);
         jLabel6.setBounds(0, 0, 370, 550);
 
-        jLabel1.setFont(new java.awt.Font("Ubuntu Light", 0, 20)); // NOI18N
-        jLabel1.setForeground(java.awt.Color.white);
-        jLabel1.setText("Left Ear");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(510, 300, 210, 24);
+        audioName.setFont(new java.awt.Font("Ubuntu Light", 0, 20)); // NOI18N
+        audioName.setForeground(java.awt.Color.white);
+        audioName.setText("Audio");
+        getContentPane().add(audioName);
+        audioName.setBounds(510, 300, 210, 24);
 
         buttonPlay.setFont(new java.awt.Font("Ubuntu Condensed", 0, 15)); // NOI18N
         buttonPlay.setForeground(java.awt.Color.white);
@@ -247,6 +284,11 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         getContentPane().add(jLabel8);
         jLabel8.setBounds(510, 100, 210, 190);
 
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Volume");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(740, 100, 70, 20);
+
         jLabel4.setOpaque(true);
         getContentPane().add(jLabel4);
         jLabel4.setBounds(370, 20, 510, 530);
@@ -267,85 +309,28 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jLabel3MouseClicked
 
-    private void nextButtonPressedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonPressedMouseReleased
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_nextButtonPressedMouseReleased
-
-    private void nextButtonPressedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonPressedMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_nextButtonPressedMouseClicked
-
-    private void nextButtonPressedMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonPressedMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextButtonPressedMouseExited
-
-    private void nextButtonPressedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonPressedMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextButtonPressedMouseEntered
-
-    private void nextButtonPressedComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_nextButtonPressedComponentShown
-        // TODO add your handling code here:
-        nextButtonPressed.setVisible(false);
-        nextButton.setVisible(true);
-    }//GEN-LAST:event_nextButtonPressedComponentShown
-
-    private void nextButtonHighlightedMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMousePressed
-        // TODO add your handling code here:
-        nextButtonHighlighted.setVisible(false);
-        nextButtonPressed.setVisible(true);
-    }//GEN-LAST:event_nextButtonHighlightedMousePressed
-
-    private void nextButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMouseClicked
-        // TODO add your handling code here:
-      
-    }//GEN-LAST:event_nextButtonHighlightedMouseClicked
-
-    private void nextButtonHighlightedMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMouseExited
-        // TODO add your handling code here:
-        nextButtonHighlighted.setVisible(false);
-        nextButton.setVisible(true);
-    }//GEN-LAST:event_nextButtonHighlightedMouseExited
-
-    private void nextButtonHighlightedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonHighlightedMouseEntered
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_nextButtonHighlightedMouseEntered
-
-    private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_nextButtonMouseClicked
-
-    private void nextButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseEntered
-        // TODO add your handling code here:
-        nextButton.setVisible(false);
-        nextButtonHighlighted.setVisible(true);
-    }//GEN-LAST:event_nextButtonMouseEntered
-
     private void buttonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPlayActionPerformed
         // TODO add your handling code here:
-       
+ 
+//        masterVolume = Float.valueOf("0." + String.valueOf(volume.getValue()));
+//        Audio.setMasterOutputVolume();
         InputStream in;
         try{
 //            in = new FileInputStream(new File (getClass().getResource("/Audio/6th.mp4.wav").getPath()));
 //            
 //            AudioStream audioStream = new AudioStream(in);
 //            AudioPlayer.player.start(audioStream);
-
-            FIS = new FileInputStream(new File (getClass().getResource("/Audio/lostwithoutyou.mp3").getPath()));
+             
+            FIS = new FileInputStream(currentAudioPlaying);
             BIS = new BufferedInputStream(FIS);
             player = new Player(BIS);
             total_length = FIS.available();
-            
+            System.out.print(getClass().getResource("/Audio/lostwithoutyou.mp3").getPath() + " | " + currentAudioPlaying);
             new Thread(){
             
                 public void run(){
                 try{
                     player.play();
-                    
-               
                 }
                 catch(Exception e){
                 e.printStackTrace();
@@ -399,6 +384,89 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonPlayMouseClicked
 
+    private void volumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volumeStateChanged
+        // TODO add your handling code here:
+        masterVolume = Float.valueOf("0." + String.valueOf(volume.getValue()));
+//        masterVolume = Float.valueOf(volume.getValue() / 100);
+        Audio.setMasterOutputVolume(masterVolume);
+        audioName.setText(String.valueOf(masterVolume));
+    }//GEN-LAST:event_volumeStateChanged
+
+    private void yesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseEntered
+        // TODO add your handling code here:
+          yesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/yes_button_highlighted.png")));
+    }//GEN-LAST:event_yesButtonMouseEntered
+
+    private void yesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseExited
+        // TODO add your handling code here:
+          yesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/yes_button.png")));
+    }//GEN-LAST:event_yesButtonMouseExited
+
+    private void yesButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMousePressed
+        // TODO add your handling code here:
+        yesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/yes_button.png")));
+    }//GEN-LAST:event_yesButtonMousePressed
+
+    private void yesButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseReleased
+        // TODO add your handling code here:
+        yesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/yes_button_highlighted.png")));
+    }//GEN-LAST:event_yesButtonMouseReleased
+
+    private void noButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseEntered
+            noButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/no_button_highlighted.png")));
+    }//GEN-LAST:event_noButtonMouseEntered
+
+    private void noButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseExited
+        // TODO add your handling code here:
+        noButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/no_button.png")));
+    }//GEN-LAST:event_noButtonMouseExited
+
+    private void noButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMousePressed
+        // TODO add your handling code here:
+        noButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/no_button.png")));
+    }//GEN-LAST:event_noButtonMousePressed
+
+    private void noButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseReleased
+        // TODO add your handling code here:
+        noButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/no_button_highlighted.png")));
+    }//GEN-LAST:event_noButtonMouseReleased
+
+    private void yesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseClicked
+        // TODO add your handling code here:
+     if(currentItemFinished < questionAudios.size()){
+            currentAudioPlaying = String.valueOf(questionAudios.get(currentItemFinished));
+            audioName.setText(String.valueOf(questionNames.get(currentItemFinished)));
+            totalPoints++;
+            currentItemFinished++;
+    
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+        }
+       if(player != null){
+        player.close();
+        buttonPlay.setEnabled(true);
+        buttonStop.setEnabled(false); }
+    }//GEN-LAST:event_yesButtonMouseClicked
+
+    private void noButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseClicked
+        // TODO add your handling code here:
+        if(currentItemFinished < questionAudios.size()){
+
+            
+            currentAudioPlaying = String.valueOf(questionAudios.get(currentItemFinished));
+            audioName.setText(String.valueOf(questionNames.get(currentItemFinished)));
+            currentItemFinished++;
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+        }
+        if(player != null){
+            player.close();
+            buttonPlay.setEnabled(true);
+            buttonStop.setEnabled(false);}
+    }//GEN-LAST:event_noButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -435,7 +503,7 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSlider audioTrack;
+    private javax.swing.JLabel audioName;
     private javax.swing.JButton buttonPlay;
     private javax.swing.JButton buttonStop;
     private javax.swing.JLabel hPlay;
@@ -448,9 +516,9 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel nextButton;
-    private javax.swing.JLabel nextButtonHighlighted;
-    private javax.swing.JLabel nextButtonPressed;
+    private javax.swing.JLabel noButton;
     private javax.swing.JLabel questionImage;
+    private javax.swing.JSlider volume;
+    private javax.swing.JLabel yesButton;
     // End of variables declaration//GEN-END:variables
 }
