@@ -29,17 +29,24 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     /**
      * Creates new form VisualAcuitySnellenTestForm
      */
-    private int totalPoints = 0, currentItemFinished = 0;
-    private Connection cn;
+    private int totalPoints = 0, currentItemFinished = 0, userId = 0;
+    private Connection cn, cn2;
     private PreparedStatement ps;
     private Statement st;
     private Map<Object, Object> content;
     private ArrayList questionImages = new ArrayList(), questionTexts = new ArrayList();
+    private int colorBlindScore = 0, colorBlindTotalPoints=0, auditoryScore=0, auditoryTotalPoints=0;
     public VisualAcuitySnellenTestForm() {
-        initComponents();
+       
+   
+    }
+    
+    public VisualAcuitySnellenTestForm(int id){
+     initComponents();
         setSize(978, 665);
          jLabel1.setBackground(new Color(23, 23,23));
         setResizable(false);
+        userId = id;//
         content = new HashMap<Object, Object>();
         questionText.setHorizontalAlignment(SwingConstants.CENTER);
         try{
@@ -54,11 +61,35 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
                 questionImages.add(icon);
                 questionTexts.add(rs.getString("Question"));
             }
-            
+           
         }
         catch(Exception e){
             e.printStackTrace();
         }
+        
+        
+        try {
+            
+              String getScores = "SELECT AuditoryTotalPoints as atp,AuditoryItemCount as aic,ColorblindTotalPoints as cbtp,ColorblindItemCount as cbic FROM cvarst.UserExamSession where Examinee_ID=" + String.valueOf(userId);
+             st = cn.createStatement();
+            ResultSet rs = st.executeQuery(getScores);
+            while(rs.next()){
+            
+                
+                auditoryScore = rs.getInt("atp");
+                auditoryTotalPoints = rs.getInt("aic");
+                colorBlindScore = rs.getInt("cbtp");
+                colorBlindTotalPoints = rs.getInt("cbic");
+                        
+            }
+            colorblindScoreLabel.setText("Colorblind Score: " + String.valueOf(colorBlindScore + "/" + colorBlindTotalPoints) );
+            auditoryScoreLabel.setText("Auditory Score: " + String.valueOf(auditoryScore + "/" + auditoryTotalPoints) );
+        
+        
+        
+        }catch(Exception e){
+        e.printStackTrace();}
+        
         
        for (int i = 0; i < questionImages.size(); i++){
             content.put(questionImages.get(i), questionTexts.get(i));
@@ -67,9 +98,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
        
        questionText.setText(String.valueOf(questionTexts.get(0)));
        questionImage.setIcon((ImageIcon) questionImages.get(0));
-       
-   
-    }
+       }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,8 +117,8 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        colorblindScoreLabel = new javax.swing.JLabel();
+        auditoryScoreLabel = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         questionImage = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -181,19 +210,19 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 0, 400, 30);
 
-        jLabel8.setBackground(new java.awt.Color(24, 24, 24));
-        jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel8.setForeground(java.awt.Color.white);
-        jLabel8.setText("Colorblind: 7/7");
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(30, 60, 140, 30);
+        colorblindScoreLabel.setBackground(new java.awt.Color(24, 24, 24));
+        colorblindScoreLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        colorblindScoreLabel.setForeground(java.awt.Color.white);
+        colorblindScoreLabel.setText("Colorblind: 7/7");
+        jPanel1.add(colorblindScoreLabel);
+        colorblindScoreLabel.setBounds(30, 60, 140, 30);
 
-        jLabel9.setBackground(new java.awt.Color(24, 24, 24));
-        jLabel9.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel9.setForeground(java.awt.Color.white);
-        jLabel9.setText("Auditory:  2/3");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(30, 100, 140, 30);
+        auditoryScoreLabel.setBackground(new java.awt.Color(24, 24, 24));
+        auditoryScoreLabel.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        auditoryScoreLabel.setForeground(java.awt.Color.white);
+        auditoryScoreLabel.setText("Auditory:  2/3");
+        jPanel1.add(auditoryScoreLabel);
+        auditoryScoreLabel.setBounds(30, 100, 140, 30);
 
         jLabel10.setBackground(new java.awt.Color(24, 24, 24));
         jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
@@ -308,7 +337,27 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         
         }
         else{
-            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+            
+            
+              try{
+                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET VisualAcuityItemCount = (?), VisualAcuityTotalPoints = (?)  where Examinee_ID = (?)");
+                    saveStatement.setInt(1, questionImages.size());
+                    saveStatement.setInt(2, totalPoints);
+                    saveStatement.setInt(3, userId);
+                    saveStatement.executeUpdate();
+                    cn.close();
+                    saveStatement.close();
+                
+                }
+               catch(Exception e){
+               e.printStackTrace();}
+            
+               int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                if(confirmExitDialog == 0){
+                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm(userId);
+                  this.dispose();
+                  vABLTF.setVisible(true);
+                }
         }
         
     }//GEN-LAST:event_answerCorrectMouseClicked
@@ -324,7 +373,26 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         
         }
           else{
-            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+                      
+              try{
+                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET VisualAcuityItemCount = (?), VisualAcuityTotalPoints = (?)  where Examinee_ID = (?)");
+                    saveStatement.setInt(1, questionImages.size());
+                    saveStatement.setInt(2, totalPoints);
+                    saveStatement.setInt(3, userId);
+                    saveStatement.executeUpdate();
+                    cn.close();
+                    saveStatement.close();
+                
+                }
+               catch(Exception e){
+               e.printStackTrace();}
+            
+               int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                if(confirmExitDialog == 0){
+                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm(userId);
+                  this.dispose();
+                  vABLTF.setVisible(true);
+                }
         }
     }//GEN-LAST:event_answerWrongMouseClicked
 
@@ -366,6 +434,8 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel answerCorrect;
     private javax.swing.JLabel answerWrong;
+    private javax.swing.JLabel auditoryScoreLabel;
+    private javax.swing.JLabel colorblindScoreLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -374,8 +444,6 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel questionImage;

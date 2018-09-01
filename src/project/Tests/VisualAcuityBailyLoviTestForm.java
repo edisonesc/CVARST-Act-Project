@@ -32,13 +32,18 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
     private PreparedStatement ps;
     private Statement st;
     private Map<Object, Object> content;
-    private int currentItemFinished = 0, totalPoints = 0;
+    private int currentItemFinished = 0, totalPoints = 0, userId = 0;
     private ArrayList questionImages = new ArrayList(), questionTexts = new ArrayList();
     public VisualAcuityBailyLoviTestForm() {
-        initComponents();
+
+    }
+    
+    public VisualAcuityBailyLoviTestForm(int id){
+            initComponents();
         setSize(978, 665);
         jLabel1.setBackground(new Color(23, 23,23));
         setResizable(false);
+        userId = id;
         content = new HashMap<Object, Object>();
         questionText.setHorizontalAlignment(SwingConstants.CENTER);
         try{
@@ -64,9 +69,7 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
       
        questionText.setText(String.valueOf(questionTexts.get(0)));
        imageQuestion.setIcon((ImageIcon) questionImages.get(0));
-
-        
-    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

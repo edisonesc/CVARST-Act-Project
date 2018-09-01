@@ -53,12 +53,16 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     private String currentAudioPlaying;
     private Map<Object, Object> content;
     private Float masterVolume;
-    private int currentItemFinished = 0, totalPoints = 0;
+    private int currentItemFinished = 0, totalPoints = 0, userId = 0;
     private ArrayList questionAudios = new ArrayList(), questionNames = new ArrayList();
     private Connection cn;
     private PreparedStatement ps;
     private Statement st;
     public AuditoryTestForm() {
+
+    }
+    public AuditoryTestForm(int id){
+    
         initComponents();
         setSize(875, 551);
         setResizable(false);
@@ -66,6 +70,7 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         jLabel4.setBackground(new Color(23, 23,23));
         audioName.setHorizontalAlignment(SwingConstants.CENTER);
         content = new HashMap<Object, Object>();
+        userId = id;
         JButton inputButtons[] = {buttonPlay,buttonStop};
               for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
@@ -441,30 +446,73 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     
         }
         else{
-            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+         
+         
+               if(player != null){
+                    player.close();
+                    buttonPlay.setEnabled(true);
+                    buttonStop.setEnabled(false); }
+               try{
+                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET AuditoryItemCount = (?), AuditoryTotalPoints = (?)  where Examinee_ID = (?)");
+                    saveStatement.setInt(1, questionAudios.size());
+                    saveStatement.setInt(2, totalPoints);
+                    saveStatement.setInt(3, userId);
+                    saveStatement.executeUpdate();
+                  
+                
+                }
+               catch(Exception e){
+               e.printStackTrace();}
+         
+                 int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                if(confirmExitDialog == 0){
+                  VisualAcuitySnellenTestForm vSTF = new VisualAcuitySnellenTestForm(userId);
+                  this.dispose();
+                  vSTF.setVisible(true);
+                }
+        
         }
-       if(player != null){
-        player.close();
-        buttonPlay.setEnabled(true);
-        buttonStop.setEnabled(false); }
+    
     }//GEN-LAST:event_yesButtonMouseClicked
 
     private void noButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseClicked
         // TODO add your handling code here:
         if(currentItemFinished < questionAudios.size()){
-
-            
             currentAudioPlaying = String.valueOf(questionAudios.get(currentItemFinished));
             audioName.setText(String.valueOf(questionNames.get(currentItemFinished)));
             currentItemFinished++;
         }
         else{
-            JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
+               try{
+                        if(player != null){
+                        player.close();
+                        buttonPlay.setEnabled(true);
+                        buttonStop.setEnabled(false);}
+                   
+                   
+                   
+                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET AuditoryItemCount = (?), AuditoryTotalPoints = (?)  where Examinee_ID = (?)");
+                    saveStatement.setInt(1, questionAudios.size());
+                    saveStatement.setInt(2, totalPoints);
+                    saveStatement.setInt(3, userId);
+                    saveStatement.executeUpdate();
+          
+                
+                }
+               catch(Exception e){
+               e.printStackTrace();}
+               
+               
+                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                if(confirmExitDialog == 0){
+                  VisualAcuitySnellenTestForm vSTF = new VisualAcuitySnellenTestForm(userId);
+                  this.dispose();
+                  vSTF.setVisible(true);
+                }
+        
+            
         }
-        if(player != null){
-            player.close();
-            buttonPlay.setEnabled(true);
-            buttonStop.setEnabled(false);}
+    
     }//GEN-LAST:event_noButtonMouseClicked
 
     /**

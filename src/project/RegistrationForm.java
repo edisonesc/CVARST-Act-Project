@@ -70,7 +70,7 @@ public class RegistrationForm extends javax.swing.JFrame {
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
             st = cn.createStatement();
             
-            JOptionPane.showMessageDialog(null, "connected.");
+            System.out.println("connected.");
             
            
             
@@ -966,7 +966,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         double height, weight;
         int age;
         String photo;
-        
+        int count = 0;
         firstname = firstnameText.getText().toString();
         middlename = middlenameText.getText().toString();
         lastname = lastnameText.getText().toString();
@@ -985,7 +985,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         try {
      
            String getCount = "select id from cvarst.registration";
-           int count = 0;
             ResultSet resultSet = st.executeQuery(getCount);
             while(resultSet.next()){
                 count = resultSet.getInt("id");
@@ -1021,7 +1020,7 @@ public class RegistrationForm extends javax.swing.JFrame {
             Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        ColorBlindTestForm btf = new ColorBlindTestForm();
+        ColorBlindTestForm btf = new ColorBlindTestForm(count + 1);
         this.dispose();
         btf.setVisible(true);
     }//GEN-LAST:event_proceedButtonHighlightedMouseClicked

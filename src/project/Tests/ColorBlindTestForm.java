@@ -52,7 +52,12 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
    private HashMap<Object, Object> testForList;
     String colorBlindImageResDuplicate[];
     int currentItemFinished = 0;
+    private int userID = 0;
     public ColorBlindTestForm() {
+
+        
+    }
+    public ColorBlindTestForm(int id){
         initComponents();
         setSize(875, 551);
         setResizable(false);
@@ -66,7 +71,8 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         jLabel1.setBackground(new Color(23, 23,23));
         JButton inputButtons[] = {inputOne, inputTwo, inputThree, inputFour, inputFive,inputSix,
         inputSeven, inputEight, inputNine, inputZero, inputClear   };
-
+        userID = id;
+        JOptionPane.showMessageDialog(null, userID);
         try{
 
             Class.forName("com.mysql.jdbc.Driver");
@@ -107,7 +113,6 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         }
         questionImage.setIcon((ImageIcon) pictureList.get(0));
         questionImage.setVerticalAlignment(SwingConstants.CENTER);
-        
     }
 
     /**
@@ -557,9 +562,21 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
                 System.out.println(String.valueOf(currentItemFinished) + " | " + String.valueOf(totalPoints));   
             }
              else{
-                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Score:"+ totalPoints + " / " + answersList.size() + " Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+                     try{
+                PreparedStatement saveStatement = cn.prepareStatement("insert into cvarst.UserExamSession (Examinee_ID, ColorblindItemCount, ColorblindTotalPoints) values (?,?,?)");
+                saveStatement.setInt(1, userID);
+                saveStatement.setInt(2, answersList.size());
+                saveStatement.setInt(3, totalPoints);
+                saveStatement.executeUpdate();
+             
+                
+                }
+                catch(Exception e){
+                e.printStackTrace();}
+                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
+    
                 if(confirmExitDialog == 0){
-                  AuditoryTestForm atf = new AuditoryTestForm();
+                  AuditoryTestForm atf = new AuditoryTestForm(userID);
                   this.dispose();
                   atf.setVisible(true);
                 }
