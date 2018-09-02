@@ -20,3 +20,12 @@
 
 ## Test Table
 ![screenshot from 2018-09-02 23-08-34](https://user-images.githubusercontent.com/21971681/44957502-e8c93d80-af05-11e8-9d7c-ad8488fbaa87.png)
+
+## Tests
+### 1
+![screenshot from 2018-09-02 23-21-32](https://user-images.githubusercontent.com/21971681/44957674-0e0a7b80-af07-11e8-95e8-e1a178ee7a20.png)
+### 2
+![screenshot from 2018-09-02 23-21-57](https://user-images.githubusercontent.com/21971681/44957680-2aa6b380-af07-11e8-8d08-2c156ad63ee5.png)
+### 3
+![screenshot from 2018-09-02 23-22-11](https://user-images.githubusercontent.com/21971681/44957683-32665800-af07-11e8-8b51-7edb43411b98.png)
+
