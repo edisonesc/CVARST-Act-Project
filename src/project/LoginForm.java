@@ -106,7 +106,7 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(428, 0, 50, 25);
+        jLabel3.setBounds(429, 0, 50, 25);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/XButton.png"))); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {

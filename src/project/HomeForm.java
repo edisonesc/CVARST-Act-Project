@@ -434,6 +434,9 @@ public class HomeForm extends javax.swing.JFrame {
 
     private void clearanceButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearanceButtonHighlightedMouseClicked
         // TODO add your handling code here:
+        ClearanceForm cF = new ClearanceForm();
+        cF.setVisible(true);
+        this.dispose();
         
     }//GEN-LAST:event_clearanceButtonHighlightedMouseClicked
 
