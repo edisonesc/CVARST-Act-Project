@@ -8,6 +8,11 @@ package project;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -30,24 +35,54 @@ public class HomeForm extends javax.swing.JFrame {
     /**
      * Creates new form HomeForm
      */
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
+    private ResultSet rs;
+    private String userPrimary;
     int day, month, year;
     int second, minute, hour;
+    
+    public void userPrimary(String username){
+       
+       try{
+          Class.forName("com.mysql.jdbc.Driver"); 
+          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where username = '" + username + "'";
+          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+          st = cn.createStatement();
+          rs = st.executeQuery(getCurrentUserData);
+          while(rs.next()){
+              nameText.setText(rs.getString("Doctor"));
+              residencyText.setText(rs.getString("Clinic_Name"));
+          }
+          
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+       userPrimary = username;
+       
+//       System.out.print(userPrimary);
+        
+       
+    }
     public HomeForm() {
         initComponents();
         setSize(875, 551);
         setResizable(false);
+        LoginForm lf = new LoginForm();
+        
         startButtonHighlighted.setVisible(false);
         clearanceButtonHighlighted.setVisible(false);
         registrationButtonHighlighted.setVisible(false);
         maintainanceButtonHighlighted.setVisible(false);
         logoffButtonHighlighted.setVisible(false);
         exitButtonHighlighted.setVisible(false);
-        
         nameText.setHorizontalAlignment(SwingConstants.CENTER);
+
         
         
-       
-       
+        
        Thread clock = new Thread(){
            public void run(){
            for(;;){
@@ -69,16 +104,15 @@ public class HomeForm extends javax.swing.JFrame {
                    Logger.getLogger(HomeForm.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
-           }
+        }
        
        };
-       
        clock.start();
        
      
   
     }
-    
+ 
     
 
 
@@ -426,6 +460,7 @@ public class HomeForm extends javax.swing.JFrame {
     private void registrationButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationButtonHighlightedMouseClicked
         // TODO add your handling code here:
         DoctorInformationForm dIF = new DoctorInformationForm();
+        dIF.userPrimary(userPrimary);
         dIF.setVisible(true);
         this.dispose();
         

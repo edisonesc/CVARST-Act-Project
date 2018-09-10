@@ -9,71 +9,32 @@ import java.awt.Point;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import net.proteanit.sql.DbUtils;
 
 /**
  *
  * @author edison
  */
-public class DoctorInformationForm extends javax.swing.JFrame {
+public class AddDoctorForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form DoctorInformationForm
+     * Creates new form AddDoctorForm
      */
-    private Connection cn;
+        private Connection cn;
     private PreparedStatement ps;
     private Statement st;
-    private ResultSet rs;
-    private String userPrimary;
-    public void userPrimary(String username){
-       
-     try{
-          Class.forName("com.mysql.jdbc.Driver"); 
-          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where username = '" + username + "'";
-          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
-          st = cn.createStatement();
-          rs = st.executeQuery(getCurrentUserData);
-          while(rs.next()){
-            stationAreaField.setText(rs.getString("Station_Area"));
-            stationIDField.setText(rs.getString("Station_ID"));
-            doctorField.setText(rs.getString("Doctor"));
-            clinicNameField.setText(rs.getString("Clinic_Name"));
-            firstNameField.setText(rs.getString("Firstname"));
-            middleNameField.setText(rs.getString("Middlename"));
-            lastNameField.setText(rs.getString("Lastname"));
-            prcNoField.setText(String.valueOf(rs.getInt("PRC_Number")));
-            ptrNoField.setText(String.valueOf(rs.getInt("PTR_Number")));
-            usernameField.setText(rs.getString("username"));
-            passwordField.setText(rs.getString("password"));
-            
-          }
-          
-          userPrimary = username;
-          
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        
-       
-    }
-    public DoctorInformationForm() {
+    public AddDoctorForm() {
         initComponents();
-        setSize(875, 670);
+        setSize(474, 675);
         setResizable(false);
         formTitle.setHorizontalAlignment(SwingConstants.CENTER);
         try{
-           cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
-           st = cn.createStatement();
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
             System.out.println("connected.");
             Class.forName("com.mysql.jdbc.Driver");
-            PreparedStatement ps = cn.prepareStatement("select Station_ID, Doctor from cvarst.RegisteredDoctors");
-            ResultSet rs = ps.executeQuery();
-            doctorTable.setModel(DbUtils.resultSetToTableModel(rs));
             
         }
         catch(Exception e){
@@ -91,43 +52,39 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private void initComponents() {
 
         formTitle = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         stationAreaField = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        stationIDField = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        doctorTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        stationIdField = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        doctorField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        doctorField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         clinicNameField = new javax.swing.JTextField();
         firstNameField = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        middleNameField = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        lastNameField = new javax.swing.JTextField();
-        prcNoField = new javax.swing.JTextField();
+        middleNameField = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        ptrNoField = new javax.swing.JTextField();
-        usernameField = new javax.swing.JTextField();
+        lastNameField = new javax.swing.JTextField();
+        prcNoField = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        ptrNoField = new javax.swing.JTextField();
+        usernameField = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         passwordVisibility = new javax.swing.JCheckBox();
         passwordField = new javax.swing.JPasswordField();
         confirmPasswordField = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -135,16 +92,35 @@ public class DoctorInformationForm extends javax.swing.JFrame {
 
         formTitle.setFont(new java.awt.Font("Ubuntu Condensed", 0, 13)); // NOI18N
         formTitle.setForeground(java.awt.Color.white);
-        formTitle.setText("Registration");
+        formTitle.setText("New Doctor");
         getContentPane().add(formTitle);
-        formTitle.setBounds(0, 0, 830, 20);
+        formTitle.setBounds(0, 0, 430, 20);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(430, 0, 50, 20);
+
+        jLabel1.setBackground(new java.awt.Color(3, 72, 83));
+        jLabel1.setOpaque(true);
+        jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLabel1MouseDragged(evt);
+            }
+        });
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(0, 0, 500, 20);
 
         jPanel2.setBackground(java.awt.Color.white);
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setBackground(java.awt.Color.white);
-        jLabel2.setForeground(java.awt.Color.gray);
-        jLabel2.setText("Computer Details");
+        jLabel5.setBackground(java.awt.Color.white);
+        jLabel5.setForeground(java.awt.Color.gray);
+        jLabel5.setText("Computer Details");
 
         jLabel6.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel6.setForeground(java.awt.Color.gray);
@@ -156,7 +132,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jLabel16.setForeground(java.awt.Color.gray);
         jLabel16.setText("Station ID");
 
-        stationIDField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        stationIdField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -164,7 +140,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addComponent(jLabel5)
                 .addContainerGap(314, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -174,14 +150,14 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(stationAreaField, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addComponent(stationIDField))
+                    .addComponent(stationIdField))
                 .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -189,117 +165,74 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(stationIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(stationIdField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(420, 30, 450, 140);
-
-        jPanel1.setBackground(java.awt.Color.white);
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.setLayout(null);
-
-        doctorTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"123", "Dr. Livingston"},
-                {"424", "Dr. Sherd "},
-                {"245", "Dr. Kelvin"},
-                {"343", "Dr. Who"},
-                {"234", "Dr. Paul"}
-            },
-            new String [] {
-                "Doctors ID", "Name"
-            }
-        ));
-        jScrollPane1.setViewportView(doctorTable);
-
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(0, 0, 400, 630);
-
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 30, 400, 630);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
-            }
-        });
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(830, 0, 50, 20);
-
-        jLabel1.setBackground(new java.awt.Color(3, 72, 83));
-        jLabel1.setOpaque(true);
-        jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                jLabel1MouseDragged(evt);
-            }
-        });
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 880, 20);
+        jPanel2.setBounds(10, 30, 450, 140);
 
         jPanel3.setBackground(java.awt.Color.white);
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel4.setForeground(java.awt.Color.gray);
-        jLabel4.setText("Doctor Information");
+        jLabel7.setForeground(java.awt.Color.gray);
+        jLabel7.setText("Doctor Information");
 
-        jLabel5.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel5.setForeground(java.awt.Color.gray);
-        jLabel5.setText("Doctor");
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel8.setForeground(java.awt.Color.gray);
+        jLabel8.setText("Doctor");
 
         doctorField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel7.setForeground(java.awt.Color.gray);
-        jLabel7.setText("Clinic Name");
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel9.setForeground(java.awt.Color.gray);
+        jLabel9.setText("Clinic Name");
 
         clinicNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
         firstNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel8.setForeground(java.awt.Color.gray);
-        jLabel8.setText("Firstname");
+        jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel10.setForeground(java.awt.Color.gray);
+        jLabel10.setText("Firstname");
 
         middleNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel9.setForeground(java.awt.Color.gray);
-        jLabel9.setText("Middlename");
+        jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel11.setForeground(java.awt.Color.gray);
+        jLabel11.setText("Middlename");
 
-        jLabel10.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel10.setForeground(java.awt.Color.gray);
-        jLabel10.setText("Lastname");
+        jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel12.setForeground(java.awt.Color.gray);
+        jLabel12.setText("Lastname");
 
         lastNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
         prcNoField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel11.setForeground(java.awt.Color.gray);
-        jLabel11.setText("PRC No.");
+        jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel13.setForeground(java.awt.Color.gray);
+        jLabel13.setText("PRC No.");
 
-        jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel12.setForeground(java.awt.Color.gray);
-        jLabel12.setText("PTR No.");
+        jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel14.setForeground(java.awt.Color.gray);
+        jLabel14.setText("PTR No.");
 
         ptrNoField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
         usernameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
 
-        jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel13.setForeground(java.awt.Color.gray);
-        jLabel13.setText("Username");
-
-        jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
-        jLabel14.setForeground(java.awt.Color.gray);
-        jLabel14.setText("Password");
-
         jLabel15.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel15.setForeground(java.awt.Color.gray);
-        jLabel15.setText("Confirm Password");
+        jLabel15.setText("Username");
+
+        jLabel17.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel17.setForeground(java.awt.Color.gray);
+        jLabel17.setText("Password");
+
+        jLabel18.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
+        jLabel18.setForeground(java.awt.Color.gray);
+        jLabel18.setText("Confirm Password");
 
         passwordVisibility.setForeground(java.awt.Color.gray);
         passwordVisibility.setText("show password");
@@ -315,10 +248,10 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         confirmPasswordField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
         confirmPasswordField.setEchoChar('\u2022');
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setText("Save");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
 
@@ -326,13 +259,6 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("+");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
         });
 
@@ -344,27 +270,26 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(passwordVisibility, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15))
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(confirmPasswordField)
@@ -372,7 +297,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(prcNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel12)
+                                .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ptrNoField, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
                             .addComponent(lastNameField)
@@ -384,67 +309,71 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel8)
                     .addComponent(doctorField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                    .addComponent(jLabel9)
                     .addComponent(clinicNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
+                    .addComponent(jLabel10)
                     .addComponent(firstNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
+                    .addComponent(jLabel11)
                     .addComponent(middleNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
+                    .addComponent(jLabel12)
                     .addComponent(lastNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
+                    .addComponent(jLabel13)
                     .addComponent(prcNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
+                    .addComponent(jLabel15)
                     .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
+                    .addComponent(jLabel17)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(confirmPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
+                    .addComponent(jLabel18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordVisibility)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(addButton)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(420, 180, 450, 480);
+        jPanel3.setBounds(10, 180, 450, 480);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        this.setState(HomeForm.ICONIFIED);
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseDragged
         // TODO add your handling code here:
@@ -452,11 +381,6 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         Point p = evt.getLocationOnScreen();
         this.setLocation(p);
     }//GEN-LAST:event_jLabel1MouseDragged
-
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        // TODO add your handling code here:
-        this.setState(HomeForm.ICONIFIED);
-    }//GEN-LAST:event_jLabel3MouseClicked
 
     private void passwordVisibilityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordVisibilityActionPerformed
         // TODO add your handling code here:
@@ -472,27 +396,71 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_passwordVisibilityActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String stationArea, stationID, doctorName, clinicName, firstName, middleName,lastName,  username, password;
+        int prcNumber, ptrNumber;
+        
+        
+        stationArea = stationAreaField.getText().toString();
+        stationID = stationIdField.getText().toString();
+        doctorName = doctorField.getText().toString();
+        clinicName = clinicNameField.getText().toString();
+        firstName = firstNameField.getText().toString();
+        middleName = middleNameField.getText().toString();
+        lastName = lastNameField.getText().toString();
+        prcNumber = Integer.valueOf(prcNoField.getText().toString());
+        ptrNumber = Integer.valueOf(ptrNoField.getText().toString());
+        username = usernameField.getText().toString();
+        password = passwordField.getText().toString();
+        
+        
+        try{
+            ps = cn.prepareStatement("insert into cvarst.RegisteredDoctors (Doctor,"
+                    + " Clinic_Name, "
+                    + "Firstname, Middlename, "
+                    + "Lastname, PRC_Number, "
+                    + "PTR_Number, "
+                    + " username, password, "
+                    + "Station_Area, Station_ID) values"
+                    + "(?,?,?,?,?,?,?,?,?,?,?)");
+            
+            
+            ps.setString(1, doctorName);
+            ps.setString(2, clinicName);
+            ps.setString(3, firstName);
+            ps.setString(4, middleNameField.getText().isEmpty() ? null : middleName);
+            ps.setString(5, lastName);
+            ps.setInt(6, prcNumber);
+            ps.setInt(7, ptrNumber);
+            ps.setString(8, username);
+            ps.setString(9, password);
+            ps.setString(10, stationArea);
+            ps.setString(11, stationID);
+            ps.executeUpdate();
+            cn.close();
+            ps.close();
+            this.dispose();
+            DoctorInformationForm dIF = new DoctorInformationForm();
+            dIF.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Registered de account Successfully");
+            
+        }
+        catch(Exception e){
+        e.printStackTrace();}
+        
+    }//GEN-LAST:event_addButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Cancel? All data input will be lost.", "Cancel", JOptionPane.YES_NO_OPTION);
-       if(confirmExitDialog == 0){
-           HomeForm hf = new HomeForm();
-           this.dispose();///
-           hf.setVisible(true);
-           
-       }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Cancel? All data input will be lost.", "Cancel", JOptionPane.YES_NO_OPTION);
+        if(confirmExitDialog == 0){
+            DoctorInformationForm dIF = new DoctorInformationForm();
+            this.dispose();///
+            dIF.setVisible(true);
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        AddDoctorForm aDF = new AddDoctorForm();
-        this.dispose();
-        aDF.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -511,34 +479,32 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DoctorInformationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDoctorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DoctorInformationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDoctorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DoctorInformationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDoctorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DoctorInformationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddDoctorForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DoctorInformationForm().setVisible(true);
+                new AddDoctorForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.JTextField clinicNameField;
     private javax.swing.JPasswordField confirmPasswordField;
     private javax.swing.JTextField doctorField;
-    private javax.swing.JTable doctorTable;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel formTitle;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -547,18 +513,16 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JTextField middleNameField;
     private javax.swing.JPasswordField passwordField;
@@ -566,7 +530,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private javax.swing.JTextField prcNoField;
     private javax.swing.JTextField ptrNoField;
     private javax.swing.JTextField stationAreaField;
-    private javax.swing.JTextField stationIDField;
+    private javax.swing.JTextField stationIdField;
     private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
 }

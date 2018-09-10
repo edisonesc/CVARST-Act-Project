@@ -7,7 +7,15 @@ package project;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -18,13 +26,14 @@ public class LoginForm extends javax.swing.JFrame {
     /**
      * Creates new form LoginForm
      */
+   
     public LoginForm() {
         initComponents();
         setTitle("");
         setResizable(false);
         setSize(516, 282);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-      
+
        
     }
 
@@ -166,12 +175,50 @@ public class LoginForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_passwordVisibilityActionPerformed
 
+    private JDialog showMessage(String s, String title, String type){
+    
+            JOptionPane jop = new JOptionPane(s, (type.equals("S")) ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+            JDialog dialog = jop.createDialog(title);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+            return dialog;
+    }
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        HomeForm homeForm = new HomeForm();
-        this.dispose();
-        homeForm.setVisible(true);
+       try{
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            Statement st = cn.createStatement();
+            PreparedStatement ps = cn.prepareStatement("select username, password from cvarst.RegisteredDoctors where username = ? and password = ?");
+            ps.setString(1, usernameText.getText().toString());
+            ps.setString(2, passwordText.getText().toString());
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                  HomeForm homeForm = new HomeForm();
+                  this.dispose();
+                  homeForm.userPrimary(usernameText.getText());
+                  homeForm.setVisible(true);
+            }else{
+            showMessage("Incorrect Username || Password","Information Error","E");
+            }
+            
+            
+            System.out.println("connected.");
+            Class.forName("com.mysql.jdbc.Driver");
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        
+  
     }//GEN-LAST:event_loginButtonActionPerformed
+
+  
+  
+
+   
 
     /**
      * @param args the command line arguments
