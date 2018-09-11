@@ -29,11 +29,11 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private Statement st;
     private ResultSet rs;
     private String userPrimary;
-    public void userPrimary(String username){
+    public void userPrimary(){
        
      try{
           Class.forName("com.mysql.jdbc.Driver"); 
-          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where username = '" + username + "'";
+          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id = '" +  User.getUserID() + "'";
           cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
           st = cn.createStatement();
           rs = st.executeQuery(getCurrentUserData);
@@ -52,7 +52,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
             
           }
           
-          userPrimary = username;
+          
           
         }
         catch(Exception e){
@@ -65,6 +65,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         initComponents();
         setSize(875, 670);
         setResizable(false);
+        userPrimary();
         formTitle.setHorizontalAlignment(SwingConstants.CENTER);
         try{
            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");

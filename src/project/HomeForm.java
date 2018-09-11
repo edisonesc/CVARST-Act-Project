@@ -43,11 +43,11 @@ public class HomeForm extends javax.swing.JFrame {
     int day, month, year;
     int second, minute, hour;
     
-    public void userPrimary(String username){
+    public void userPrimary(){
        
        try{
           Class.forName("com.mysql.jdbc.Driver"); 
-          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where username = '" + username + "'";
+          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id= '" +  User.getUserID() + "'";
           cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
           st = cn.createStatement();
           rs = st.executeQuery(getCurrentUserData);
@@ -60,7 +60,7 @@ public class HomeForm extends javax.swing.JFrame {
         catch(Exception e){
             e.printStackTrace();
         }
-       userPrimary = username;
+     
        
 //       System.out.print(userPrimary);
         
@@ -71,7 +71,6 @@ public class HomeForm extends javax.swing.JFrame {
         setSize(875, 551);
         setResizable(false);
         LoginForm lf = new LoginForm();
-        
         startButtonHighlighted.setVisible(false);
         clearanceButtonHighlighted.setVisible(false);
         registrationButtonHighlighted.setVisible(false);
@@ -80,7 +79,7 @@ public class HomeForm extends javax.swing.JFrame {
         exitButtonHighlighted.setVisible(false);
         nameText.setHorizontalAlignment(SwingConstants.CENTER);
 
-        
+        userPrimary();
         
         
        Thread clock = new Thread(){
@@ -460,7 +459,7 @@ public class HomeForm extends javax.swing.JFrame {
     private void registrationButtonHighlightedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationButtonHighlightedMouseClicked
         // TODO add your handling code here:
         DoctorInformationForm dIF = new DoctorInformationForm();
-        dIF.userPrimary(userPrimary);
+   
         dIF.setVisible(true);
         this.dispose();
         
