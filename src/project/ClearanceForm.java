@@ -5,6 +5,7 @@
  */
 package project;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.SwingConstants;
@@ -28,6 +29,8 @@ public class ClearanceForm extends javax.swing.JFrame {
         size.height += 60;
         fromDate.setCalendarPreferredSize(size);
         toDate.setCalendarPreferredSize(size);
+        
+        
     }
 
     /**

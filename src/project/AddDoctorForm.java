@@ -422,8 +422,8 @@ public class AddDoctorForm extends javax.swing.JFrame {
                     + "Lastname, PRC_Number, "
                     + "PTR_Number, "
                     + " username, password, "
-                    + "Station_Area, Station_ID) values"
-                    + "(?,?,?,?,?,?,?,?,?,?,?)");
+                    + "Station_Area, Station_ID, balance) values"
+                    + "(?,?,?,?,?,?,?,?,?,?,?, ?)");
             
             
             ps.setString(1, doctorName);
@@ -437,6 +437,7 @@ public class AddDoctorForm extends javax.swing.JFrame {
             ps.setString(9, password);
             ps.setString(10, stationArea);
             ps.setString(11, stationID);
+            ps.setInt(12, 10);
             ps.executeUpdate();
             cn.close();
             ps.close();

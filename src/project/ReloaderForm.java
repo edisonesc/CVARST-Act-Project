@@ -7,6 +7,13 @@ package project;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,10 +24,33 @@ public class ReloaderForm extends javax.swing.JFrame {
     /**
      * Creates new form Reloader
      */
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
+    private ResultSet rs;
+    private String doctorName;
+    public void userPrimary(){
+       try{
+          Class.forName("com.mysql.jdbc.Driver"); 
+          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id= '" +  User.getUserID() + "'";
+          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+          st = cn.createStatement();
+          rs = st.executeQuery(getCurrentUserData);
+          while(rs.next()){
+              doctorName = rs.getString("Doctor");
+
+          }
+          
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public ReloaderForm() {
         initComponents();
         setSize(335, 168);
         setResizable(false);
+        
     }
 
     /**
@@ -32,7 +62,7 @@ public class ReloaderForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField5 = new javax.swing.JTextField();
+        reloadValue = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -43,14 +73,14 @@ public class ReloaderForm extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(null);
 
-        jTextField5.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+        reloadValue.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        reloadValue.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField5KeyTyped(evt);
+                reloadValueKeyTyped(evt);
             }
         });
-        getContentPane().add(jTextField5);
-        jTextField5.setBounds(100, 70, 200, 30);
+        getContentPane().add(reloadValue);
+        reloadValue.setBounds(100, 70, 200, 30);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/title_bar_reloader.png"))); // NOI18N
         getContentPane().add(jLabel2);
@@ -103,16 +133,51 @@ public class ReloaderForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+   private JDialog showMessage(String s, String title, String type){
+    
+        JOptionPane jop = new JOptionPane(s, (type.equals("S")) ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+        JDialog dialog = jop.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+        return dialog;
+    }
     private void acceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptButtonActionPerformed
         // TODO add your handling code here:
+        userPrimary();
+        int reloadValRequest = Integer.valueOf(reloadValue.getText().toString());
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            System.out.println("connected."); 
+            ps =cn.prepareStatement("insert into cvarst.GRTable (Doctor_ID, Doctor_Name, Reload_Request, Status) values"
+                    + "(?,?,?,?)");
+            
+            ps.setInt(1, User.getUserID());
+            ps.setString(2, doctorName);
+            ps.setInt(3, reloadValRequest);
+            ps.setString(4, "Pending");
+            ps.executeUpdate();
+            cn.close();
+            ps.close();
+            this.dispose();
+            showMessage("Request submitted successfully.", "Pending", "S");
+            
+                    
+        }
+        catch(Exception e){
+        
+                e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_acceptButtonActionPerformed
 
-    private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
+    private void reloadValueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_reloadValueKeyTyped
         // TODO add your handling code here:
                 char c = evt.getKeyChar();
             if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c==KeyEvent.VK_DELETE))){
             evt.consume();}
-    }//GEN-LAST:event_jTextField5KeyTyped
+    }//GEN-LAST:event_reloadValueKeyTyped
 
     /**
      * @param args the command line arguments
@@ -156,6 +221,6 @@ public class ReloaderForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField reloadValue;
     // End of variables declaration//GEN-END:variables
 }

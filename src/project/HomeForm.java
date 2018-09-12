@@ -54,6 +54,7 @@ public class HomeForm extends javax.swing.JFrame {
           while(rs.next()){
               nameText.setText(rs.getString("Doctor"));
               residencyText.setText(rs.getString("Clinic_Name"));
+              balanceLabel.setText(rs.getString("balance"));
           }
           
         }
@@ -124,7 +125,7 @@ public class HomeForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        balanceText1 = new javax.swing.JLabel();
+        balanceLabel = new javax.swing.JLabel();
         residencyText = new javax.swing.JLabel();
         nameText = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -151,10 +152,10 @@ public class HomeForm extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(null);
 
-        balanceText1.setForeground(java.awt.Color.white);
-        balanceText1.setText("97");
-        getContentPane().add(balanceText1);
-        balanceText1.setBounds(30, 466, 110, 13);
+        balanceLabel.setForeground(java.awt.Color.white);
+        balanceLabel.setText("97");
+        getContentPane().add(balanceLabel);
+        balanceLabel.setBounds(30, 466, 110, 13);
 
         residencyText.setForeground(java.awt.Color.white);
         residencyText.setText("Bagong Clinic");
@@ -525,7 +526,7 @@ public class HomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel balanceText1;
+    private javax.swing.JLabel balanceLabel;
     private javax.swing.JLabel clearanceButton;
     private javax.swing.JLabel clearanceButtonHighlighted;
     private javax.swing.JLabel currDate;

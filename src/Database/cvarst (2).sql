@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 11, 2018 at 12:34 AM
+-- Generation Time: Sep 12, 2018 at 10:11 PM
 -- Server version: 5.7.23-0ubuntu0.18.04.1
 -- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
@@ -73,6 +73,48 @@ INSERT INTO `ColorblindTest` (`id`, `Picture`, `Answer`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `GRTable`
+--
+
+CREATE TABLE `GRTable` (
+  `id` int(11) NOT NULL,
+  `Doctor_ID` int(11) NOT NULL,
+  `Doctor_Name` varchar(100) NOT NULL,
+  `Reload_Request` bigint(20) NOT NULL,
+  `Status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `GRTable`
+--
+
+INSERT INTO `GRTable` (`id`, `Doctor_ID`, `Doctor_Name`, `Reload_Request`, `Status`) VALUES
+(1, 4, 'Dr. Hannes', 100, 'Pending'),
+(2, 3, 'asfas', 23, 'Granted');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `GRUsers`
+--
+
+CREATE TABLE `GRUsers` (
+  `id` int(11) NOT NULL,
+  `Name` varchar(100) NOT NULL,
+  `Username` varchar(100) NOT NULL,
+  `Password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `GRUsers`
+--
+
+INSERT INTO `GRUsers` (`id`, `Name`, `Username`, `Password`) VALUES
+(1, 'Justin Edison', 'just', 'just');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `RegisteredDoctors`
 --
 
@@ -88,17 +130,19 @@ CREATE TABLE `RegisteredDoctors` (
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `Station_Area` varchar(100) NOT NULL,
-  `Station_ID` bigint(20) NOT NULL
+  `Station_ID` bigint(20) NOT NULL,
+  `balance` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `RegisteredDoctors`
 --
 
-INSERT INTO `RegisteredDoctors` (`id`, `Doctor`, `Clinic_Name`, `Firstname`, `Middlename`, `Lastname`, `PRC_Number`, `PTR_Number`, `username`, `password`, `Station_Area`, `Station_ID`) VALUES
-(1, 'Justin Edison', 'Just Clinic', 'John', 'Edward', 'Nekki', 134112, 23423, 'ivan', 'ivan', 'Q City', 12311),
-(2, 'Dr. Levinski', 'Levinski Clenek', 'Londer', NULL, 'Happy', 324, 231, 'levinski', 'levinski', 'Farmers Market', 38334),
-(3, 'Dr. Jeprox', 'Jeprox Pierce', 'Jose', 'K.', 'Kilo', 49423, 2384, 'jeprox', 'jeprox', 'Bulak', 6868);
+INSERT INTO `RegisteredDoctors` (`id`, `Doctor`, `Clinic_Name`, `Firstname`, `Middlename`, `Lastname`, `PRC_Number`, `PTR_Number`, `username`, `password`, `Station_Area`, `Station_ID`, `balance`) VALUES
+(1, 'Justin Edison', 'Just Clinic', 'John', 'Edward', 'Nekki', 134112, 23423, 'ivan', 'ivan', 'Q City', 12311, 0),
+(2, 'Dr. Levinski', 'Levinski Clenek', 'Londer', NULL, 'Happy', 324, 231, 'levinski', 'levinski', 'Farmers Market', 38334, 0),
+(3, 'Dr. Jeprox', 'Jeprox Pierce', 'Jose', 'K.', 'Kilo', 49423, 2384, 'jeprox', 'jeprox', 'Bulak', 6868, 0),
+(4, 'Dr. Hannes', 'Justin Clenek', 'Justin Edison', 'B.', 'Escabarte', 178178, 2782378, 'justin', 'justin', 'Caloocan City', 768176, 10);
 
 -- --------------------------------------------------------
 
@@ -275,6 +319,18 @@ ALTER TABLE `ColorblindTest`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `GRTable`
+--
+ALTER TABLE `GRTable`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `GRUsers`
+--
+ALTER TABLE `GRUsers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `RegisteredDoctors`
 --
 ALTER TABLE `RegisteredDoctors`
@@ -319,10 +375,20 @@ ALTER TABLE `AuditoryTest`
 ALTER TABLE `ColorblindTest`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
+-- AUTO_INCREMENT for table `GRTable`
+--
+ALTER TABLE `GRTable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `GRUsers`
+--
+ALTER TABLE `GRUsers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `RegisteredDoctors`
 --
 ALTER TABLE `RegisteredDoctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `registration`
 --

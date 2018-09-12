@@ -185,8 +185,7 @@ public class LoginForm extends javax.swing.JFrame {
     }
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        int id = 0;
-        
+       int id = 0;
        try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
@@ -195,27 +194,18 @@ public class LoginForm extends javax.swing.JFrame {
             ps.setString(1, usernameText.getText().toString());
             ps.setString(2, passwordText.getText().toString());
             ResultSet rs = ps.executeQuery();
-            
             User user = new User();
-            
-            
-            
             if(rs.next()){
-
                   id = rs.getInt("id");
                   user.setUserID(id);
                   HomeForm homeForm = new HomeForm();
                   this.dispose();
-               
                   homeForm.setVisible(true);
-                  
-                  
             }else{
             showMessage("Incorrect Username || Password","Information Error","E");
             }            
             System.out.println("connected.");
-            
-            
+ 
         }
         catch(Exception e){
             e.printStackTrace();

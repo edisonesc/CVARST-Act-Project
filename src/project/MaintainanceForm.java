@@ -7,8 +7,10 @@ package project;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,6 +39,8 @@ import project.Pickers.VisualSnellenPicker;
  *
  * @author edison
  */
+
+
 public class MaintainanceForm extends javax.swing.JFrame {
 
     /**
@@ -52,6 +56,30 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private ColorBlindEditor cBE;
     private VisualSnellenEditor vSE;
     private VisualBailyEditor vBE;
+    
+    
+    public void userPrimary(){
+       
+        try{
+            Class.forName("com.mysql.jdbc.Driver"); 
+            String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id= '" +  User.getUserID() + "'";
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            rs = st.executeQuery(getCurrentUserData);
+            while(rs.next()){
+                doctorField.setText(rs.getString("Doctor"));
+                clinicNameField.setText(rs.getString("Clinic_Name"));
+                stationField.setText(rs.getString("Station_Area"));
+                areaIDField.setText(rs.getString("Station_ID"));
+                balanceLabel.setText(rs.getString("balance"));
+                prcNoField.setText(rs.getString("PRC_Number")); 
+                ptrNoField.setText(rs.getString("PTR_Number"));
+            }
+
+        }
+        catch(Exception e){
+                e.printStackTrace();}
+    }
     public MaintainanceForm() {
         initComponents();
         setSize(875, 551);
@@ -60,9 +88,10 @@ public class MaintainanceForm extends javax.swing.JFrame {
         addButton.setEnabled(false);
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
-        
+//        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         jLabel5.setBackground(new Color(23,23,23,100));
-  
+        userPrimary();
         JTable[] tables = {colorBlindTable, visualSnellenTable, visualBailyLoviTable, auditoryTestTable};
         
         for(int i = 0; i < tables.length; i++){
@@ -99,7 +128,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
        
         JTableHeader colorBlindTableHeader = colorBlindTable.getTableHeader();
         colorBlindTableHeader.setDefaultRenderer(new CustomHeader(colorBlindTable));
-        availableBalance.setHorizontalAlignment(SwingConstants.CENTER);
+        balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
         String getData = "Select * from cvarst.AuditoryTest";
            try{
@@ -158,15 +187,15 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        stationField = new javax.swing.JTextField();
+        clinicNameField = new javax.swing.JTextField();
+        doctorField = new javax.swing.JTextField();
+        ptrNoField = new javax.swing.JTextField();
+        prcNoField = new javax.swing.JTextField();
+        areaIDField = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        availableBalance = new javax.swing.JLabel();
+        balanceLabel = new javax.swing.JLabel();
         reload = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -241,17 +270,17 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jLabel11.setForeground(java.awt.Color.gray);
         jLabel11.setText("Area ID");
 
-        jTextField2.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        stationField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        jTextField3.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        clinicNameField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        doctorField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        jTextField5.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        ptrNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        jTextField6.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        prcNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        jTextField7.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        areaIDField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -268,17 +297,17 @@ public class MaintainanceForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField2))
+                            .addComponent(clinicNameField)
+                            .addComponent(doctorField)
+                            .addComponent(stationField))
                         .addGap(27, 27, 27)))
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(prcNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(areaIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51))
         );
         jPanel6Layout.setVerticalGroup(
@@ -290,22 +319,22 @@ public class MaintainanceForm extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(doctorField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(clinicNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(prcNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(stationField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(areaIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(46, 46, 46)
@@ -323,9 +352,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jLabel12.setForeground(java.awt.Color.gray);
         jLabel12.setText("Available Balance");
 
-        availableBalance.setFont(new java.awt.Font("Ubuntu", 0, 48)); // NOI18N
-        availableBalance.setForeground(java.awt.Color.gray);
-        availableBalance.setText("23");
+        balanceLabel.setFont(new java.awt.Font("Ubuntu", 0, 48)); // NOI18N
+        balanceLabel.setForeground(java.awt.Color.gray);
+        balanceLabel.setText("23");
 
         reload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/restart_button.png"))); // NOI18N
         reload.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -354,7 +383,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(availableBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reload)
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -368,7 +397,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(availableBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1097,9 +1126,11 @@ System.out.print("SHOWING");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addButton;
+    private javax.swing.JTextField areaIDField;
     private javax.swing.JTable auditoryTestTable;
-    private javax.swing.JLabel availableBalance;
     private javax.swing.JLabel backButton;
+    private javax.swing.JLabel balanceLabel;
+    private javax.swing.JTextField clinicNameField;
     private javax.swing.JScrollPane colorBlindScrollPane;
     private javax.swing.JTable colorBlindTable;
     private java.util.List<project.ColorblindTest> colorblindTestList;
@@ -1107,6 +1138,7 @@ System.out.print("SHOWING");
     private javax.persistence.Query colorblindTestQuery;
     private javax.persistence.Query colorblindTestQuery1;
     private javax.swing.JLabel deleteButton;
+    private javax.swing.JTextField doctorField;
     private javax.swing.JLabel editButton;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -1132,14 +1164,11 @@ System.out.print("SHOWING");
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField prcNoField;
+    private javax.swing.JTextField ptrNoField;
     private javax.swing.JLabel reload;
     private javax.swing.JLabel saveButton;
+    private javax.swing.JTextField stationField;
     private javax.swing.JPanel tab1;
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
