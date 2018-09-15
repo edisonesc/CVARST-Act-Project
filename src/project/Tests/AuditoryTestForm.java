@@ -29,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javazoom.jl.player.Player;
+import project.Examinee;
 import project.VolumeController.Audio;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -58,10 +59,8 @@ public class AuditoryTestForm extends javax.swing.JFrame {
     private Connection cn;
     private PreparedStatement ps;
     private Statement st;
-    public AuditoryTestForm() {
-
-    }
-    public AuditoryTestForm(int id){
+ 
+    public AuditoryTestForm(){
     
         initComponents();
         setSize(875, 551);
@@ -70,7 +69,7 @@ public class AuditoryTestForm extends javax.swing.JFrame {
         jLabel4.setBackground(new Color(23, 23,23));
         audioName.setHorizontalAlignment(SwingConstants.CENTER);
         content = new HashMap<Object, Object>();
-        userId = id;
+        
         JButton inputButtons[] = {buttonPlay,buttonStop};
               for (int i=0; i < inputButtons.length; i++){
             inputButtons[i].setOpaque(false);
@@ -438,6 +437,7 @@ public class AuditoryTestForm extends javax.swing.JFrame {
 
     private void yesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yesButtonMouseClicked
         // TODO add your handling code here:
+        int examineeID = Examinee.getExamineeID(), colorBlindTotalPoints = Examinee.getColorBlindTotalPoints(), colorBlindExamineePoints = Examinee.getColorBlindExamineePoints();
      if(currentItemFinished < questionAudios.size()){
             currentAudioPlaying = String.valueOf(questionAudios.get(currentItemFinished));
             audioName.setText(String.valueOf(questionNames.get(currentItemFinished)));
@@ -453,13 +453,14 @@ public class AuditoryTestForm extends javax.swing.JFrame {
                     buttonPlay.setEnabled(true);
                     buttonStop.setEnabled(false); }
                try{
-                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET AuditoryItemCount = (?), AuditoryTotalPoints = (?)  where Examinee_ID = (?)");
-                    saveStatement.setInt(1, questionAudios.size());
-                    saveStatement.setInt(2, totalPoints);
-                    saveStatement.setInt(3, userId);
-                    saveStatement.executeUpdate();
-                  
-                
+             
+                    
+                    Examinee examinee = new Examinee();
+                    examinee.setUserID(examineeID);
+                    examinee.setColorblindExamineePoints(colorBlindExamineePoints);
+                    examinee.setColorblindTotalPoints(colorBlindTotalPoints);
+                    examinee.setAuditoryExamineePoints(totalPoints);
+                    examinee.setAuditoryTotalPoints(questionAudios.size());              
                 }
                catch(Exception e){
                e.printStackTrace();}
@@ -470,13 +471,13 @@ public class AuditoryTestForm extends javax.swing.JFrame {
                   this.dispose();
                   vSTF.setVisible(true);
                 }
-        
         }
     
     }//GEN-LAST:event_yesButtonMouseClicked
 
     private void noButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noButtonMouseClicked
         // TODO add your handling code here:
+        int examineeID = Examinee.getExamineeID(), colorBlindTotalPoints = Examinee.getColorBlindTotalPoints(), colorBlindExamineePoints = Examinee.getColorBlindExamineePoints();
         if(currentItemFinished < questionAudios.size()){
             currentAudioPlaying = String.valueOf(questionAudios.get(currentItemFinished));
             audioName.setText(String.valueOf(questionNames.get(currentItemFinished)));
@@ -489,13 +490,14 @@ public class AuditoryTestForm extends javax.swing.JFrame {
                         buttonPlay.setEnabled(true);
                         buttonStop.setEnabled(false);}
                    
-                   
-                   
-                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET AuditoryItemCount = (?), AuditoryTotalPoints = (?)  where Examinee_ID = (?)");
-                    saveStatement.setInt(1, questionAudios.size());
-                    saveStatement.setInt(2, totalPoints);
-                    saveStatement.setInt(3, userId);
-                    saveStatement.executeUpdate();
+                                    
+                                        
+                    Examinee examinee = new Examinee();
+                    examinee.setUserID(examineeID);
+                    examinee.setColorblindExamineePoints(colorBlindExamineePoints);
+                    examinee.setColorblindTotalPoints(colorBlindTotalPoints);
+                    examinee.setAuditoryExamineePoints(totalPoints);
+                    examinee.setAuditoryTotalPoints(questionAudios.size());
           
                 
                 }

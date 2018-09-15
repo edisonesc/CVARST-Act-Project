@@ -90,7 +90,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         deleteButton.setEnabled(false);
 //        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 //        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-        jLabel5.setBackground(new Color(23,23,23,100));
+//        jLabel5.setBackground(new Color(23,23,23,100));
         userPrimary();
         JTable[] tables = {colorBlindTable, visualSnellenTable, visualBailyLoviTable, auditoryTestTable};
         

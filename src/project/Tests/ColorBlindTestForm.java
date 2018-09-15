@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import project.Examinee;
 import project.HomeForm;
 import project.Pickers.ColorBlindPicker;
 
@@ -53,11 +54,8 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
     String colorBlindImageResDuplicate[];
     int currentItemFinished = 0;
     private int userID = 0;
-    public ColorBlindTestForm() {
 
-        
-    }
-    public ColorBlindTestForm(int id){
+    public ColorBlindTestForm(){
         initComponents();
         setSize(875, 551);
         setResizable(false);
@@ -71,7 +69,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
         jLabel1.setBackground(new Color(23, 23,23));
         JButton inputButtons[] = {inputOne, inputTwo, inputThree, inputFour, inputFive,inputSix,
         inputSeven, inputEight, inputNine, inputZero, inputClear   };
-        userID = id;
+       
         JOptionPane.showMessageDialog(null, userID);
         try{
 
@@ -85,11 +83,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
             while(resultSet.next()){
              
                      ImageIcon icon = new ImageIcon((byte[]) resultSet.getBytes("Picture"));
-//                    Image img = icon.getImage();
-//                    BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-//                    Graphics g = bi.createGraphics();
-//                    g.drawImage(img, 0, 0, questionImage.getWidth(), questionImage.getHeight(), null);
-//                    ImageIcon result = new ImageIcon(bi);
+
                     
                        pictureList.add(icon);
                         answersList.add(resultSet.getString("Answer"));
@@ -548,7 +542,8 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
 //                    atf.setVisible(true);
 //                }
 //        }
-
+        
+     int examineeID = Examinee.getExamineeID();
      if(currentItemFinished < answersList.size()){
                   currentQuestion  = testForList.get(questionImage.getIcon()).toString();
                   userAnswer = inputField.getText().toString();
@@ -563,12 +558,11 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
             }
              else{
                      try{
-                PreparedStatement saveStatement = cn.prepareStatement("insert into cvarst.UserExamSession (Examinee_ID, ColorblindItemCount, ColorblindTotalPoints) values (?,?,?)");
-                saveStatement.setInt(1, userID);
-                saveStatement.setInt(2, answersList.size());
-                saveStatement.setInt(3, totalPoints);
-                saveStatement.executeUpdate();
-             
+                Examinee examinee = new Examinee();
+                examinee.setUserID(examineeID);
+                examinee.setColorblindTotalPoints(answersList.size());
+                examinee.setColorblindExamineePoints(totalPoints);
+                
                 
                 }
                 catch(Exception e){
@@ -576,7 +570,7 @@ public class ColorBlindTestForm extends javax.swing.JFrame {
                 int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
     
                 if(confirmExitDialog == 0){
-                  AuditoryTestForm atf = new AuditoryTestForm(userID);
+                  AuditoryTestForm atf = new AuditoryTestForm();
                   this.dispose();
                   atf.setVisible(true);
                 }

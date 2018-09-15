@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.jdesktop.swingbinding.SwingBindings;
+import project.Examinee;
 
 /**
  *
@@ -30,6 +31,7 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
      * Creates new form VisualAcuitySnellenTestForm
      */
     private int totalPoints = 0, currentItemFinished = 0, userId = 0;
+   
     private Connection cn, cn2;
     private PreparedStatement ps;
     private Statement st;
@@ -49,6 +51,11 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         userId = id;//
         content = new HashMap<Object, Object>();
         questionText.setHorizontalAlignment(SwingConstants.CENTER);
+        colorBlindScore = Examinee.getColorBlindExamineePoints();
+        colorBlindTotalPoints = Examinee.getColorBlindTotalPoints();
+        auditoryScore = Examinee.getAuditoryExamineePoints();
+        auditoryTotalPoints = Examinee.getAuditoryTotalPoints();
+        userId = Examinee.getExamineeID();
         try{
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
@@ -65,31 +72,15 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         }
         catch(Exception e){
             e.printStackTrace();
+            
+            
         }
+        JOptionPane.showMessageDialog(null, Examinee.getExamineeID() + "\n" + Examinee.getColorBlindExamineePoints() + "\n" + Examinee.getAuditoryTotalPoints());
         
-        
-        try {
-            
-              String getScores = "SELECT AuditoryTotalPoints as atp,AuditoryItemCount as aic,ColorblindTotalPoints as cbtp,ColorblindItemCount as cbic FROM cvarst.UserExamSession where Examinee_ID=" + String.valueOf(userId);
-             st = cn.createStatement();
-            ResultSet rs = st.executeQuery(getScores);
-            while(rs.next()){
-            
-                
-                auditoryScore = rs.getInt("atp");
-                auditoryTotalPoints = rs.getInt("aic");
-                colorBlindScore = rs.getInt("cbtp");
-                colorBlindTotalPoints = rs.getInt("cbic");
-                        
-            }
-            colorblindScoreLabel.setText("Colorblind Score: " + String.valueOf(colorBlindScore + "/" + colorBlindTotalPoints) );
-            auditoryScoreLabel.setText("Auditory Score: " + String.valueOf(auditoryScore + "/" + auditoryTotalPoints) );
-        
-        
-        
-        }catch(Exception e){
-        e.printStackTrace();}
-        
+  
+            colorblindScoreLabel.setText("Colorblind Score: " + String.valueOf(Examinee.getColorBlindExamineePoints() + "/" + Examinee.getColorBlindTotalPoints()) );
+            auditoryScoreLabel.setText("Auditory Score: " + String.valueOf(Examinee.getAuditoryExamineePoints() + "/" + Examinee.getAuditoryTotalPoints()) );
+ 
         
        for (int i = 0; i < questionImages.size(); i++){
             content.put(questionImages.get(i), questionTexts.get(i));
@@ -325,6 +316,20 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_choice.png")));
     }//GEN-LAST:event_answerCorrectMousePressed
 
+    
+    private void finished(){
+    
+        Examinee examinee = new Examinee();
+        examinee.setUserID(userId);
+        examinee.setColorblindExamineePoints(colorBlindScore);
+        examinee.setColorblindTotalPoints(colorBlindTotalPoints);
+        examinee.setAuditoryExamineePoints(auditoryScore);
+        examinee.setAuditoryTotalPoints(auditoryTotalPoints);
+        examinee.setVisualSnellenExamineePoints(totalPoints);
+        examinee.setVisualSnellenTotalPoints(questionImages.size());
+        
+     
+    }
     private void answerCorrectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseClicked
         // TODO add your handling code here:
         
@@ -339,22 +344,11 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         else{
             
             
-              try{
-                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET VisualAcuityItemCount = (?), VisualAcuityTotalPoints = (?)  where Examinee_ID = (?)");
-                    saveStatement.setInt(1, questionImages.size());
-                    saveStatement.setInt(2, totalPoints);
-                    saveStatement.setInt(3, userId);
-                    saveStatement.executeUpdate();
-                    cn.close();
-                    saveStatement.close();
-                
-                }
-               catch(Exception e){
-               e.printStackTrace();}
+                finished();
             
                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
                 if(confirmExitDialog == 0){
-                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm(userId);
+                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm();
                   this.dispose();
                   vABLTF.setVisible(true);
                 }
@@ -374,22 +368,11 @@ public class VisualAcuitySnellenTestForm extends javax.swing.JFrame {
         }
           else{
                       
-              try{
-                    PreparedStatement saveStatement = cn.prepareStatement("update cvarst.UserExamSession SET VisualAcuityItemCount = (?), VisualAcuityTotalPoints = (?)  where Examinee_ID = (?)");
-                    saveStatement.setInt(1, questionImages.size());
-                    saveStatement.setInt(2, totalPoints);
-                    saveStatement.setInt(3, userId);
-                    saveStatement.executeUpdate();
-                    cn.close();
-                    saveStatement.close();
-                
-                }
-               catch(Exception e){
-               e.printStackTrace();}
-            
+ 
+                finished();
                int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Finished. Proceed with the Acuity Test?", "Done", JOptionPane.YES_NO_OPTION);
                 if(confirmExitDialog == 0){
-                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm(userId);
+                  VisualAcuityBailyLoviTestForm vABLTF = new VisualAcuityBailyLoviTestForm();
                   this.dispose();
                   vABLTF.setVisible(true);
                 }

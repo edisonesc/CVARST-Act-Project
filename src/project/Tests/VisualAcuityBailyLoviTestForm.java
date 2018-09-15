@@ -15,9 +15,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import project.Examinee;
+import project.HomeForm;
+import project.RegistrationForm;
 
 /**
  *
@@ -34,16 +39,22 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
     private Map<Object, Object> content;
     private int currentItemFinished = 0, totalPoints = 0, userId = 0;
     private ArrayList questionImages = new ArrayList(), questionTexts = new ArrayList();
-    public VisualAcuityBailyLoviTestForm() {
-
-    }
-    
-    public VisualAcuityBailyLoviTestForm(int id){
+  
+    private int colorBlindScore = 0, colorBlindTotalPoints=0, auditoryScore=0, auditoryTotalPoints=0, visualSnellenScore = 0, visualSnellenTotal = 0;
+    public VisualAcuityBailyLoviTestForm(){
             initComponents();
         setSize(978, 665);
         jLabel1.setBackground(new Color(23, 23,23));
         setResizable(false);
-        userId = id;
+        
+        colorBlindScore = Examinee.getColorBlindExamineePoints();
+        colorBlindTotalPoints = Examinee.getColorBlindTotalPoints();
+        auditoryScore = Examinee.getAuditoryExamineePoints();
+        auditoryTotalPoints = Examinee.getAuditoryTotalPoints();
+        visualSnellenScore = Examinee.getVisualSnellenExamineePoints();
+        visualSnellenTotal  = Examinee.getVisualSnellenTotalPoints();
+        userId = Examinee.getExamineeID();
+        
         content = new HashMap<Object, Object>();
         questionText.setHorizontalAlignment(SwingConstants.CENTER);
         try{
@@ -253,6 +264,71 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
         answerCorrect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/correct_highlighted.png")));
     }//GEN-LAST:event_answerCorrectMouseReleased
 
+        private void finished(){
+    
+        Examinee examinee = new Examinee();
+        examinee.setUserID(userId);
+        examinee.setColorblindExamineePoints(colorBlindScore);
+        examinee.setColorblindTotalPoints(colorBlindTotalPoints);
+        examinee.setAuditoryExamineePoints(auditoryScore);
+        examinee.setAuditoryTotalPoints(auditoryTotalPoints);
+        examinee.setVisualSnellenExamineePoints(visualSnellenScore);
+        examinee.setVisualSnellenTotalPoints(visualSnellenTotal);
+        
+        examinee.setVisualBailyExamineePoints(totalPoints);
+        examinee.setVisualBailyTotalPoints(questionImages.size());
+        
+        
+//        
+//        JOptionPane.showMessageDialog(null, 
+//                
+//                String.valueOf(
+//                examinee.getColorBlindExamineePoints() + " " +
+//                        examinee.getColorBlindExamineePoints() + " " +
+//                        examinee.getAuditoryExamineePoints() +" " +
+//                        examinee.getAuditoryTotalPoints() +" " +
+//                        examinee.getVisualSnellenExamineePoints() +" " +
+//                        examinee.getVisualSnellenTotalPoints() +" " +
+//                        examinee.getVisualBailyExamineePoints() + " " +
+//                        examinee.getVisualBailyTotalPoints()
+//                        
+//                
+//                        )
+//                );
+
+
+        try {
+            
+            ps = cn.prepareStatement("update cvarst.registration SET ColorblindScore = ? , ColorblindTotalPoints = ?"
+                    + ", AuditoryScore = ?, AuditoryTotalPoints = ?, VisualSnellenScore = ? , VisualSnellenTotalPoints = ?, VisualBailyScore = ?, VisualBailyTotalPoints = ? where id = '"+ Examinee.getExamineeID()+"'");
+            
+            
+//            (ColorblindScore , ColorblindTotalPoints, "
+//                    + "AuditoryScore, AuditoryTotalPoints, "
+//                    + "VisualSnellenScore, VisualSnellenTotalPoints, "
+//                    + "VisualBailyScore, VisualBailyTotalPoints)
+            ps.setInt(1, Examinee.getColorBlindExamineePoints());
+            ps.setInt(2, Examinee.getColorBlindTotalPoints()); //firstname
+            ps.setInt(3, Examinee.getAuditoryExamineePoints());
+            ps.setInt(4, Examinee.getAuditoryTotalPoints());
+            ps.setInt(5, Examinee.getVisualSnellenExamineePoints());
+            ps.setInt(6, Examinee.getVisualSnellenTotalPoints());
+            ps.setInt(7, Examinee.getVisualBailyExamineePoints());
+            ps.setInt(8, Examinee.getVisualBailyTotalPoints());
+       
+            ps.executeUpdate();
+            cn.close();
+            ps.close();
+            JOptionPane.showMessageDialog(null, "Exam completed. ");
+            HomeForm hF = new HomeForm();
+            this.dispose();
+            hF.setVisible(true);
+            
+        } catch (Exception e) {
+            Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
     private void answerCorrectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_answerCorrectMouseClicked
         // TODO add your handling code here:
 
@@ -265,6 +341,7 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
 
         }
         else{
+            finished();
             JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
         }
 
@@ -301,6 +378,7 @@ public class VisualAcuityBailyLoviTestForm extends javax.swing.JFrame {
 
         }
         else{
+            finished();
             JOptionPane.showMessageDialog(null, "Done. Total Points: " + String.valueOf(totalPoints));
         }
     }//GEN-LAST:event_answerWrongMouseClicked

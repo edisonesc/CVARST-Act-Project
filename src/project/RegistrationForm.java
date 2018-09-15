@@ -19,8 +19,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 
@@ -982,6 +984,9 @@ public class RegistrationForm extends javax.swing.JFrame {
         age = Integer.valueOf(ageText.getText().toString());
         photo = "hehe";
         
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+	Date date = new Date();
+        String dateNow = dateFormat.format(date);
         try {
      
            String getCount = "select id from cvarst.registration";
@@ -993,11 +998,11 @@ public class RegistrationForm extends javax.swing.JFrame {
             ps = cn.prepareStatement("insert into cvarst.registration (id, firstname, middlename, lastname,"
                     + " address, birthdate, gender, age, height,"
                     + " weight, blood_type, res_code, vehicle_used,"
-                    + " license_number, photo) values"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + " license_number, photo, date_registered, code, result, uploaded) values"
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             ps.setInt(1, count + 1);
-            ps.setString(2, firstname);
+            ps.setString(2, firstname); //firstname
             ps.setString(3, middlename);
             ps.setString(4, lastname);
             ps.setString(5, address);
@@ -1011,16 +1016,24 @@ public class RegistrationForm extends javax.swing.JFrame {
             ps.setString(13, vehicleUsed);
             ps.setString(14, licenseNumber);
             ps.setString(15, photo);
+            ps.setString(16, dateNow);
+            ps.setString(17, "For Verification");
+            ps.setString(18, "Pending");
+            ps.setString(19, "No");
             ps.executeUpdate();
             cn.close();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Registered de account Successfully");
+            JOptionPane.showMessageDialog(null, "Registered de account Successfully ");
             
-        } catch (SQLException ex) {
-            Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
         }
-
-        ColorBlindTestForm btf = new ColorBlindTestForm(count + 1);
+        
+        Examinee examinee = new Examinee();
+        examinee.setUserID(count + 1);
+        
+        ColorBlindTestForm btf = new ColorBlindTestForm();
         this.dispose();
         btf.setVisible(true);
     }//GEN-LAST:event_proceedButtonHighlightedMouseClicked
