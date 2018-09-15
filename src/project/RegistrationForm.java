@@ -20,9 +20,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.GregorianCalendar;
 
 
@@ -983,10 +985,14 @@ public class RegistrationForm extends javax.swing.JFrame {
         weight = Double.valueOf(weightText1.getText().toString());
         age = Integer.valueOf(ageText.getText().toString());
         photo = "hehe";
-        
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
-	Date date = new Date();
-        String dateNow = dateFormat.format(date);
+//        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+       
+        Date now = new Date();
+    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+    String date = format.format(now);
+    Date myDate = new Date(date);
+    java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+            
         try {
      
            String getCount = "select id from cvarst.registration";
@@ -1013,17 +1019,17 @@ public class RegistrationForm extends javax.swing.JFrame {
             ps.setDouble(10, weight);
             ps.setString(11, bloodType);
             ps.setString(12, resCode);
-            ps.setString(13, vehicleUsed);
+            ps.setString(13, vehicleUsed); 
             ps.setString(14, licenseNumber);
             ps.setString(15, photo);
-            ps.setString(16, dateNow);
+            ps.setDate(16, sqlDate);
             ps.setString(17, "For Verification");
             ps.setString(18, "Pending");
             ps.setString(19, "No");
             ps.executeUpdate();
             cn.close();
             ps.close();
-            JOptionPane.showMessageDialog(null, "Registered de account Successfully ");
+            JOptionPane.showMessageDialog(null, "Registered de account Successfully " + sqlDate);
             
         } catch (Exception e) {
             Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, e);

@@ -8,7 +8,20 @@ package project;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -19,6 +32,10 @@ public class ClearanceForm extends javax.swing.JFrame {
     /**
      * Creates new form ClearanceForm
      */
+    private Connection cn;
+    private PreparedStatement ps;
+    private Statement st;
+    private ResultSet rs;
     public ClearanceForm() {
         initComponents();
         setSize(1095, 639);
@@ -30,6 +47,24 @@ public class ClearanceForm extends javax.swing.JFrame {
         fromDate.setCalendarPreferredSize(size);
         toDate.setCalendarPreferredSize(size);
         
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        fromDate.setDateFormat(dateFormat);
+        toDate.setDateFormat(dateFormat);
+         String getData = "Select photo, firstname, middlename, lastname, result, code, date_registered from cvarst.registration";
+         try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            rs = st.executeQuery(getData);
+            clearanceTable.setModel(DbUtils.resultSetToTableModel(rs));
+            clearanceTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+            
+            
+
+        }
+           catch(Exception e){
+           e.printStackTrace();}
+        JOptionPane.showMessageDialog(null, toDate.getText()+ " | " + fromDate.getText());
         
     }
 
@@ -55,13 +90,14 @@ public class ClearanceForm extends javax.swing.JFrame {
         jTextField9 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        clearanceTable = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         fromDate = new datechooser.beans.DateChooserCombo();
         toDate = new datechooser.beans.DateChooserCombo();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -164,14 +200,14 @@ public class ClearanceForm extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 40, 620, 170);
+        jPanel1.setBounds(10, 40, 620, 200);
 
         jPanel2.setBackground(java.awt.Color.white);
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(null);
 
-        jTable1.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        clearanceTable.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
+        clearanceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "asasa", "saas", "For VErification", "no"},
                 {null, null, null, null, null},
@@ -182,13 +218,13 @@ public class ClearanceForm extends javax.swing.JFrame {
                 "id", "Picture", "Name", "Code", "Result"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(clearanceTable);
 
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(0, 0, 1060, 370);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(10, 220, 1060, 370);
+        jPanel2.setBounds(10, 260, 1060, 330);
 
         jPanel3.setBackground(java.awt.Color.white);
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -196,91 +232,153 @@ public class ClearanceForm extends javax.swing.JFrame {
         jLabel4.setForeground(java.awt.Color.gray);
         jLabel4.setText("Search by Date");
 
-        fromDate.setFieldFont(new java.awt.Font("Umpush", java.awt.Font.PLAIN, 16));
+        fromDate.setCurrentView(new datechooser.view.appearance.AppearancesList("Swing",
+            new datechooser.view.appearance.ViewAppearance("custom",
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(85, 85, 85),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(85, 85, 85),
+                    new java.awt.Color(0, 0, 255),
+                    true,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(0, 0, 255),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(128, 128, 128),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(85, 85, 85),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Ubuntu", java.awt.Font.PLAIN, 15),
+                    new java.awt.Color(85, 85, 85),
+                    new java.awt.Color(255, 0, 0),
+                    false,
+                    false,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                (datechooser.view.BackRenderer)null,
+                false,
+                true)));
+    fromDate.setFieldFont(new java.awt.Font("Umpush", java.awt.Font.PLAIN, 16));
+    fromDate.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+        public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+            fromDateOnSelectionChange(evt);
+        }
+    });
 
-        toDate.setFieldFont(new java.awt.Font("Umpush", java.awt.Font.PLAIN, 16));
+    toDate.setFieldFont(new java.awt.Font("Umpush", java.awt.Font.PLAIN, 16));
+    toDate.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
+        public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
+            toDateOnSelectionChange(evt);
+        }
+    });
 
-        jLabel6.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
-        jLabel6.setForeground(java.awt.Color.gray);
-        jLabel6.setText("From");
+    jLabel6.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
+    jLabel6.setForeground(java.awt.Color.gray);
+    jLabel6.setText("From");
 
-        jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
-        jLabel7.setForeground(java.awt.Color.gray);
-        jLabel7.setText("To");
+    jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
+    jLabel7.setForeground(java.awt.Color.gray);
+    jLabel7.setText("To");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+    jButton4.setText("🔍");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton4ActionPerformed(evt);
+        }
+    });
+
+    javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+    jPanel3.setLayout(jPanel3Layout);
+    jPanel3Layout.setHorizontalGroup(
+        jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel3Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel4)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGap(20, 20, 20)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(fromDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fromDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27))
-        );
+                .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap())
+    );
+    jPanel3Layout.setVerticalGroup(
+        jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel3Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel4)
+            .addGap(33, 33, 33)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(fromDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(9, 9, 9)
+                    .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+            .addComponent(jButton4)
+            .addContainerGap())
+    );
 
-        getContentPane().add(jPanel3);
-        jPanel3.setBounds(640, 40, 430, 170);
+    getContentPane().add(jPanel3);
+    jPanel3.setBounds(640, 40, 430, 200);
 
-        jButton1.setText("🔄");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(920, 600, 70, 28);
+    jButton1.setText("🔄");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton1ActionPerformed(evt);
+        }
+    });
+    getContentPane().add(jButton1);
+    jButton1.setBounds(920, 600, 70, 28);
 
-        jButton2.setText("❌");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2);
-        jButton2.setBounds(1000, 600, 70, 28);
+    jButton2.setText("❌");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton2ActionPerformed(evt);
+        }
+    });
+    getContentPane().add(jButton2);
+    jButton2.setBounds(1000, 600, 70, 28);
 
-        jButton3.setText("Print Clearance");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton3);
-        jButton3.setBounds(750, 600, 160, 28);
+    jButton3.setText("Print Clearance");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton3ActionPerformed(evt);
+        }
+    });
+    getContentPane().add(jButton3);
+    jButton3.setBounds(750, 600, 160, 28);
 
-        background.setBackground(java.awt.Color.white);
-        background.setOpaque(true);
-        getContentPane().add(background);
-        background.setBounds(0, 20, 1100, 620);
+    background.setBackground(java.awt.Color.white);
+    background.setOpaque(true);
+    getContentPane().add(background);
+    background.setBounds(0, 20, 1100, 620);
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseDragged
@@ -297,6 +395,7 @@ public class ClearanceForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        update_Table();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -306,9 +405,114 @@ public class ClearanceForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
+    
+      private void update_Table(){
+           PreparedStatement prepared = null;
+        Connection conn;
+        
+    try{
+
+        
+       
+    String sql = "Select photo, firstname, middlename, lastname, result, code, date_registered from cvarst.registration";
+    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+    prepared = conn.prepareStatement(sql);
+    rs = prepared.executeQuery();
+    clearanceTable.setModel(DbUtils.resultSetToTableModel(rs));
+    
+    }
+    catch(Exception e){
+    JOptionPane.showMessageDialog(null, e);
+    
+    }
+    finally{
+    try{
+    
+    rs.close();
+    prepared.close();
+    
+    }
+    catch (Exception e){}
+    }
+    
+    
+    try{prepared.close();}
+    catch(Exception e){}
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+    
+    
+    public void searchedResult() throws ParseException{
+    
+     String from = fromDate.getText(), to = toDate.getText() ;
+//              SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+//              Date date = new Date();
+//              String dateFrom = dateFormat.format(from);
+//              String dateTo = dateFormat.format(to);
+              
+              
+    Date now = new Date();
+
+    //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+   
+//    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//    Date newDate = fromDate.getSelectedDate();
+//System.out.println(dateFormat.format(newDate));
+
+
+
+    //String date = format.format(fromDate.getText());
+    //Date myDate = new Date(date);
+    //java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+
+     
+//      String getData = "Select photo, firstname, middlename, lastname, result, code, date_registered from cvarst.registration where date_registered = '"+ dateFormat.format(newDate) +"'";
+    
+
+    String getData = "Select photo, firstname, middlename, lastname, result, code, date_registered from cvarst.registration where"
+            + " date_registered between '"+ fromDate.getText() +"' AND '"+ toDate.getText() +"'";
+
+
+         try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+            st = cn.createStatement();
+            rs = st.executeQuery(getData);
+            clearanceTable.setModel(DbUtils.resultSetToTableModel(rs));
+            clearanceTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        }
+           catch(Exception e){
+           e.printStackTrace();}
+    }
+    private void fromDateOnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_fromDateOnSelectionChange
+     
+            // TODO add your handling code here:
+            
+      
+        
+        
+        
+    }//GEN-LAST:event_fromDateOnSelectionChange
+
+    private void toDateOnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_toDateOnSelectionChange
+        
+            // TODO add your handling code here:
+           
+        
+    }//GEN-LAST:event_toDateOnSelectionChange
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            // TODO add your handling code here:
+            searchedResult();
+        } catch (ParseException ex) {
+            Logger.getLogger(ClearanceForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -347,11 +551,13 @@ public class ClearanceForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JTable clearanceTable;
     private javax.swing.JLabel formTitle;
     private datechooser.beans.DateChooserCombo fromDate;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -365,7 +571,6 @@ public class ClearanceForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
