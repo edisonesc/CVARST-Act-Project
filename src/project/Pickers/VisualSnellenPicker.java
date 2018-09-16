@@ -235,17 +235,14 @@ public class VisualSnellenPicker extends javax.swing.JFrame {
 
                 String getCount = "select id from cvarst.ColorblindTest";
                 int count = 0;
-                ResultSet resultSet = st.executeQuery(getCount);
-                while(resultSet.next()){
-                    count = resultSet.getInt("id");
-                }
+              
 
-                ps = cn.prepareStatement("insert into cvarst.ColorblindTest (id, Picture, Answer) values"
-                    + "(?, ?, ?)");
-
-                ps.setInt(1, count + 1);
-                ps.setObject(2, imageChosedToByteArray);
+                ps = cn.prepareStatement("insert into cvarst.VisualAcuityTest ( Picture, Question, Answer, Vision) values"
+                    + "(?, ?, ?, ? )");
+                ps.setObject(1, imageChosedToByteArray);
+                ps.setString(2, questionField.getText().toString());
                 ps.setString(3, answer);
+                ps.setString(4, visionField.getText().toString());
                 ps.executeUpdate();
                 cn.close();
                 ps.close();

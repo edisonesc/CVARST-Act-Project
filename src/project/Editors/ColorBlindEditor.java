@@ -207,9 +207,8 @@ public class ColorBlindEditor extends javax.swing.JFrame {
         String filename = f.getAbsolutePath();
         attachedFileField.setText(filename);
 
-        ImageIcon image = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(questionImage.getWidth(), questionImage.getHeight(), Image.SCALE_REPLICATE));
-        questionImage.setIcon(image);
         try{
+                        
             File imageFile = new File(filename);
             FileInputStream fis = new FileInputStream(imageFile);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -218,11 +217,19 @@ public class ColorBlindEditor extends javax.swing.JFrame {
                 bos.write(buf, 0, readNum);
             }
             imageChosedToByteArray = bos.toByteArray();
-
         }
         catch(Exception e){
-                e.printStackTrace();
+        
+        
+        e.printStackTrace();
         }
+        
+        
+        
+        
+        ImageIcon image = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(questionImage.getWidth(), questionImage.getHeight(), Image.SCALE_REPLICATE));
+        questionImage.setIcon(image);
+
     }//GEN-LAST:event_attachFileButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -232,34 +239,25 @@ public class ColorBlindEditor extends javax.swing.JFrame {
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
 
-     
         String answer = answerField.getText().toString();
         try{
 
             ps = cn.prepareStatement("");
             st = cn.createStatement();
 
-            try {
-
-                String getCount = "select id from cvarst.ColorblindTest";
-                int count = 0;
-                ResultSet resultSet = st.executeQuery(getCount);
-                while(resultSet.next()){
-                    count = resultSet.getInt("id");
-                }
-
-                ps = cn.prepareStatement("insert into cvarst.ColorblindTest (id, Picture, Answer) values"
-                    + "(?, ?, ?)");
-
-                ps.setInt(1, count + 1);
-                ps.setObject(2, imageChosedToByteArray);
-                ps.setString(3, answer);
+            try {               
+                ps = cn.prepareStatement("update cvarst.ColorblindTest SET Picture = ?, Answer = ? where id = ?");
+                ps.setObject(1, imageChosedToByteArray);
+                ps.setString(2, answer);
+                ps.setInt(3, itemID);
                 ps.executeUpdate();
                 cn.close();
                 ps.close();
-                JOptionPane.showMessageDialog(null, "Added de item Successfully");
+                JOptionPane.showMessageDialog(null, "Modified de item Successfully");
 
-            } catch (SQLException ex) {
+                System.out.print(String.valueOf(imageChosedToByteArray));
+
+            } catch (Exception ex) {
                 Logger.getLogger(ColorBlindEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
 

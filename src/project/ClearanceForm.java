@@ -38,9 +38,9 @@ public class ClearanceForm extends javax.swing.JFrame {
     private ResultSet rs;
     public ClearanceForm() {
         initComponents();
-        setSize(1095, 639);
+        setSize(1209, 738);
         setResizable(false);
-        formTitle.setHorizontalAlignment(SwingConstants.CENTER);
+//        formTitle.setHorizontalAlignment(SwingConstants.CENTER);
         Dimension size = fromDate.getCalendarPreferredSize();
         size.width += 90;
         size.height += 60;
@@ -77,9 +77,12 @@ public class ClearanceForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        formTitle = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -88,6 +91,8 @@ public class ClearanceForm extends javax.swing.JFrame {
         jTextField8 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        formTitle = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         clearanceTable = new javax.swing.JTable();
@@ -108,22 +113,21 @@ public class ClearanceForm extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(null);
 
-        formTitle.setFont(new java.awt.Font("Ubuntu Condensed", 0, 13)); // NOI18N
-        formTitle.setForeground(java.awt.Color.white);
-        formTitle.setText("Clearances");
-        getContentPane().add(formTitle);
-        formTitle.setBounds(0, 0, 1100, 20);
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MinimizeButton.png"))); // NOI18N
+        jLabel3.setBackground(new java.awt.Color(210, 21, 21));
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("-");
+        jLabel3.setOpaque(true);
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
             }
         });
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(1050, 0, 50, 20);
+        jLabel3.setBounds(1160, 0, 50, 20);
 
-        jLabel1.setBackground(new java.awt.Color(3, 72, 83));
+        jLabel1.setBackground(new java.awt.Color(26, 26, 26));
         jLabel1.setOpaque(true);
         jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -131,7 +135,46 @@ public class ClearanceForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 1100, 20);
+        jLabel1.setBounds(0, 0, 1210, 20);
+
+        jPanel4.setBackground(java.awt.Color.white);
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel5.setBackground(java.awt.Color.lightGray);
+        jLabel5.setOpaque(true);
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Johnson Smith");
+
+        jButton5.setFont(new java.awt.Font("Ubuntu Light", 0, 15)); // NOI18N
+        jButton5.setText("More Details");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addContainerGap())
+        );
+
+        getContentPane().add(jPanel4);
+        jPanel4.setBounds(1040, 110, 160, 200);
 
         jPanel1.setBackground(java.awt.Color.white);
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,10 +217,10 @@ public class ClearanceForm extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-                            .addComponent(jTextField8)
-                            .addComponent(jTextField9))))
-                .addContainerGap(47, Short.MAX_VALUE))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                            .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                            .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,17 +239,43 @@ public class ClearanceForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 40, 620, 200);
+        jPanel1.setBounds(10, 110, 560, 200);
+
+        jPanel5.setBackground(new java.awt.Color(23, 23, 23));
+
+        formTitle.setBackground(new java.awt.Color(23, 23, 23));
+        formTitle.setFont(new java.awt.Font("Sawasdee", 0, 48)); // NOI18N
+        formTitle.setForeground(java.awt.Color.white);
+        formTitle.setText("Clearances");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(formTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 1133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(formTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel5);
+        jPanel5.setBounds(0, 20, 1210, 80);
 
         jPanel2.setBackground(java.awt.Color.white);
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(null);
 
-        clearanceTable.setFont(new java.awt.Font("Ubuntu", 0, 16)); // NOI18N
+        clearanceTable.setFont(new java.awt.Font("Ubuntu Light", 0, 16)); // NOI18N
         clearanceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "asasa", "saas", "For VErification", "no"},
@@ -221,13 +290,14 @@ public class ClearanceForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(clearanceTable);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(0, 0, 1060, 370);
+        jScrollPane1.setBounds(0, 0, 1190, 360);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(10, 260, 1060, 330);
+        jPanel2.setBounds(10, 320, 1190, 360);
 
         jPanel3.setBackground(java.awt.Color.white);
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel3.setFont(new java.awt.Font("Trebuchet MS", 0, 15)); // NOI18N
 
         jLabel4.setForeground(java.awt.Color.gray);
         jLabel4.setText("Search by Date");
@@ -273,7 +343,7 @@ public class ClearanceForm extends javax.swing.JFrame {
                 (datechooser.view.BackRenderer)null,
                 false,
                 true)));
-    fromDate.setFieldFont(new java.awt.Font("Umpush", java.awt.Font.PLAIN, 16));
+    fromDate.setFieldFont(new java.awt.Font("Trebuchet MS", java.awt.Font.PLAIN, 16));
     fromDate.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
         public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
             fromDateOnSelectionChange(evt);
@@ -309,19 +379,23 @@ public class ClearanceForm extends javax.swing.JFrame {
         .addGroup(jPanel3Layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(jLabel4)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+            .addContainerGap(313, Short.MAX_VALUE))
+        .addGroup(jPanel3Layout.createSequentialGroup()
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fromDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap())
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(fromDate, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                        .addComponent(toDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGap(21, 21, 21))
     );
     jPanel3Layout.setVerticalGroup(
         jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,7 +418,7 @@ public class ClearanceForm extends javax.swing.JFrame {
     );
 
     getContentPane().add(jPanel3);
-    jPanel3.setBounds(640, 40, 430, 200);
+    jPanel3.setBounds(590, 110, 430, 200);
 
     jButton1.setText("🔄");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -353,7 +427,7 @@ public class ClearanceForm extends javax.swing.JFrame {
         }
     });
     getContentPane().add(jButton1);
-    jButton1.setBounds(920, 600, 70, 28);
+    jButton1.setBounds(1050, 690, 70, 28);
 
     jButton2.setText("❌");
     jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +436,7 @@ public class ClearanceForm extends javax.swing.JFrame {
         }
     });
     getContentPane().add(jButton2);
-    jButton2.setBounds(1000, 600, 70, 28);
+    jButton2.setBounds(1130, 690, 70, 28);
 
     jButton3.setText("Print Clearance");
     jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -371,12 +445,12 @@ public class ClearanceForm extends javax.swing.JFrame {
         }
     });
     getContentPane().add(jButton3);
-    jButton3.setBounds(750, 600, 160, 28);
+    jButton3.setBounds(880, 690, 160, 28);
 
     background.setBackground(java.awt.Color.white);
     background.setOpaque(true);
     getContentPane().add(background);
-    background.setBounds(0, 20, 1100, 620);
+    background.setBounds(0, 20, 1210, 720);
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -558,11 +632,14 @@ public class ClearanceForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -570,6 +647,8 @@ public class ClearanceForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 12, 2018 at 10:11 PM
+-- Generation Time: Sep 16, 2018 at 02:02 AM
 -- Server version: 5.7.23-0ubuntu0.18.04.1
 -- PHP Version: 7.2.7-0ubuntu0.18.04.2
 
@@ -90,7 +90,9 @@ CREATE TABLE `GRTable` (
 
 INSERT INTO `GRTable` (`id`, `Doctor_ID`, `Doctor_Name`, `Reload_Request`, `Status`) VALUES
 (1, 4, 'Dr. Hannes', 100, 'Pending'),
-(2, 3, 'asfas', 23, 'Granted');
+(2, 3, 'asfas', 23, 'Granted'),
+(3, 5, 'Dr. Rivera', 1000, 'Pending'),
+(4, 5, 'Dr. Rivera', 99, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -142,7 +144,8 @@ INSERT INTO `RegisteredDoctors` (`id`, `Doctor`, `Clinic_Name`, `Firstname`, `Mi
 (1, 'Justin Edison', 'Just Clinic', 'John', 'Edward', 'Nekki', 134112, 23423, 'ivan', 'ivan', 'Q City', 12311, 0),
 (2, 'Dr. Levinski', 'Levinski Clenek', 'Londer', NULL, 'Happy', 324, 231, 'levinski', 'levinski', 'Farmers Market', 38334, 0),
 (3, 'Dr. Jeprox', 'Jeprox Pierce', 'Jose', 'K.', 'Kilo', 49423, 2384, 'jeprox', 'jeprox', 'Bulak', 6868, 0),
-(4, 'Dr. Hannes', 'Justin Clenek', 'Justin Edison', 'B.', 'Escabarte', 178178, 2782378, 'justin', 'justin', 'Caloocan City', 768176, 10);
+(4, 'Dr. Hannes', 'Justin Clenek', 'Justin Edison', 'B.', 'Escabarte', 178178, 2782378, 'justin', 'justin', 'Caloocan City', 768176, 10),
+(5, 'Dr. Rivera', 'Joshua Dental Clinic', 'Joshua', 'F', 'Rivera', 828128, 82181, 'joshua@yahoo.com', 'joshua', 'Ilang ilang', 69696, 10);
 
 -- --------------------------------------------------------
 
@@ -165,92 +168,28 @@ CREATE TABLE `registration` (
   `res_code` varchar(10) NOT NULL,
   `vehicle_used` varchar(90) NOT NULL,
   `license_number` varchar(20) NOT NULL,
-  `photo` blob NOT NULL
+  `photo` blob NOT NULL,
+  `date_registered` date DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `result` varchar(50) DEFAULT NULL,
+  `uploaded` varchar(50) DEFAULT NULL,
+  `ColorblindScore` int(11) DEFAULT NULL,
+  `ColorblindTotalPoints` int(11) DEFAULT NULL,
+  `AuditoryScore` int(11) DEFAULT NULL,
+  `AuditoryTotalPoints` int(11) DEFAULT NULL,
+  `VisualSnellenScore` int(11) DEFAULT NULL,
+  `VisualSnellenTotalPoints` int(11) DEFAULT NULL,
+  `VisualBailyScore` int(11) DEFAULT NULL,
+  `VisualBailyTotalPoints` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `registration`
 --
 
-INSERT INTO `registration` (`id`, `firstname`, `middlename`, `lastname`, `address`, `birthdate`, `gender`, `age`, `height`, `weight`, `blood_type`, `res_code`, `vehicle_used`, `license_number`, `photo`) VALUES
-(1, 'Justin Edison', 'Brillantes', 'Escabarte', 'Block 132 Lot 26v Phase 8 A Bagong Silang Caloocan City', '17-05-1999', 'Male', 19, '130', '98', 'O', '3', 'Hot Wels', 'SDA2345', 0x68656865),
-(2, 'Liam', 'Bry', 'Spencer', 'erth', '17-05-1997', 'Male', 21, '120', '98', 'O', '4', 'cold wels', 'adi2134', 0x68656865),
-(3, 'jsutin', 'derbn', 'zsp', 'kasjd', '14-11-2018', 'Male', 0, '34', '43', 'B', '3', 'sdfwefw', '2343', 0x68656865),
-(4, 'Justin ', 'Ediso', 'Escabarte', 'Blk 1232 L26 Ph 8 A Bagong Silang Caloocan City', '17-05-1999', 'Male', 19, '100', '16', 'O', '2', 'Hot wheels', '696969', 0x68656865),
-(5, 'fewef', 'ewfwe', 'wfw', 'wefwef', '12-09-2018', 'Female', 0, '3', '4', 'O', '2', '444', 'awd', 0x68656865),
-(6, 'qqqq', 'ddd', 'sadad', 'cccccc', '27-09-2018', 'Male', 0, '12', '34', 'A', '3', 'adqdqwdq', 'ascacs', 0x68656865),
-(7, 'd', 'd', 'a', 'asdaaw', '28-09-2018', 'Male', 0, '23', '32', 'A', '1', '23', '23', 0x68656865),
-(8, 'eee', 'eee', 'eee', 'eeeeeeeeee', '02-09-2018', 'Male', 0, '2', '2', 'B', '2', 'ds', 'dw', 0x68656865),
-(9, 'ggf', 'gfgf', 'fgg', 'ggf', '12-09-2018', 'Male', 0, '2', '45', 'A', '1', '5', '6', 0x68656865),
-(10, 'n', 'n', 'n', 'n', '13-09-2018', 'Male', 0, '7', '7', 'B', '1', 'i', 'i', 0x68656865),
-(11, 'gr', 'bt', 'bt', 't', '12-09-2018', 'Male', 0, '1', '1', 'A', '1', '1', '1', 0x68656865),
-(12, '2', '2', '2', '2', '06-09-2018', 'Male', 0, '3', '3', 'A', '1', 'a', 'a', 0x68656865),
-(13, 'y', 'y', 'y', 'yy', '18-09-2018', 'Male', 0, '76', '76', 'A', '1', 'y', 'y', 0x68656865),
-(14, 'u', 'u', 'u', 'u', '05-09-2018', 'Male', 0, '8', '8', 'A', '1', '8', '8', 0x68656865),
-(15, 'e', 'e', 'e', 'eeeefefefe', '12-09-2018', 'Male', 0, '3', '3', 'A', '1', '3', '3', 0x68656865),
-(16, 'gh', 'e', 'fqwe', 'weq', '05-09-2018', 'Male', 0, '1', '23', 'A', '1', '23', '23', 0x68656865),
-(17, 'dvvf', 'asfasf', 'saa', '3wef', '05-09-2018', 'Male', 0, '3', '3', 'A', '1', 'ee4', 'f44', 0x68656865),
-(18, 'hu', 'hu', 'j', 'wef', '07-09-2018', 'Male', 0, '2', '2', 'A', '1', '2', '3', 0x68656865),
-(19, 'qw', 'qwq', 'qwd', 'wdqd', '08-09-2018', 'Male', 0, '3', '3', 'A', '1', 'qd', '3d', 0x68656865),
-(20, 'sd', 'sd', 'd', 'ss', '25-09-2018', 'Male', 0, '34', '34', 'A', '1', 'qwd', 'qwdq', 0x68656865),
-(21, 'k', 'k', 'k', 'ik', '05-09-2018', 'Male', 0, '8', '8', 'A', '1', '888', '888', 0x68656865),
-(22, 't', '6', '5', '34', '28-09-2018', 'Male', 0, '34', '4', 'A', '1', '44', '4', 0x68656865),
-(23, 'hg', 'fy', 'fy', 'fyfy', '11-09-2018', 'Male', 0, '7', '7', 'A', '1', '77', '7', 0x68656865),
-(24, 'f3f23f', '2f2', '232', '23f2', '08-09-2018', 'Male', 0, '23', '23', 'A', '1', 'q', 'qd', 0x68656865),
-(25, 'as', 'as', 'as', 'as', '14-09-2018', 'Male', 0, '2', '2', 'A', '1', '2', '2', 0x68656865),
-(26, '4t3', 't34t', 't34tt3', '34t34', '11-09-2018', 'Male', 0, '4', '4', 'A', '1', 'grg', 'egerg', 0x68656865),
-(27, 'efe', 'fafa', 'dwad', 'awdasda', '05-09-2018', 'Male', 0, '6', '6', 'A', '1', 'qweq', '22d', 0x68656865),
-(28, 'gnh', 'g', 'g', 'g', '05-09-2018', 'Male', 0, '4', '4', 'A', '1', '4', '4', 0x68656865),
-(29, 'thy', 'rttr', 'trtr', 'trt', '10-09-2018', 'Male', 0, '4', '4', 'A', '1', '4', '5', 0x68656865),
-(30, 'JKjustin ', 'B', 'ExaxBVASRT', 'ADKAOPW', '06-09-2018', 'Male', 0, '7', '8', 'A', '1', 't', 'r', 0x68656865),
-(31, 'wda', 'dawd', 'awda', 'ad', '04-09-2018', 'Male', 0, '3', '3', 'A', '1', 'dfe', 'ef', 0x68656865);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `UserExamSession`
---
-
-CREATE TABLE `UserExamSession` (
-  `id` int(11) NOT NULL,
-  `Examinee_ID` int(11) NOT NULL,
-  `ColorblindItemCount` int(11) DEFAULT NULL,
-  `VisualAcuityItemCount` int(11) DEFAULT NULL,
-  `VisualBailyItemCount` int(11) DEFAULT NULL,
-  `ColorblindTotalPoints` int(11) DEFAULT NULL,
-  `VisualAcuityTotalPoints` int(11) DEFAULT NULL,
-  `VisualBailyTotalPoints` int(11) DEFAULT NULL,
-  `AuditoryItemCount` int(11) DEFAULT NULL,
-  `AuditoryTotalPoints` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `UserExamSession`
---
-
-INSERT INTO `UserExamSession` (`id`, `Examinee_ID`, `ColorblindItemCount`, `VisualAcuityItemCount`, `VisualBailyItemCount`, `ColorblindTotalPoints`, `VisualAcuityTotalPoints`, `VisualBailyTotalPoints`, `AuditoryItemCount`, `AuditoryTotalPoints`) VALUES
-(5, 10, 6, NULL, NULL, 6, NULL, 99, 0, 0),
-(6, 11, 6, NULL, NULL, 6, NULL, NULL, 3, 3),
-(7, 12, 6, 3, NULL, 6, 3, NULL, 3, 3),
-(8, 13, 6, NULL, NULL, 6, NULL, NULL, 3, 3),
-(9, 14, 6, 3, NULL, 6, 3, NULL, 3, 3),
-(10, 15, 6, NULL, NULL, 6, NULL, NULL, 3, 3),
-(11, 16, 6, NULL, NULL, 4, NULL, NULL, 3, 3),
-(12, 17, 6, NULL, NULL, 4, NULL, NULL, 3, 0),
-(13, 18, 6, NULL, NULL, 5, NULL, NULL, 3, 0),
-(14, 19, 6, NULL, NULL, 4, NULL, NULL, 3, 0),
-(15, 20, 6, NULL, NULL, 4, NULL, NULL, 3, 0),
-(16, 21, 6, NULL, NULL, 2, NULL, NULL, 3, 0),
-(17, 22, 6, NULL, NULL, 4, NULL, NULL, 3, 0),
-(18, 23, 6, NULL, NULL, 3, NULL, NULL, 3, 3),
-(19, 24, 6, NULL, NULL, 3, NULL, NULL, 3, 0),
-(20, 25, 6, NULL, NULL, 3, NULL, NULL, 3, 0),
-(21, 26, 6, NULL, NULL, 3, NULL, NULL, 3, 0),
-(22, 27, 6, NULL, NULL, 4, NULL, NULL, 3, 0),
-(23, 28, 6, NULL, NULL, 2, NULL, NULL, 3, 0),
-(24, 29, 6, NULL, NULL, 3, NULL, NULL, 3, 0),
-(25, 30, 6, 3, NULL, 6, 3, NULL, 3, 3),
-(26, 31, 6, NULL, NULL, 4, NULL, NULL, 3, 3);
+INSERT INTO `registration` (`id`, `firstname`, `middlename`, `lastname`, `address`, `birthdate`, `gender`, `age`, `height`, `weight`, `blood_type`, `res_code`, `vehicle_used`, `license_number`, `photo`, `date_registered`, `code`, `result`, `uploaded`, `ColorblindScore`, `ColorblindTotalPoints`, `AuditoryScore`, `AuditoryTotalPoints`, `VisualSnellenScore`, `VisualSnellenTotalPoints`, `VisualBailyScore`, `VisualBailyTotalPoints`) VALUES
+(1, 'adsas', 'asda', 'asda', 'asdasas', '04-09-2018', 'Male', 0, '32', '32', 'A', '1', 'qwd', 'qwd', 0x68656865, '2018-09-15', 'For Verification', 'Pending', 'No', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'edfsd', 'fsdfsd', 'sdfsd', 'sdfsd', '06-09-2018', 'Male', 0, '4', '3', 'A', '1', 'df', 'sdfs', 0x68656865, '2018-01-27', 'For Verification', 'Pending', 'No', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -343,12 +282,6 @@ ALTER TABLE `registration`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `UserExamSession`
---
-ALTER TABLE `UserExamSession`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `VisualAcuityBailyTest`
 --
 ALTER TABLE `VisualAcuityBailyTest`
@@ -378,7 +311,7 @@ ALTER TABLE `ColorblindTest`
 -- AUTO_INCREMENT for table `GRTable`
 --
 ALTER TABLE `GRTable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `GRUsers`
 --
@@ -388,17 +321,12 @@ ALTER TABLE `GRUsers`
 -- AUTO_INCREMENT for table `RegisteredDoctors`
 --
 ALTER TABLE `RegisteredDoctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
---
--- AUTO_INCREMENT for table `UserExamSession`
---
-ALTER TABLE `UserExamSession`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `VisualAcuityBailyTest`
 --

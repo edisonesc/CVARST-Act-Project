@@ -285,23 +285,19 @@ public class VisualSnellenEditor extends javax.swing.JFrame {
 
             try {
 
-                String getCount = "select id from cvarst.ColorblindTest";
-                int count = 0;
-                ResultSet resultSet = st.executeQuery(getCount);
-                while(resultSet.next()){
-                    count = resultSet.getInt("id");
-                }
+             
 
-                ps = cn.prepareStatement("insert into cvarst.ColorblindTest (id, Picture, Answer) values"
-                    + "(?, ?, ?)");
+                ps = cn.prepareStatement("update cvarst.VisualAcuityTest set Picture = ? , Question = ?, Answer = ?, Vision =? where id = ?");
 
-                ps.setInt(1, count + 1);
-                ps.setObject(2, imageChosedToByteArray);
+                ps.setObject(1, imageChosedToByteArray);
+                ps.setString(2, questionField.getText());
                 ps.setString(3, answer);
+                ps.setString(4, visionField.getText());
+                ps.setInt(5, itemID);
                 ps.executeUpdate();
                 cn.close();
                 ps.close();
-                JOptionPane.showMessageDialog(null, "Added de item Successfully");
+                JOptionPane.showMessageDialog(null, "Modified de item Successfully");
 
             } catch (SQLException ex) {
                 Logger.getLogger(VisualSnellenEditor.class.getName()).log(Level.SEVERE, null, ex);

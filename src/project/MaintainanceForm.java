@@ -28,12 +28,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
+import project.Editors.AuditoryEditor;
 import project.Editors.ColorBlindEditor;
 import project.Editors.VisualBailyEditor;
 import project.Editors.VisualSnellenEditor;
+import project.Pickers.AuditoryPicker;
 import project.Pickers.ColorBlindPicker;
 import project.Pickers.VisualBailyPicker;
 import project.Pickers.VisualSnellenPicker;
+import project.Tests.AuditoryTestForm;
 
 /**
  *
@@ -53,9 +56,11 @@ public class MaintainanceForm extends javax.swing.JFrame {
     private ColorBlindPicker cBP = new ColorBlindPicker();
     private VisualSnellenPicker vSP = new VisualSnellenPicker();
     private VisualBailyPicker vBP = new VisualBailyPicker();
+    private AuditoryPicker aP = new AuditoryPicker();
     private ColorBlindEditor cBE;
     private VisualSnellenEditor vSE;
     private VisualBailyEditor vBE;
+    private AuditoryEditor aE;
     
     
     public void userPrimary(){
@@ -577,6 +582,11 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Visual Acuity Test (Bar Chart)", tab4);
 
+        tab5.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tab5ComponentShown(evt);
+            }
+        });
         tab5.setLayout(null);
 
         auditoryTestTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -773,10 +783,16 @@ public class MaintainanceForm extends javax.swing.JFrame {
         else if(tab4.isShowing()){
             vBP.setVisible(true);
         }
+        else if(tab5.isShowing()){
+            aP.setVisible(true);
+            
+        }
         }
         else{
             JOptionPane.showMessageDialog(null, "Add not applicable.");
         }
+        
+        
             
         
     }//GEN-LAST:event_addButtonMouseClicked
@@ -926,6 +942,22 @@ System.out.print("SHOWING");
             }
         
         }
+        else if(tab5.isShowing()){
+        
+                     if(auditoryTestTable.getSelectedRowCount() != 0){
+            
+            int id = (int) auditoryTestTable.getValueAt(auditoryTestTable.getSelectedRow(), 0);
+            System.out.println(String.valueOf(id));
+         
+            aE = new AuditoryEditor(id);
+            aE.setVisible(true);
+            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Please select an item to modify.");
+            }
+        
+        }
         
         
         }
@@ -998,6 +1030,32 @@ System.out.print("SHOWING");
                 JOptionPane.showMessageDialog(null, "Please select an item to delete.");
             }
          }
+         else if(tab5.isShowing()){
+                 if(auditoryTestTable.getSelectedRowCount() != 0){
+                try {
+                    int id = (int) auditoryTestTable.getValueAt(auditoryTestTable.getSelectedRow(), 0);
+                    deleteItem = "DELETE FROM cvarst.AuditoryTest WHERE Id = ?";
+                    ps = cn.prepareStatement(deleteItem);
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                    this.dispose();
+                    new MaintainanceForm().setVisible(true);
+                    JOptionPane.showMessageDialog(null, "Item deleted.");
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+              else{
+                JOptionPane.showMessageDialog(null, "Please select an item to delete.");
+            }
+         
+         
+         
+         }
+        
+        
           }
      
     }//GEN-LAST:event_deleteButtonMouseClicked
@@ -1076,6 +1134,12 @@ System.out.print("SHOWING");
         saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/save_button_highlighted.png")));
         
     }//GEN-LAST:event_saveButtonMouseReleased
+
+    private void tab5ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tab5ComponentShown
+       addButton.setEnabled(true);
+        editButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+    }//GEN-LAST:event_tab5ComponentShown
 
     /**
      * @param args the command line arguments
