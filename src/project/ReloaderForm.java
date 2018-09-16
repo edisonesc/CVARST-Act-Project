@@ -153,8 +153,8 @@ public class ReloaderForm extends javax.swing.JFrame {
             ps =cn.prepareStatement("insert into cvarst.GRTable (Doctor_ID, Doctor_Name, Reload_Request, Status) values"
                     + "(?,?,?,?)");
             
-            ps.setInt(1, User.getUserID());
-            ps.setString(2, doctorName);
+            ps.setInt(1,Doctor.getDoctorID());
+            ps.setString(2, Doctor.getDoctor());
             ps.setInt(3, reloadValRequest);
             ps.setString(4, "Pending");
             ps.executeUpdate();

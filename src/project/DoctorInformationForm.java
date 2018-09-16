@@ -212,7 +212,15 @@ public class DoctorInformationForm extends javax.swing.JFrame {
             new String [] {
                 "Doctors ID", "Name"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(doctorTable);
 
         jPanel1.add(jScrollPane1);
@@ -490,9 +498,9 @@ public class DoctorInformationForm extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        AddDoctorForm aDF = new AddDoctorForm();
-        this.dispose();
-        aDF.setVisible(true);
+//        AddDoctorForm aDF = new AddDoctorForm();
+//        this.dispose();
+//        aDF.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

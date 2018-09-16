@@ -189,14 +189,14 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="2" rowCount="5">
-                    <Column editable="true" title="Doctors ID" type="java.lang.Object">
+                    <Column editable="false" title="Doctors ID" type="java.lang.Object">
                       <Data value="123"/>
                       <Data value="424"/>
                       <Data value="245"/>
                       <Data value="343"/>
                       <Data value="234"/>
                     </Column>
-                    <Column editable="true" title="Name" type="java.lang.Object">
+                    <Column editable="false" title="Name" type="java.lang.Object">
                       <Data value="Dr. Livingston"/>
                       <Data value="Dr. Sherd "/>
                       <Data value="Dr. Kelvin"/>
@@ -207,16 +207,6 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>

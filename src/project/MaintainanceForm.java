@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -223,6 +224,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         saveButton = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         tab2 = new javax.swing.JPanel();
         colorBlindScrollPane = new javax.swing.JScrollPane();
         colorBlindTable = new javax.swing.JTable();
@@ -257,6 +259,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jTabbedPane1.setFont(new java.awt.Font("Umpush", 0, 13)); // NOI18N
 
         tab1.setBackground(java.awt.Color.white);
+        tab1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tab1.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 tab1ComponentShown(evt);
@@ -480,6 +483,9 @@ public class MaintainanceForm extends javax.swing.JFrame {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 saveButtonMouseReleased(evt);
             }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveButtonMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 saveButtonMouseExited(evt);
             }
@@ -489,6 +495,16 @@ public class MaintainanceForm extends javax.swing.JFrame {
         });
         tab1.add(saveButton);
         saveButton.setBounds(650, 380, 150, 30);
+
+        jButton1.setText("🔄");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        tab1.add(jButton1);
+        jButton1.setBounds(300, 330, 40, 90);
 
         jTabbedPane1.addTab("Doctor Details", tab1);
 
@@ -1155,33 +1171,78 @@ System.out.print("SHOWING");
         deleteButton.setEnabled(true);
     }//GEN-LAST:event_tab5ComponentShown
 
-    private void doctorsListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorsListActionPerformed
-        try {
+    private void refreshInformation(){
+    try {
             // TODO add your handling code here:
             String doctor = doctorsList.getSelectedItem().toString();
-            ps = cn.prepareStatement("Select Clinic_Name, prc_number, ptr_number, station_area, station_ID from cvarst.RegisteredDoctors where Doctor = ?");
+            Doctor doctorClass = new Doctor();
+            doctorClass.setDoctor(doctor);
+           
+            ps = cn.prepareStatement("Select id, Clinic_Name, prc_number, ptr_number, station_area, station_ID, balance from cvarst.RegisteredDoctors where Doctor = ?");
             ps.setString(1, doctor);
             ps.executeQuery();
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
+                doctorClass.setDoctorID(rs.getInt("id"));
+                balanceLabel.setText(rs.getString("balance"));
                 clinicNameField.setText(rs.getString("Clinic_Name"));
                 stationIDField.setText(rs.getString("Station_ID"));
                 ptrNoField.setText(rs.getString("PTR_Number"));
                 prcNoField.setText(rs.getString("PRC_Number"));
-                areaField.setText(rs.getString("Station_Area"));
-            
+                areaField.setText(rs.getString("Station_Area"));   
+                
             }
-            
-            
-            
-            
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void doctorsListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorsListActionPerformed
+        refreshInformation();
             
     }//GEN-LAST:event_doctorsListActionPerformed
+    private JDialog showMessage(String s, String title, String type){
+    
+            JOptionPane jop = new JOptionPane(s, (type.equals("S")) ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+            JDialog dialog = jop.createDialog(title);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+            return dialog;
+    }
+    private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
+        // TODO add your handling code here:
+        int confirmExitDialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to change information?", "Exit", JOptionPane.YES_NO_OPTION);
+       if(confirmExitDialog == 0){
+            try {
+                System.out.print("Save trigger");
+                // TODO add your handling code here:
+                String doctor = doctorsList.getSelectedItem().toString();
+                String clinicName = clinicNameField.getText().toString();
+                String stationID = stationIDField.getText().toString();
+                String area = areaField.getText().toString();
+                String prcNo = prcNoField.getText().toString();
+                String ptrNo = ptrNoField.getText().toString();
+                ps  = cn.prepareStatement("UPDATE cvarst.RegisteredDoctors SET Clinic_Name = ?, PTR_Number = ?, PRC_Number = ?,"
+                        + " Station_Area = ?, Station_ID = ? WHERE Doctor = ? ");
+                ps.setString(1, clinicName);
+                ps.setString(2, ptrNo);
+                ps.setString(3, prcNo);
+                ps.setString(4, area);
+                ps.setString(5, stationID);
+                ps.setString(6, doctor);
+                ps.executeUpdate();
+                
+                showMessage("Successfully saved", "Success", "S");
+            } catch (SQLException ex) {
+                Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       }
+    }//GEN-LAST:event_saveButtonMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        refreshInformation();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1247,6 +1308,7 @@ System.out.print("SHOWING");
     private javax.swing.JComboBox<String> doctorsList;
     private javax.swing.JLabel editButton;
     private javax.persistence.EntityManager entityManager;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
