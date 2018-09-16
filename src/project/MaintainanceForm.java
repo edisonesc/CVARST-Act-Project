@@ -67,19 +67,19 @@ public class MaintainanceForm extends javax.swing.JFrame {
        
         try{
             Class.forName("com.mysql.jdbc.Driver"); 
-            String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id= '" +  User.getUserID() + "'";
+//            String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id= '" +  User.getUserID() + "'";
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
             st = cn.createStatement();
-            rs = st.executeQuery(getCurrentUserData);
-            while(rs.next()){
-                doctorField.setText(rs.getString("Doctor"));
-                clinicNameField.setText(rs.getString("Clinic_Name"));
-                stationField.setText(rs.getString("Station_Area"));
-                areaIDField.setText(rs.getString("Station_ID"));
-                balanceLabel.setText(rs.getString("balance"));
-                prcNoField.setText(rs.getString("PRC_Number")); 
-                ptrNoField.setText(rs.getString("PTR_Number"));
-            }
+//            rs = st.executeQuery(getCurrentUserData);
+//            while(rs.next()){
+//                doctorField.setText(rs.getString("Doctor"));
+//                clinicNameField.setText(rs.getString("Clinic_Name"));
+//                stationField.setText(rs.getString("Station_Area"));
+//                areaIDField.setText(rs.getString("Station_ID"));
+//                balanceLabel.setText(rs.getString("balance"));
+//                prcNoField.setText(rs.getString("PRC_Number")); 
+//                ptrNoField.setText(rs.getString("PTR_Number"));
+//            }
 
         }
         catch(Exception e){
@@ -160,6 +160,21 @@ public class MaintainanceForm extends javax.swing.JFrame {
             }
           
            }
+           
+           
+           
+           String query = "Select Doctor from cvarst.RegisteredDoctors";
+           try{
+               ResultSet rs = st.executeQuery(query);
+               while(rs.next()){     
+               doctorsList.addItem(rs.getString("Doctor"));
+               }
+           
+           }
+           catch(Exception e){
+               e.printStackTrace();
+           }
+           
 
     }
 
@@ -192,12 +207,12 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        stationField = new javax.swing.JTextField();
+        stationIDField = new javax.swing.JTextField();
         clinicNameField = new javax.swing.JTextField();
-        doctorField = new javax.swing.JTextField();
         ptrNoField = new javax.swing.JTextField();
         prcNoField = new javax.swing.JTextField();
-        areaIDField = new javax.swing.JTextField();
+        areaField = new javax.swing.JTextField();
+        doctorsList = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         balanceLabel = new javax.swing.JLabel();
@@ -257,7 +272,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel7.setForeground(java.awt.Color.gray);
-        jLabel7.setText("Station");
+        jLabel7.setText("Station ID");
 
         jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel8.setForeground(java.awt.Color.gray);
@@ -273,19 +288,23 @@ public class MaintainanceForm extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel11.setForeground(java.awt.Color.gray);
-        jLabel11.setText("Area ID");
+        jLabel11.setText("Area");
 
-        stationField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        stationIDField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
         clinicNameField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
-
-        doctorField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
         ptrNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
         prcNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
 
-        areaIDField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        areaField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+
+        doctorsList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doctorsListActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -294,25 +313,20 @@ public class MaintainanceForm extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(clinicNameField)
-                            .addComponent(doctorField)
-                            .addComponent(stationField))
-                        .addGap(27, 27, 27)))
+                    .addComponent(clinicNameField)
+                    .addComponent(stationIDField)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(doctorsList, 0, 416, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(prcNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(areaIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(areaField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51))
         );
         jPanel6Layout.setVerticalGroup(
@@ -323,9 +337,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(doctorField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ptrNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -338,11 +350,13 @@ public class MaintainanceForm extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(stationField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(areaIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(stationIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(areaField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(46, 46, 46)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(doctorsList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
@@ -1141,6 +1155,34 @@ System.out.print("SHOWING");
         deleteButton.setEnabled(true);
     }//GEN-LAST:event_tab5ComponentShown
 
+    private void doctorsListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorsListActionPerformed
+        try {
+            // TODO add your handling code here:
+            String doctor = doctorsList.getSelectedItem().toString();
+            ps = cn.prepareStatement("Select Clinic_Name, prc_number, ptr_number, station_area, station_ID from cvarst.RegisteredDoctors where Doctor = ?");
+            ps.setString(1, doctor);
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                clinicNameField.setText(rs.getString("Clinic_Name"));
+                stationIDField.setText(rs.getString("Station_ID"));
+                ptrNoField.setText(rs.getString("PTR_Number"));
+                prcNoField.setText(rs.getString("PRC_Number"));
+                areaField.setText(rs.getString("Station_Area"));
+            
+            }
+            
+            
+            
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainanceForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }//GEN-LAST:event_doctorsListActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1190,7 +1232,7 @@ System.out.print("SHOWING");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addButton;
-    private javax.swing.JTextField areaIDField;
+    private javax.swing.JTextField areaField;
     private javax.swing.JTable auditoryTestTable;
     private javax.swing.JLabel backButton;
     private javax.swing.JLabel balanceLabel;
@@ -1202,7 +1244,7 @@ System.out.print("SHOWING");
     private javax.persistence.Query colorblindTestQuery;
     private javax.persistence.Query colorblindTestQuery1;
     private javax.swing.JLabel deleteButton;
-    private javax.swing.JTextField doctorField;
+    private javax.swing.JComboBox<String> doctorsList;
     private javax.swing.JLabel editButton;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -1232,7 +1274,7 @@ System.out.print("SHOWING");
     private javax.swing.JTextField ptrNoField;
     private javax.swing.JLabel reload;
     private javax.swing.JLabel saveButton;
-    private javax.swing.JTextField stationField;
+    private javax.swing.JTextField stationIDField;
     private javax.swing.JPanel tab1;
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
