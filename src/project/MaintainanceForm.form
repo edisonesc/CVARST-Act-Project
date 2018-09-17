@@ -301,6 +301,9 @@
                       <Font name="Umpush" size="16" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="stationIDFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="clinicNameField">
                   <Properties>
@@ -308,6 +311,9 @@
                       <Font name="Umpush" size="16" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="clinicNameFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="ptrNoField">
                   <Properties>
@@ -315,6 +321,9 @@
                       <Font name="Umpush" size="16" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ptrNoFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="prcNoField">
                   <Properties>
@@ -322,6 +331,9 @@
                       <Font name="Umpush" size="16" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="prcNoFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="areaField">
                   <Properties>
@@ -329,6 +341,9 @@
                       <Font name="Umpush" size="16" style="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="areaFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="doctorsList">
                   <Properties>

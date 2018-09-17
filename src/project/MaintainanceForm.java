@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -182,7 +183,19 @@ public class MaintainanceForm extends javax.swing.JFrame {
            
 
     }
-
+    
+        private void validation() {
+        if (clinicNameField.getText().trim().length() != 0
+                && stationIDField.getText().trim().length() !=  0
+                && ptrNoField.getText().trim().length() != 0
+                && prcNoField.getText().trim().length() != 0
+                && areaField.getText().trim().length() != 0) {
+            saveButton.setEnabled(true);
+        }
+        else {
+            saveButton.setEnabled(false);
+        }
+        }
     
 
 
@@ -300,14 +313,39 @@ public class MaintainanceForm extends javax.swing.JFrame {
         jLabel11.setText("Area");
 
         stationIDField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        stationIDField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stationIDFieldKeyTyped(evt);
+            }
+        });
 
         clinicNameField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        clinicNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                clinicNameFieldKeyTyped(evt);
+            }
+        });
 
         ptrNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        ptrNoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ptrNoFieldKeyTyped(evt);
+            }
+        });
 
         prcNoField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        prcNoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                prcNoFieldKeyTyped(evt);
+            }
+        });
 
         areaField.setFont(new java.awt.Font("Umpush", 0, 16)); // NOI18N
+        areaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                areaFieldKeyTyped(evt);
+            }
+        });
 
         doctorsList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1249,6 +1287,46 @@ System.out.print("SHOWING");
         // TODO add your handling code here:
         refreshInformation();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void clinicNameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clinicNameFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_clinicNameFieldKeyTyped
+
+    private void stationIDFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stationIDFieldKeyTyped
+        // TODO add your handling code here:
+        char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_stationIDFieldKeyTyped
+
+    private void ptrNoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ptrNoFieldKeyTyped
+        // TODO add your handling code here:
+        char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_ptrNoFieldKeyTyped
+
+    private void prcNoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prcNoFieldKeyTyped
+        // TODO add your handling code here:
+        char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_prcNoFieldKeyTyped
+
+    private void areaFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_areaFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_areaFieldKeyTyped
 
     /**
      * @param args the command line arguments

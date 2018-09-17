@@ -5,13 +5,24 @@
  */
 package project;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,9 +31,12 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -34,6 +48,8 @@ public class ClearanceForm extends javax.swing.JFrame {
     /**
      * Creates new form ClearanceForm
      */
+     private JFileChooser chooser = new JFileChooser();
+     private File f;
     private Connection cn;
     private PreparedStatement ps;
     private Statement st;
@@ -66,7 +82,9 @@ public class ClearanceForm extends javax.swing.JFrame {
         }
            catch(Exception e){
            e.printStackTrace();}
-        JOptionPane.showMessageDialog(null, toDate.getText()+ " | " + fromDate.getText());
+         
+         
+     
         
     }
 
@@ -122,6 +140,7 @@ public class ClearanceForm extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
@@ -434,6 +453,12 @@ public class ClearanceForm extends javax.swing.JFrame {
                 (datechooser.view.BackRenderer)null,
                 false,
                 true)));
+    try {
+        fromDate.setDefaultPeriods(new datechooser.model.multiple.PeriodSet(new datechooser.model.multiple.Period(new java.util.GregorianCalendar(2018, 8, 17),
+            new java.util.GregorianCalendar(2018, 8, 17))));
+} catch (datechooser.model.exeptions.IncompatibleDataExeption e1) {
+    e1.printStackTrace();
+    }
     fromDate.setFieldFont(new java.awt.Font("Trebuchet MS", java.awt.Font.PLAIN, 16));
     fromDate.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
         public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
@@ -484,8 +509,7 @@ public class ClearanceForm extends javax.swing.JFrame {
                     .addGap(18, 18, 18)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(fromDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(9, 9, 9)))
+                        .addComponent(toDate, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addGap(22, 22, 22))
     );
     jPanel3Layout.setVerticalGroup(
@@ -529,6 +553,15 @@ public class ClearanceForm extends javax.swing.JFrame {
     getContentPane().add(jButton2);
     jButton2.setBounds(1130, 690, 70, 28);
 
+    jButton7.setText("Complete Status");
+    jButton7.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton7ActionPerformed(evt);
+        }
+    });
+    getContentPane().add(jButton7);
+    jButton7.setBounds(890, 690, 150, 28);
+
     jButton3.setText("Print Clearance");
     jButton3.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -536,7 +569,7 @@ public class ClearanceForm extends javax.swing.JFrame {
         }
     });
     getContentPane().add(jButton3);
-    jButton3.setBounds(880, 690, 160, 28);
+    jButton3.setBounds(720, 690, 160, 28);
 
     background.setBackground(java.awt.Color.white);
     background.setOpaque(true);
@@ -605,23 +638,132 @@ public class ClearanceForm extends javax.swing.JFrame {
     try{prepared.close();}
     catch(Exception e){}
     }
+          private JDialog showMessage(String s, String title, String type){
+    
+            JOptionPane jop = new JOptionPane(s, (type.equals("S")) ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+            JDialog dialog = jop.createDialog(title);
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+            return dialog;
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel)clearanceTable.getModel();         // Specify target table//
-        int selectedRowIndex = clearanceTable.getSelectedRow(); 
-        
-        try {
-        ps = cn.prepareStatement("UPDATE cvarst.registration SET code = ?, result = ?, uploaded = ? Where id = ?");
-        ps.setString(1, "Verified");
-        ps.setString(2, "Complete");
-        ps.setString(3, "Yes");
-        ps.setInt(4, Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString()));
-        
-        ps.executeUpdate();
-        update_Table();
+try {
+            // TODO add your handling code here:
+            DefaultTableModel model = (DefaultTableModel)clearanceTable.getModel();         // Specify target table//
+
+       
+            
+         chooser.showOpenDialog(null);
+        chooser.setDialogTitle("Save File");
+        f =  chooser.getSelectedFile();
+        String filename = f.getAbsolutePath();
+//        attachedFileField.setText(filename);
+            
+            String file_name = filename;
+            
+            
+            
+            Document document = new Document();
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream(file_name));
+                document.open();
+                Paragraph header = new Paragraph("                                 "
+                        + "                       LTO Clearance Summary Report");
+                document.add(header);
+                try {
+                    ps = cn.prepareStatement("SELECT Doctor, Clinic_Name from cvarst.RegisteredDoctors WHERE id = ?");
+                    ps.setInt(1, User.getUserID());
+                    ps.executeQuery();
+                    ResultSet rs = ps.executeQuery();
+                    while(rs.next())
+                    {
+                        Paragraph doc = new Paragraph("\n\nDoctor:\t                 "+rs.getString("Doctor")+ "                                                "
+                                + "              \t\t\tDate Proceed: "+ fromDate.getText());
+                        document.add(doc);
+                        Paragraph clinic = new Paragraph("\nClinic:\t                   "+rs.getString("Clinic_Name"));
+                        document.add(clinic);
+                        Paragraph dateFrom = new Paragraph("\nDate From:\t           "+fromDate.getText());
+                        document.add(dateFrom);
+                        Paragraph dateTo = new Paragraph("\nDate To :\t              "+toDate.getText());
+                        document.add(dateTo);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClearanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Paragraph spacing = new Paragraph("\n\n");
+                document.add(spacing);
+                PdfPTable table = new PdfPTable(8);
+                table.setWidthPercentage(100);
+                PdfPCell cell = new PdfPCell(new Phrase("Exam ID"));
+                table.addCell(cell);
+                cell = new PdfPCell(new Phrase("Exam Date"));
+                table.addCell(cell);
+                cell = new PdfPCell(new Phrase("Name"));
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Color Blind"));
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Vision"));
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Auditory"));
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Status"));
+                table.addCell(cell);
+                cell = new PdfPCell(new Phrase("Remarks"));
+                table.addCell(cell);
+                try {
+//                    String qry = "SELECT * from cvarst.registration WHERE date_registered between '"+fromDate.getText()+
+//                            "' AND '"+ toDate.getText()+"'";
+                    
+//                                        String qry = "SELECT * from cvarst.registration WHERE date_registered between '"+fromDate.getText()+
+//                            "' AND '"+ toDate.getText()+"'";
+                  String getData = "Select id, photo, firstname, middlename, lastname, result, code, ColorblindScore, AuditoryScore, date_registered from cvarst.registration where date_registered between '"+ fromDate.getText() +"' AND '"+ toDate.getText() +"'";
+                    ResultSet rs = st.executeQuery(getData);
+                    int count = 0;
+                    while(rs.next()){
+                        count++;
+                        cell = new PdfPCell(new Phrase(rs.getString("id")));
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase(rs.getString("date_registered"))); //declaration ng data type is int
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase(rs.getString("firstname")+rs.getString("middlename")+rs.getString("lastname")));
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase(rs.getString("ColorblindScore") == null  ? "No Data" : rs.getString("ColorblindScore").toString())); 
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase("Left/Right"));
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase(rs.getString("AuditoryScore") == null  ? "No data" : rs.getString("AuditoryScore").toString())); 
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase(rs.getString("result")));
+                        table.addCell(cell);
+                        cell = new PdfPCell(new Phrase("Remarks"));
+                        table.addCell(cell);
+                    }
+                        cell = new PdfPCell(new Phrase("Total clearances:              "+ count));
+                        cell.setColspan(8);
+                        table.addCell(cell);
+                        showMessage("Report Summary Saved", "Success", "S");
+                } catch (SQLException ex) {
+                    Logger.getLogger(ClearanceForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                document.add(table);
+
+                document.close();
+                
+                
+            } catch (DocumentException ex) {
+                Logger.getLogger(ClearanceForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    
+
         }
-        catch(Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        catch(FileNotFoundException ex) {
+            Logger.getLogger(ClearanceForm.class.getName()).log(Level.SEVERE,null, ex);
         }
         
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -752,6 +894,35 @@ public class ClearanceForm extends javax.swing.JFrame {
         detailsPane.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+  
+            // TODO add your handling code here:
+            DefaultTableModel model = (DefaultTableModel)clearanceTable.getModel();         // Specify target table//
+
+            
+            if(clearanceTable.getSelectedRowCount()!= 0){
+                int selectedRowIndex = clearanceTable.getSelectedRow();
+                 int id = Integer.valueOf((model.getValueAt(selectedRowIndex, 0).toString()));
+              try {
+
+                ps = cn.prepareStatement("UPDATE cvarst.registration SET code = ?, result = ?, uploaded = ? Where id = ?");
+                ps.setString(1, "Verified");
+                ps.setString(2, "Complete");
+                ps.setString(3, "Yes");
+                ps.setInt(4, id);
+                ps.executeUpdate();
+                update_Table();
+            }
+            catch(Exception e) {
+                 
+            }}
+            else{
+            
+               showMessage("No row selected", "Notice", "E");
+            }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -808,6 +979,7 @@ public class ClearanceForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

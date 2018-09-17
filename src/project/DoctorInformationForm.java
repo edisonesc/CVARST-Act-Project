@@ -6,6 +6,7 @@
 package project;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -67,6 +68,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         setResizable(false);
         userPrimary();
         formTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        saveButton.setEnabled(false);
         try{
            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
            st = cn.createStatement();
@@ -79,6 +81,25 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+    }
+    
+    private void validation() {
+        if (stationAreaField.getText().trim().length() != 0
+                && stationIDField.getText().trim().length() !=  0
+                && doctorField.getText().trim().length() != 0
+                && clinicNameField.getText().trim().length() != 0
+                && firstNameField.getText().trim().length() != 0
+                && lastNameField.getText().trim().length() != 0
+                && prcNoField.getText().trim().length() != 0
+                && ptrNoField.getText().trim().length() != 0
+                && usernameField.getText().trim().length() != 0
+                && passwordField.getText().trim().length() != 0
+                && confirmPasswordField.getText().trim().length() != 0) {
+            saveButton.setEnabled(true);
+        }
+        else {
+            saveButton.setEnabled(false);
         }
     }
 
@@ -151,12 +172,22 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jLabel6.setText("Station/Area");
 
         stationAreaField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        stationAreaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stationAreaFieldKeyTyped(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel16.setForeground(java.awt.Color.gray);
         jLabel16.setText("Station ID");
 
         stationIDField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        stationIDField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stationIDFieldKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -220,7 +251,12 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        doctorTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(doctorTable);
+        if (doctorTable.getColumnModel().getColumnCount() > 0) {
+            doctorTable.getColumnModel().getColumn(0).setResizable(false);
+            doctorTable.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(0, 0, 400, 630);
@@ -258,14 +294,29 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jLabel5.setText("Doctor");
 
         doctorField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        doctorField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                doctorFieldKeyTyped(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel7.setForeground(java.awt.Color.gray);
         jLabel7.setText("Clinic Name");
 
         clinicNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        clinicNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                clinicNameFieldKeyTyped(evt);
+            }
+        });
 
         firstNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        firstNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                firstNameFieldKeyTyped(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel8.setForeground(java.awt.Color.gray);
@@ -282,8 +333,18 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jLabel10.setText("Lastname");
 
         lastNameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        lastNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                lastNameFieldKeyTyped(evt);
+            }
+        });
 
         prcNoField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        prcNoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                prcNoFieldKeyTyped(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel11.setForeground(java.awt.Color.gray);
@@ -294,8 +355,18 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jLabel12.setText("PTR No.");
 
         ptrNoField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        ptrNoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ptrNoFieldKeyTyped(evt);
+            }
+        });
 
         usernameField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                usernameFieldKeyTyped(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
         jLabel13.setForeground(java.awt.Color.gray);
@@ -319,9 +390,24 @@ public class DoctorInformationForm extends javax.swing.JFrame {
 
         passwordField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
         passwordField.setEchoChar('\u2022');
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                passwordFieldKeyTyped(evt);
+            }
+        });
 
         confirmPasswordField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
         confirmPasswordField.setEchoChar('\u2022');
+        confirmPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                confirmPasswordFieldKeyTyped(evt);
+            }
+        });
 
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -491,6 +577,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         password = passwordField.getText().toString();
         confirmpassword = confirmPasswordField.getText().toString();
         
+
         if  (password.equals(confirmpassword)) {
         try{
             ps = cn.prepareStatement("insert into cvarst.RegisteredDoctors (Doctor,"
@@ -541,6 +628,79 @@ public class DoctorInformationForm extends javax.swing.JFrame {
            
        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void stationAreaFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stationAreaFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_stationAreaFieldKeyTyped
+
+    private void stationIDFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stationIDFieldKeyTyped
+                char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_stationIDFieldKeyTyped
+
+    private void doctorFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_doctorFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_doctorFieldKeyTyped
+
+    private void clinicNameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clinicNameFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_clinicNameFieldKeyTyped
+
+    private void firstNameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_firstNameFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_firstNameFieldKeyTyped
+
+    private void lastNameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastNameFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_lastNameFieldKeyTyped
+
+    private void prcNoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prcNoFieldKeyTyped
+        // TODO add your handling code here:
+                char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_prcNoFieldKeyTyped
+
+    private void ptrNoFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ptrNoFieldKeyTyped
+        // TODO add your handling code here:
+                char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_ptrNoFieldKeyTyped
+
+    private void usernameFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_usernameFieldKeyTyped
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void passwordFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_passwordFieldKeyTyped
+
+    private void confirmPasswordFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_confirmPasswordFieldKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_confirmPasswordFieldKeyTyped
 
     /**
      * @param args the command line arguments

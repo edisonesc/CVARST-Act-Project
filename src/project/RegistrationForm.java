@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import static java.lang.Thread.sleep;
@@ -68,6 +69,9 @@ public class RegistrationForm extends javax.swing.JFrame {
         cancelButtonHighlighted.setVisible(false);
         jPanel1.setVisible(false);
         selectButtonHighlighted.setVisible(false);
+        proceedButtonHighlighted.setEnabled(false);
+        
+                
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -87,6 +91,24 @@ public class RegistrationForm extends javax.swing.JFrame {
  
         genderCB.setOpaque(false);
      
+    }
+
+        
+    private void validation() {
+        if (firstnameText.getText().trim().length() != 0
+                && lastnameText.getText().trim().length() !=  0
+                && addressText.getText().trim().length() != 0
+                && birthdateText.getText().trim().length() != 0
+                && licenseNoText.getText().trim().length() != 0
+                && vehicleUsedText.getText().trim().length() != 0
+                && heightText.getText().trim().length() != 0
+                && weightText1.getText().trim().length() != 0
+                && ageText.getText().trim().length() != 0) {
+            proceedButtonHighlighted.setEnabled(true);
+        }
+        else {
+            proceedButtonHighlighted.setEnabled(false);
+        }
     }
     
  
@@ -205,7 +227,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         dateChooserBirthdate.setBounds(0, 0, 260, 225);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(290, 240, 260, 260);
+        jPanel1.setBounds(290, 210, 260, 260);
 
         weightLabel1.setForeground(java.awt.Color.lightGray);
         weightLabel1.setText("lbs");
@@ -234,6 +256,11 @@ public class RegistrationForm extends javax.swing.JFrame {
                 heightTextMouseClicked(evt);
             }
         });
+        heightText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                heightTextKeyTyped(evt);
+            }
+        });
         getContentPane().add(heightText);
         heightText.setBounds(290, 270, 80, 28);
         getContentPane().add(jSeparator8);
@@ -256,6 +283,11 @@ public class RegistrationForm extends javax.swing.JFrame {
                 vehicleUsedTextMouseClicked(evt);
             }
         });
+        vehicleUsedText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                vehicleUsedTextKeyTyped(evt);
+            }
+        });
         getContentPane().add(vehicleUsedText);
         vehicleUsedText.setBounds(290, 330, 280, 28);
 
@@ -274,6 +306,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         weightText1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 weightText1MouseClicked(evt);
+            }
+        });
+        weightText1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                weightText1KeyTyped(evt);
             }
         });
         getContentPane().add(weightText1);
@@ -296,6 +333,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         licenseNoText.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 licenseNoTextMouseClicked(evt);
+            }
+        });
+        licenseNoText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                licenseNoTextKeyTyped(evt);
             }
         });
         getContentPane().add(licenseNoText);
@@ -469,6 +511,11 @@ public class RegistrationForm extends javax.swing.JFrame {
                 lastnameTextFocusLost(evt);
             }
         });
+        lastnameText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                lastnameTextKeyTyped(evt);
+            }
+        });
         getContentPane().add(lastnameText);
         lastnameText.setBounds(650, 95, 190, 28);
 
@@ -497,6 +544,11 @@ public class RegistrationForm extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 firstnameTextFocusLost(evt);
+            }
+        });
+        firstnameText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                firstnameTextKeyTyped(evt);
             }
         });
         getContentPane().add(firstnameText);
@@ -643,6 +695,11 @@ public class RegistrationForm extends javax.swing.JFrame {
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
+            }
+        });
+        jLabel2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jLabel2KeyTyped(evt);
             }
         });
         getContentPane().add(jLabel2);
@@ -1043,6 +1100,51 @@ public class RegistrationForm extends javax.swing.JFrame {
         this.dispose();
         btf.setVisible(true);
     }//GEN-LAST:event_proceedButtonHighlightedMouseClicked
+
+    private void firstnameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_firstnameTextKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_firstnameTextKeyTyped
+
+    private void lastnameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lastnameTextKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_lastnameTextKeyTyped
+
+    private void jLabel2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel2KeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_jLabel2KeyTyped
+
+    private void heightTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_heightTextKeyTyped
+        // TODO add your handling code here:
+        char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_heightTextKeyTyped
+
+    private void weightText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_weightText1KeyTyped
+        // TODO add your handling code here:
+        char vchar = evt.getKeyChar();
+        if (!(Character.isDigit(vchar)
+            || (vchar == KeyEvent.VK_BACK_SPACE))) {
+            evt.consume();
+        }
+        validation();
+    }//GEN-LAST:event_weightText1KeyTyped
+
+    private void vehicleUsedTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_vehicleUsedTextKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_vehicleUsedTextKeyTyped
+
+    private void licenseNoTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_licenseNoTextKeyTyped
+        // TODO add your handling code here:
+        validation();
+    }//GEN-LAST:event_licenseNoTextKeyTyped
 
     /**
      * @param args the command line arguments
