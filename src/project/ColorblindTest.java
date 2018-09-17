@@ -99,6 +99,8 @@ public class ColorblindTest implements Serializable {
     public byte[] getPicture() {
         return picture;
     }
+    
+    
 
     public ImageIcon getImage() throws IOException{
 
@@ -111,7 +113,24 @@ public class ColorblindTest implements Serializable {
         ImageIcon result = new ImageIcon(bi);
         
         return result;
+        
     }
+    /////////////////////////////////////////
+    public ImageIcon getImage(byte[] picture) throws IOException{ ////////////////
+        
+//        
+        ImageIcon icon = new ImageIcon(this.picture);
+        Image img = icon.getImage();
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+        g.drawImage(img, 0, 0, 250, 250, null);
+        ImageIcon result = new ImageIcon(bi);
+        
+        return result;
+      ///////////////////////////////////  
+    }
+    
+    
     public void setPicture(byte[] picture) {
         byte[] oldPicture = this.picture;
         this.picture = picture;

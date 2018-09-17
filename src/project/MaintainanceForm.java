@@ -17,8 +17,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -29,6 +32,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
+import org.jdesktop.beansbinding.BindingGroup;
 import project.Editors.AuditoryEditor;
 import project.Editors.ColorBlindEditor;
 import project.Editors.VisualBailyEditor;
@@ -125,7 +129,7 @@ public class MaintainanceForm extends javax.swing.JFrame {
         auditoryTestTable.setRowHeight(40);
       
       
-        
+       
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         
@@ -178,6 +182,8 @@ public class MaintainanceForm extends javax.swing.JFrame {
            
 
     }
+
+    
 
 
     /**

@@ -31,33 +31,33 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private String userPrimary;
     public void userPrimary(){
        
-     try{
-          Class.forName("com.mysql.jdbc.Driver"); 
-          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id = '" +  User.getUserID() + "'";
-          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
-          st = cn.createStatement();
-          rs = st.executeQuery(getCurrentUserData);
-          while(rs.next()){
-            stationAreaField.setText(rs.getString("Station_Area"));
-            stationIDField.setText(rs.getString("Station_ID"));
-            doctorField.setText(rs.getString("Doctor"));
-            clinicNameField.setText(rs.getString("Clinic_Name"));
-            firstNameField.setText(rs.getString("Firstname"));
-            middleNameField.setText(rs.getString("Middlename"));
-            lastNameField.setText(rs.getString("Lastname"));
-            prcNoField.setText(String.valueOf(rs.getInt("PRC_Number")));
-            ptrNoField.setText(String.valueOf(rs.getInt("PTR_Number")));
-            usernameField.setText(rs.getString("username"));
-            passwordField.setText(rs.getString("password"));
-            
-          }
-          
-          
-          
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+//     try{
+//          Class.forName("com.mysql.jdbc.Driver"); 
+//          String getCurrentUserData = "Select * from cvarst.RegisteredDoctors where id = '" +  User.getUserID() + "'";
+//          cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvarst?zeroDateTimeBehavior=convertToNull", "root", "");
+//          st = cn.createStatement();
+//          rs = st.executeQuery(getCurrentUserData);
+//          while(rs.next()){
+//            stationAreaField.setText(rs.getString("Station_Area"));
+//            stationIDField.setText(rs.getString("Station_ID"));
+//            doctorField.setText(rs.getString("Doctor"));
+//            clinicNameField.setText(rs.getString("Clinic_Name"));
+//            firstNameField.setText(rs.getString("Firstname"));
+//            middleNameField.setText(rs.getString("Middlename"));
+//            lastNameField.setText(rs.getString("Lastname"));
+//            prcNoField.setText(String.valueOf(rs.getInt("PRC_Number")));
+//            ptrNoField.setText(String.valueOf(rs.getInt("PTR_Number")));
+//            usernameField.setText(rs.getString("username"));
+//            passwordField.setText(rs.getString("password"));
+//            
+//          }
+//          
+//          
+//          
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
         
        
     }
@@ -126,9 +126,8 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         passwordVisibility = new javax.swing.JCheckBox();
         passwordField = new javax.swing.JPasswordField();
         confirmPasswordField = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -324,10 +323,10 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         confirmPasswordField.setFont(new java.awt.Font("Umpush", 0, 14)); // NOI18N
         confirmPasswordField.setEchoChar('\u2022');
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
@@ -335,13 +334,6 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("+");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
         });
 
@@ -353,15 +345,14 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(passwordVisibility, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,9 +434,8 @@ public class DoctorInformationForm extends javax.swing.JFrame {
                 .addComponent(passwordVisibility)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(saveButton)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -481,9 +471,65 @@ public class DoctorInformationForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_passwordVisibilityActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        String stationArea, stationID, doctorName, clinicName, firstName, middleName,lastName,  username, password, confirmpassword;
+        int prcNumber, ptrNumber;
+        
+        
+        stationArea = stationAreaField.getText().toString();
+        stationID = stationIDField.getText().toString();
+        doctorName = doctorField.getText().toString();
+        clinicName = clinicNameField.getText().toString();
+        firstName = firstNameField.getText().toString();
+        middleName = middleNameField.getText().toString();
+        lastName = lastNameField.getText().toString();
+        prcNumber = Integer.valueOf(prcNoField.getText().toString());
+        ptrNumber = Integer.valueOf(ptrNoField.getText().toString());
+        username = usernameField.getText().toString();
+        password = passwordField.getText().toString();
+        confirmpassword = confirmPasswordField.getText().toString();
+        
+        if  (password.equals(confirmpassword)) {
+        try{
+            ps = cn.prepareStatement("insert into cvarst.RegisteredDoctors (Doctor,"
+                    + " Clinic_Name, "
+                    + "Firstname, Middlename, "
+                    + "Lastname, PRC_Number, "
+                    + "PTR_Number, "
+                    + " username, password, "
+                    + "Station_Area, Station_ID, balance) values"
+                    + "(?,?,?,?,?,?,?,?,?,?,?, ?)");
+            
+            ps.setString(1, doctorName);
+            ps.setString(2, clinicName);
+            ps.setString(3, firstName);
+            ps.setString(4, middleNameField.getText().isEmpty() ? null : middleName);
+            ps.setString(5, lastName);
+            ps.setInt(6, prcNumber);
+            ps.setInt(7, ptrNumber);
+            ps.setString(8, username);
+            ps.setString(9, password);
+            ps.setString(10, stationArea);
+            ps.setString(11, stationID);
+            ps.setInt(12, 10);
+            ps.executeUpdate();
+            cn.close();
+            ps.close();
+            
+            this.dispose();
+            DoctorInformationForm dIF = new DoctorInformationForm();
+            dIF.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Registered the account Successfully");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Password does not match!");
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -495,13 +541,6 @@ public class DoctorInformationForm extends javax.swing.JFrame {
            
        }
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-//        AddDoctorForm aDF = new AddDoctorForm();
-//        this.dispose();
-//        aDF.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -545,9 +584,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private javax.swing.JTable doctorTable;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JLabel formTitle;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -574,6 +611,7 @@ public class DoctorInformationForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox passwordVisibility;
     private javax.swing.JTextField prcNoField;
     private javax.swing.JTextField ptrNoField;
+    private javax.swing.JButton saveButton;
     private javax.swing.JTextField stationAreaField;
     private javax.swing.JTextField stationIDField;
     private javax.swing.JTextField usernameField;
